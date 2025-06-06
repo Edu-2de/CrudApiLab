@@ -1,14 +1,13 @@
 import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { products, brands, Product } from '../data/db';
-import { authMiddleware } from '../middleware/auth';
+import { products, brands, Product, coupons } from '../data/db';
+import { authMiddleware, requireAdmin } from '../middleware/auth';
 
 const router = Router();
 
-
-router.post('/', (req: Request, res: Response) => {
+router.post('/', requireAdmin, (req: Request, res: Response) => {
   const { title, price, brandId } = req.body;
-  const product: Product = { id: uuidv4(), title, price, brandId };
+  const product: Product = { id: uuidv4(), title, price, brandId, quantity: 0 };
   products.push(product);
   res.status(201).json(product);
 });
@@ -37,7 +36,7 @@ router.get('/:id/details', (req: Request, res: Response) => {
 
 
 // Update product by ID
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', requireAdmin, (req: Request, res: Response) => {
   const product = products.find(u => u.id === req.params.id);
   if (!product) return res.status(404).json({ message: "Product not found" });
   const { title, price, brandId } = req.body;
@@ -48,7 +47,7 @@ router.put('/:id', (req: Request, res: Response) => {
 });
 
 // Delete product by ID
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', requireAdmin, (req: Request, res: Response) => {
   const idx = products.findIndex(u => u.id === req.params.id);
   if (idx === -1) return res.status(404).json({ message: "Product not found" });
   products.splice(idx, 1);
@@ -57,18 +56,32 @@ router.delete('/:id', (req: Request, res: Response) => {
 
 router.post('/:id/buy', authMiddleware, (req: Request, res: Response) => {
   const { quantity } = req.body;
+  const coupon = coupons.find(u => u.id === req.body.couponId);
+
   const product = products.find(u => u.id === req.params.id);
   if (!product) return res.status(404).json({ message: "Product not found" });
 
   // @ts-ignore
   const user = req.user;
-  const total = Number(product.price) * Number(quantity);
+  let total = Number(product.price) * Number(quantity);
 
   if (user.balance < total) {
     return res.status(400).json({ message: "Insufficient balance" });
   }
 
+  if (product.quantity < quantity) {
+    return res.status(400).json({ message: "Not enough product in stock" });
+  }
+
+  if (coupon) {
+    total -= coupon.discount;
+    if (total < 0) {
+      total = 0;
+    }
+  }
+
   user.balance -= total;
+  product.quantity -= quantity;
   res.status(200).json({ message: `Purchased ${quantity} of ${product.title}`, balance: user.balance });
 });
 

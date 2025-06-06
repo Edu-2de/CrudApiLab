@@ -1,28 +1,29 @@
 import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { User, users } from '../data/db';
+import { requireAdmin } from '../middleware/auth';
 
 const router = Router();
 
 // Create user
 router.post('/', (req: Request, res: Response) => {
   const { name, password } = req.body;
-  const user: User = { id: uuidv4(), name, password, balance: 0 };
+  const user: User = { id: uuidv4(), name, password, balance: 0, role: 'user' };
   users.push(user);
   res.status(201).json(user);
 });
 // Read all users
-router.get('/', (req: Request, res: Response) => {
+router.get('/', requireAdmin, (req: Request, res: Response) => {
   res.json(users);
 });
 // Read user by ID
-router.get('/:id', (req: Request, res: Response) => {
+router.get('/:id', requireAdmin, (req: Request, res: Response) => {
   const user = users.find(u => u.id === req.params.id);
   if (!user) return res.status(404).json({ message: "User not found" });
   res.json(user);
 });
 // Update user by ID
-router.put('/:id', (req: Request, res: Response) => {
+router.put('/:id', requireAdmin, (req: Request, res: Response) => {
   const user = users.find(u => u.id === req.params.id);
   if (!user) return res.status(404).json({ message: "User not found" });
   const { name, password } = req.body;
@@ -31,7 +32,7 @@ router.put('/:id', (req: Request, res: Response) => {
   res.json(user);
 });
 // Delete user by ID
-router.delete('/:id', (req: Request, res: Response) => {
+router.delete('/:id', requireAdmin, (req: Request, res: Response) => {
   const idx = users.findIndex(u => u.id === req.params.id);
   if (idx === -1) return res.status(404).json({ message: "User not found" });
   users.splice(idx, 1);

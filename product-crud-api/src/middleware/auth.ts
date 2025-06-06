@@ -12,3 +12,12 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
   req.user = user;
   next();
 }
+
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  // @ts-ignore
+  const user = req.user;
+  if (!user || user.role !== 'admin') {
+    return res.status(403).json({ message: 'Admin access required' });
+  }
+  next();
+}
