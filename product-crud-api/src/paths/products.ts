@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { products, brands, Product } from '../data/db';
+import { authMiddleware } from '../middleware/auth';
 
 const router = Router();
 
@@ -52,6 +53,23 @@ router.delete('/:id', (req: Request, res: Response) => {
   if (idx === -1) return res.status(404).json({ message: "Product not found" });
   products.splice(idx, 1);
   res.status(204).send();
+});
+
+router.post('/:id/buy', authMiddleware, (req: Request, res: Response) => {
+  const { quantity } = req.body;
+  const product = products.find(u => u.id === req.params.id);
+  if (!product) return res.status(404).json({ message: "Product not found" });
+
+  // @ts-ignore
+  const user = req.user;
+  const total = Number(product.price) * Number(quantity);
+
+  if (user.balance < total) {
+    return res.status(400).json({ message: "Insufficient balance" });
+  }
+
+  user.balance -= total;
+  res.status(200).json({ message: `Purchased ${quantity} of ${product.title}`, balance: user.balance });
 });
 
 export default router;

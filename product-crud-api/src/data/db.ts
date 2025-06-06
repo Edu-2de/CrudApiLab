@@ -10,6 +10,18 @@ export interface Product {
   brandId: string;
 }
 
+export interface User{
+  id: string;
+  name: string;
+  password: string;
+  balance: number;
+}
+
+export const users: User[] = [
+  { id: '1', name: 'John Doe', password: 'password123', balance: 100 },
+  { id: '2', name: 'Jane Smith', password: 'password456', balance: 200 }
+];
+
 export const brands: Brand[] = [
   { id: '1', title: 'Nike' },
   { id: '2', title: 'Adidas' }
