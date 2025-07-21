@@ -15,3 +15,18 @@ export const checkIfTableExist = async () => {
     return false;
   }
 };
+
+let setupExecuted = false;
+
+export const setupDB = async () => {
+  if (setupExecuted) {
+    console.log('>> Database setup already completed, skipping');
+    return;
+  }
+
+  try {
+    
+  }catch(error){
+
+  }
+};
