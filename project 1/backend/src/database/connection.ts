@@ -25,3 +25,5 @@ pool.on('connect', () => {
 pool.on('error', err => {
   console.log('Error (ಠ_ಠ): ', err);
 });
+
+export default pool;
