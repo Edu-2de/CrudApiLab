@@ -20,13 +20,23 @@ let setupExecuted = false;
 
 export const setupDB = async () => {
   if (setupExecuted) {
-    console.log('>> Database setup already completed, skipping');
+    console.log('Database setup already completed, skipping');
     return;
   }
 
   try {
-    
-  }catch(error){
+    console.log('Setting up database...');
 
-  }
+    const tableExist = await checkIfTableExist();
+    if (tableExist) {
+      console.log('Database tables already exist, skipping');
+      setupExecuted = true;
+      return;
+    }
+
+    const schemaPath = path.join(__dirname, './sql/schema.sql');
+    const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
+
+    
+  } catch (error) {}
 };
