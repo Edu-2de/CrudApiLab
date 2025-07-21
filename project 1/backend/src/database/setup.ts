@@ -52,3 +52,14 @@ export const setupDB = async () => {
     throw error;
   }
 };
+
+export const testConnection = async () => {
+  try {
+    const result = await pool.query('SELECT NOW()');
+    console.log('✅ Database connection test successful:', result.rows[0].now);
+    return true;
+  } catch (error) {
+    console.log('❌ Database connection test failed:', error);
+    return false;
+  }
+};
