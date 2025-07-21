@@ -41,5 +41,14 @@ export const setupDB = async () => {
     console.log('Database schema created successfully');
 
     setupExecuted = true;
-  } catch (error) {}
+  } catch (error) {
+    console.error('Database setup error: ', error);
+
+    if (error instanceof Error && error.message.includes('already exists')) {
+      console.log('⚠️ Tables already exist, continuing...');
+      setupExecuted = true;
+      return;
+    }
+    throw error;
+  }
 };
