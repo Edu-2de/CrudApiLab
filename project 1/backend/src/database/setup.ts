@@ -37,6 +37,9 @@ export const setupDB = async () => {
     const schemaPath = path.join(__dirname, './sql/schema.sql');
     const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
 
-    
+    await pool.query(schemaSql);
+    console.log('Database schema created successfully');
+
+    setupExecuted = true;
   } catch (error) {}
 };
