@@ -24,4 +24,9 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 CREATE TABLE IF NOT EXISTS account_types (
     id SERIAL PRIMARY KEY,
     type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
+    price DECIMAL(10,2) DEFAULT 0.00
 );
+
+INSERT INTO account_types(type, price)VALUES
+('basic', 100.00)
+ON CONFLICT (type) DO NOTHING;
