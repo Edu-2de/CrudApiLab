@@ -48,6 +48,18 @@ INSERT INTO courses(title, description, price, professional_id)VALUES
 ON CONFLICT (professional_id) DO NOTHING;
 
 
+
+CREATE TABLE IF NOT EXISTS enrollments(
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
+  course_id INTEGER UNIQUE REFERENCES courses(id) ON DELETE SET NULL,
+  enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'pending', 'suspended', 'completed', 'canceled'))
+);
+
+
+
+
 CREATE TABLE IF NOT EXISTS meis(
   id SERIAL PRIMARY KEY,
   user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
