@@ -10,12 +10,12 @@ CREATE TABLE IF NOT EXISTS users (
 )
 
 INSERT INTO users (first_name, second_name, email, password_hash, role)VALUES
-('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$hxrKnQby/FyLhdEjrOpc5OqUg2t9hvQ66tAPTq1InkPtnOlb4Spn6', 'full_access')
+('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$o3Lx9SXG2xPq7pYLzaUq/uVWxioqy4mI/Q9BWMxJRTwE6CJGbBvzy', 'full_access')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
-('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$LeoE2tYbQ.oRpyJnv3BQ0e.TuePBdWESnbn5Qkl2jraHLTZKVEwfq',  'limit_access')
+('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$6E07uTkNqMJtfMwmkRE1EuAK38BFxCmihM7Tuf3MVuCJgiN8dMPOK',  'limit_access')
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
-('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$LeoE2tYbQ.oRpyJnv3BQ0e.TuePBdWESnbn5Qkl2jraHLTZKVEwfq',  'user')
+('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
