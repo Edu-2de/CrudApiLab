@@ -36,12 +36,16 @@ ON CONFLICT (user_id) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS courses(
   id SERIAL PRIMARY KEY,
-  title VARCHAR(20) UNIQUE NOT NULL,
+  title VARCHAR(20) NOT NULL,
   description VARCHAR(100),
   price DECIMAL(10,2) NOT NULL,
   professional_id INTEGER UNIQUE REFERENCES professionals(id) ON DELETE SET NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );
+
+INSERT INTO courses(title, description, price, professional_id)VALUES
+('MeiCourse', 'Course for meis', 200.00, 1)
+ON CONFLICT (professional_id) DO NOTHING;
 
 
 CREATE TABLE IF NOT EXISTS meis(
