@@ -21,6 +21,18 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
 
 
+CREATE TABLE IF NOT EXISTS professionals(
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
+  bio VARCHAR(100),
+  area_of_expertise VARCHAR(20) NOT NULL
+)
+
+INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
+('1', 'I have 40 years old and i love dogs', 'science')
+ON CONFLICT (user_id) DO NOTHING
+
+
 CREATE TABLE IF NOT EXISTS meis(
   id SERIAL PRIMARY KEY,
   user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
