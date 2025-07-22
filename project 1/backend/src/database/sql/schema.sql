@@ -12,3 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
 INSERT INTO users (first_name, second_name, email, password_hash, role)VALUES
 ('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$hxrKnQby/FyLhdEjrOpc5OqUg2t9hvQ66tAPTq1InkPtnOlb4Spn6', 'full_access')
 ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
+('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$LeoE2tYbQ.oRpyJnv3BQ0e.TuePBdWESnbn5Qkl2jraHLTZKVEwfq',  'limit_access')
+ON CONFLICT (email) DO NOTHING;
