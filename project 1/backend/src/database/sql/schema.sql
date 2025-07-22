@@ -51,12 +51,14 @@ ON CONFLICT (professional_id) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS enrollments(
   id SERIAL PRIMARY KEY,
-  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
-  course_id INTEGER UNIQUE REFERENCES courses(id) ON DELETE SET NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  course_id INTEGER REFERENCES courses(id) ON DELETE SET NULL,
   enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'pending', 'suspended', 'completed', 'canceled'))
 );
 
+INSERT INTO enrollments(user_id, course_id, status)VALUES
+(3, 1, 'active');
 
 
 
