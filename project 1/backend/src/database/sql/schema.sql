@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   role VARCHAR(20) DEFAULT 'user' CHECK(role IN ('full_access', 'limit_access', 'user')),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 INSERT INTO users (first_name, second_name, email, password_hash, role)VALUES
 ('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$o3Lx9SXG2xPq7pYLzaUq/uVWxioqy4mI/Q9BWMxJRTwE6CJGbBvzy', 'full_access')
@@ -19,6 +19,7 @@ ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
+ON CONFLICT (email) DO NOTHING;
 
 
 CREATE TABLE IF NOT EXISTS professionals(
@@ -26,11 +27,12 @@ CREATE TABLE IF NOT EXISTS professionals(
   user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
   bio VARCHAR(100),
   area_of_expertise VARCHAR(20) NOT NULL
-)
+);
 
 INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
 ('1', 'I have 40 years old and i love dogs', 'science')
-ON CONFLICT (user_id) DO NOTHING
+ON CONFLICT (user_id) DO NOTHING;
+
 
 
 CREATE TABLE IF NOT EXISTS meis(
@@ -40,7 +42,7 @@ CREATE TABLE IF NOT EXISTS meis(
   business_name VARCHAR(100) NOT NULL,
   opening_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'pending', 'suspended', 'closed'))
-)
+);
 
 INSERT INTO meis(user_id, cnpj, business_name, business_name)VALUES
 (3, '12.345.678/0001-95', 'Food.ltd')
