@@ -27,10 +27,12 @@ CREATE TABLE IF NOT EXISTS meis(
   cnpj VARCHAR(100) UNIQUE NOT NULL,
   business_name VARCHAR(100) NOT NULL,
   opening_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  status VARCHAR(100)
+  status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'pending', 'suspended', 'closed'))
 )
 
-
+INSERT INTO meis(user_id, cnpj, business_name, business_name)VALUES
+(3, '12.345.678/0001-95', 'Food.ltd')
+ON CONFLICT (cnpj) DO NOTHING;
 
 
 
