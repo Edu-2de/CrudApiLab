@@ -95,3 +95,12 @@ INSERT INTO account_types(type, price)VALUES
 ('premium', 200.00)
 ON CONFLICT (type) DO NOTHING;
 
+
+
+CREATE TABLE IF NOT EXISTS user_account_types (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
+  accountType_id INTEGER UNIQUE REFERENCES account_types(id) ON DELETE SET NULL,
+  start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  end_date TIMESTAMP
+);
