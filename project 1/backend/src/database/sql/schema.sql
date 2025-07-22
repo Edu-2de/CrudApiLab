@@ -21,6 +21,19 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
 
 
+CREATE TABLE IF NOT EXISTS meis(
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
+  cnpj VARCHAR(100) UNIQUE NOT NULL,
+  business_name VARCHAR(100) NOT NULL,
+  opening_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  status VARCHAR(100)
+)
+
+
+
+
+
 CREATE TABLE IF NOT EXISTS account_types (
   id SERIAL PRIMARY KEY,
   type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
@@ -39,10 +52,3 @@ INSERT INTO account_types(type, price)VALUES
 ('premium', 200.00)
 ON CONFLICT (type) DO NOTHING;
 
-CREATE TABLE IF NOT EXISTS meis(
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
-  cnpj VARCHAR(100) UNIQUE NOT NULL,
-  business_name VARCHAR(100) NOT NULL,
-  
-)
