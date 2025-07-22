@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@types/pg": "^8.15.4",
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "pg": "^8.16.3"
