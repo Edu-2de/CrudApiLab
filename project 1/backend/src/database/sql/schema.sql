@@ -34,6 +34,14 @@ INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
 ON CONFLICT (user_id) DO NOTHING;
 
 
+CREATE TABLE IF NOT EXISTS courses(
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(20) UNIQUE NOT NULL,
+  description VARCHAR(100),
+  price DECIMAL(10,2) NOT NULL,
+  professional_id INTEGER UNIQUE REFERENCES professionals(id) ON DELETE SET NULL
+)
+
 
 CREATE TABLE IF NOT EXISTS meis(
   id SERIAL PRIMARY KEY,
