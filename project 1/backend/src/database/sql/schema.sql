@@ -30,3 +30,11 @@ CREATE TABLE IF NOT EXISTS account_types (
 INSERT INTO account_types(type, price)VALUES
 ('basic', 100.00)
 ON CONFLICT (type) DO NOTHING;
+
+INSERT INTO account_types(type, price)VALUES
+('advanced', 150.00)
+ON CONFLICT (type) DO NOTHING;
+
+INSERT INTO account_types(type, price)VALUES
+('premium', 200.00)
+ON CONFLICT (type) DO NOTHING;
