@@ -16,3 +16,6 @@ ON CONFLICT (email) DO NOTHING;
 INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$LeoE2tYbQ.oRpyJnv3BQ0e.TuePBdWESnbn5Qkl2jraHLTZKVEwfq',  'limit_access')
 ON CONFLICT (email) DO NOTHING;
+
+INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
+('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$LeoE2tYbQ.oRpyJnv3BQ0e.TuePBdWESnbn5Qkl2jraHLTZKVEwfq',  'user')
