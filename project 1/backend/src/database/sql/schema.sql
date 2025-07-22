@@ -19,3 +19,9 @@ ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
+
+
+CREATE TABLE IF NOT EXISTS account_types (
+    id SERIAL PRIMARY KEY,
+    type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
+);
