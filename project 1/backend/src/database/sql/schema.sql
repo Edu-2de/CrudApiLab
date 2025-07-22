@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS courses(
   title VARCHAR(20) UNIQUE NOT NULL,
   description VARCHAR(100),
   price DECIMAL(10,2) NOT NULL,
-  professional_id INTEGER UNIQUE REFERENCES professionals(id) ON DELETE SET NULL
-)
+  professional_id INTEGER UNIQUE REFERENCES professionals(id) ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+);
 
 
 CREATE TABLE IF NOT EXISTS meis(
