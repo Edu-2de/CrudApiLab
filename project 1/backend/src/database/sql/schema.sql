@@ -22,9 +22,9 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 
 
 CREATE TABLE IF NOT EXISTS account_types (
-    id SERIAL PRIMARY KEY,
-    type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
-    price DECIMAL(10,2) DEFAULT 0.00
+  id SERIAL PRIMARY KEY,
+  type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
+  price DECIMAL(10,2) DEFAULT 0.00
 );
 
 INSERT INTO account_types(type, price)VALUES
@@ -38,3 +38,11 @@ ON CONFLICT (type) DO NOTHING;
 INSERT INTO account_types(type, price)VALUES
 ('premium', 200.00)
 ON CONFLICT (type) DO NOTHING;
+
+CREATE TABLE IF NOT EXISTS meis(
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
+  cnpj VARCHAR(100) UNIQUE NOT NULL,
+  business_name VARCHAR(100) NOT NULL,
+  
+)
