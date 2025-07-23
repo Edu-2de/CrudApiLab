@@ -28,12 +28,29 @@ export class AuthController {
       const token = jwt.sign(
         {
           id: user.id,
+          first_name: user.first_name,
           email: user.email,
-          
+          role: user.role,
         },
         JWT_SECRET,
         { expiresIn: '1h' }
       );
-    } catch (error) {}
+      res.json({
+        message: 'Login successful',
+        token,
+        user: {
+          id: user.id,
+          first_name: user.first_name,
+          second_name: user.second_name,
+          email: user.email,
+          role: user.role,
+        },
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during login',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
