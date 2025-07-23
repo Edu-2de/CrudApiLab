@@ -46,8 +46,7 @@ CREATE TABLE IF NOT EXISTS courses(
 );
 
 INSERT INTO courses(title, description, price, professional_id)VALUES
-('MeiCourse', 'Course for meis', 200.00, 1)
-ON CONFLICT (professional_id) DO NOTHING;
+('MeiCourse', 'Course for meis', 200.00, 1);
 
 
 

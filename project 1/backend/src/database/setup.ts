@@ -5,10 +5,11 @@ import path from 'path';
 export const checkIfTableExist = async () => {
   try {
     const result = await pool.query(`
-      SELECT EXISTS(
-        SELECT FROM CrudApiProject1_schema.tables
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables
         WHERE table_schema = 'public'
-        AND table_name = 'users');
+        AND table_name = 'users'
+      );
     `);
     return result.rows[0].exists;
   } catch (error) {
@@ -45,7 +46,7 @@ export const setupDB = async () => {
     console.error('Database setup error: ', error);
 
     if (error instanceof Error && error.message.includes('already exists')) {
-      console.log('⚠️ Tables already exist, continuing...');
+      console.log('Tables already exist, continuing...');
       setupExecuted = true;
       return;
     }
@@ -56,10 +57,10 @@ export const setupDB = async () => {
 export const testConnection = async () => {
   try {
     const result = await pool.query('SELECT NOW()');
-    console.log('✅ Database connection test successful:', result.rows[0].now);
+    console.log('Database connection test successful:', result.rows[0].now);
     return true;
   } catch (error) {
-    console.log('❌ Database connection test failed:', error);
+    console.log('Database connection test failed:', error);
     return false;
   }
 };
