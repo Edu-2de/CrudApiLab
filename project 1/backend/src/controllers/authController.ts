@@ -55,6 +55,13 @@ export class AuthController {
   };
 
   static register = async (req: Request, res: Response): Promise<void> => {
-    
+    try{
+
+    }catch(error){
+      res.status(500).json({
+        message: 'Error during login',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
