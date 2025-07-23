@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-  id SERIAL PRIMARY KEY
+  id SERIAL PRIMARY KEY,
   first_name VARCHAR(100) NOT NULL,
   second_name VARCHAR(100),
   email VARCHAR(100) UNIQUE NOT NULL,
@@ -22,6 +22,7 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ON CONFLICT (email) DO NOTHING;
 
 
+
 CREATE TABLE IF NOT EXISTS professionals(
   id SERIAL PRIMARY KEY,
   user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
@@ -34,18 +35,18 @@ INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
 ON CONFLICT (user_id) DO NOTHING;
 
 
+
 CREATE TABLE IF NOT EXISTS courses(
   id SERIAL PRIMARY KEY,
   title VARCHAR(20) NOT NULL,
   description VARCHAR(100),
   price DECIMAL(10,2) NOT NULL,
-  professional_id INTEGER UNIQUE REFERENCES professionals(id) ON DELETE SET NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  professional_id INTEGER REFERENCES professionals(id) ON DELETE SET NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 INSERT INTO courses(title, description, price, professional_id)VALUES
-('MeiCourse', 'Course for meis', 200.00, 1)
-ON CONFLICT (professional_id) DO NOTHING;
+('MeiCourse', 'Course for meis', 200.00, 1);
 
 
 
@@ -71,7 +72,7 @@ CREATE TABLE IF NOT EXISTS meis(
   status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'pending', 'suspended', 'closed'))
 );
 
-INSERT INTO meis(user_id, cnpj, business_name, business_name)VALUES
+INSERT INTO meis(user_id, cnpj, business_name)VALUES
 (3, '12.345.678/0001-95', 'Food.ltd')
 ON CONFLICT (cnpj) DO NOTHING;
 
@@ -99,8 +100,11 @@ ON CONFLICT (type) DO NOTHING;
 
 CREATE TABLE IF NOT EXISTS user_account_types (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
-  accountType_id INTEGER UNIQUE REFERENCES account_types(id) ON DELETE SET NULL,
+  user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  account_type_id INTEGER REFERENCES account_types(id) ON DELETE SET NULL,
   start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   end_date TIMESTAMP
 );
+
+INSERT INTO user_account_types(user_id, account_type_id, start_date, end_date)VALUES
+(3, 2, NOW(), NOW() + INTERVAL '1 month');
