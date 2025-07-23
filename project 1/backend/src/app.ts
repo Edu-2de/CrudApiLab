@@ -23,7 +23,7 @@ const startServer = async() =>{
     console.log('Database setup completed');
 
     app.listen(PORT, ()=>{
-      console.log('Server running on port' + PORT);
+      console.log('Server running on port: ' + PORT);
       console.log(`Test DB: http://localhost:${PORT}/test-db`);
       
     });
