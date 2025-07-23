@@ -53,4 +53,8 @@ export class AuthController {
       });
     }
   };
+
+  static register = async (req: Request, res: Response): Promise<void> => {
+    
+  };
 }
