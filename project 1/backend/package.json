@@ -1,12 +1,17 @@
 {
   "dependencies": {
+    "@types/helmet": "^4.0.0",
     "@types/pg": "^8.15.4",
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "helmet": "^8.1.0",
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@types/dotenv": "^8.2.3"
+    "@types/cors": "^2.8.19",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5.0.3"
   }
 }
