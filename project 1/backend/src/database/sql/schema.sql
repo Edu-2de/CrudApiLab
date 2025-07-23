@@ -104,3 +104,7 @@ CREATE TABLE IF NOT EXISTS user_account_types (
   start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   end_date TIMESTAMP
 );
+
+INSERT INTO user_account_types(user_id, accountType_id, start_date, end_date)VALUES
+VALUES (1, 2, NOW(), NOW() + INTERVAL '1 month')
+ON CONFLICT (user_id) DO NOTHING;
