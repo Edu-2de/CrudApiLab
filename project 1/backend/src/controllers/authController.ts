@@ -55,9 +55,30 @@ export class AuthController {
   };
 
   static register = async (req: Request, res: Response): Promise<void> => {
-    try{
+    try {
+      const { first_name, second_name, email, password } = req.body;
 
-    }catch(error){
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        res.status(400).json({ message: 'Invalid email format' });
+        return;
+      }
+
+      const verifyEmail = await pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
+      if (verifyEmail.rows.length > 0) {
+        res.status(400).json({ error: 'This email already exist' });
+      }
+
+      if (password.length < 8) {
+        res.status(400).json({ error: 'The password need be more than 8 characters' });
+        return;
+      }
+
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+
+    } catch (error) {
       res.status(500).json({
         message: 'Error during login',
         error: error instanceof Error ? error.message : String(error),
