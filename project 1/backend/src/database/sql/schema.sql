@@ -22,6 +22,7 @@ INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
 ON CONFLICT (email) DO NOTHING;
 
 
+
 CREATE TABLE IF NOT EXISTS professionals(
   id SERIAL PRIMARY KEY,
   user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
@@ -32,6 +33,7 @@ CREATE TABLE IF NOT EXISTS professionals(
 INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
 ('1', 'I have 40 years old and i love dogs', 'science')
 ON CONFLICT (user_id) DO NOTHING;
+
 
 
 CREATE TABLE IF NOT EXISTS courses(
