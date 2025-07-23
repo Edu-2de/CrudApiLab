@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import jwt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 import pool from '../database/connection';
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
@@ -12,9 +13,14 @@ export class AuthController {
         res.status(400).json({ error: 'Email or password is missing!' });
         return;
       }
-      const result = await pool.query(
-        
-      )
+      const result = await pool.query(`SELECT * FROM users WHERE email  = $1`, [email]);
+      if (result.rows.length == 0) {
+        res.status(400).json({ error: 'This user not exist' });
+        return;
+      }
+      const user = result.rows[0];
+      const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
     } catch (error) {}
   };
 }
