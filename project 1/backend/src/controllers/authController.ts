@@ -122,4 +122,40 @@ export class AuthController {
       });
     }
   };
+
+  static getUserById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.params;
+      if (!userId) {
+        res.status(400).json({ message: 'The user id is missing' });
+        return;
+      }
+
+      const resultUser = await pool.query(
+        `
+        SELECT 
+        id, first_name, second_name, email, role, created_at 
+        FROM users Where id = $1
+      `,
+        [userId]
+      );
+
+      if (resultUser.rows.length === 0) {
+        res.status(400).json({ message: 'We do not have a user for this id' });
+        return;
+      }
+
+      const user = resultUser.rows[0];
+
+      res.json({
+        message: 'User retrieved successfully',
+        user: user,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching user',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
 }
