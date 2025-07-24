@@ -7,7 +7,6 @@ jest.mock('../database/connection');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
 
-
 const mockPool = pool as any;
 const mockBcrypt = bcrypt as any;
 const mockJwt = jwt as any;
@@ -48,6 +47,19 @@ describe('AuthController', () => {
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'This user not exist' });
+    });
+    it('should be return 400 if the password is invalid', async () => {
+      mockReq.body = { email: 'test@gmail.com', password: 'wrongPassword' };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [0] });
+
+      mockBcrypt.compare.mockResolvedValueOnce(false);
+
+      await AuthController.login(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid password!' });
+
     });
   });
 });
