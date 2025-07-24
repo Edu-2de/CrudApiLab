@@ -118,5 +118,15 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'This email already exist' });
     });
+    it('should be return 400 if the password is less than eighth characters', async () => {
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password:'passwor'};
+
+      mockPool.query.mockResolvedValueOnce({rows: []})
+
+      await AuthController.register(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'The password need be more than 8 characters' });
+    });
   });
 });
