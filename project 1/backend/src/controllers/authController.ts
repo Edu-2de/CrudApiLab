@@ -247,4 +247,19 @@ export class AuthController {
       });
     }
   };
+
+  static deleteUserById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.params;
+      if (!userId) {
+        res.status(400).json({ message: 'User id is missing' });
+        return;
+      }
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during delete user',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
 }
