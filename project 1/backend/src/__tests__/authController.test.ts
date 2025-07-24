@@ -212,10 +212,10 @@ describe('AuthController', () => {
 
       await AuthController.getAllUsers(mockReq, mockRes);
 
-      expect(mockRes.json).toHaveBeenCalledWith({ 
+      expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Users retrieved successfully',
-        users: mockUsers
-       });
+        users: mockUsers,
+      });
     });
   });
 });
