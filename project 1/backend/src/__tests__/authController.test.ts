@@ -218,4 +218,14 @@ describe('AuthController', () => {
       });
     });
   });
+  describe('updateUserById', () => {
+    it('should be return 400 if the user id is missing', async () => {
+      mockReq.params = {};
+
+      await AuthController.updateUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'The user id is missing' });
+    });
+  });
 });
