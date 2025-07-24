@@ -36,7 +36,7 @@ describe('AuthController', () => {
       await AuthController.login(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Email or password is missing!' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'Email or password is missing!' });
     });
     it('should be return 400 if the user not exist', async () => {
       mockReq.body = { email: 'test@gmail.com', password: 'password' };
@@ -46,7 +46,7 @@ describe('AuthController', () => {
       await AuthController.login(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'This user not exist' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'This user not exist' });
     });
     it('should be return 400 if the password is invalid', async () => {
       mockReq.body = { email: 'test@gmail.com', password: 'wrongPassword' };
@@ -58,7 +58,7 @@ describe('AuthController', () => {
       await AuthController.login(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid password!' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'Invalid password!' });
     });
     it('should return success response with token on valid login', async () => {
       mockReq.body = { email: 'test@gmail.com', password: 'password' };
@@ -98,7 +98,7 @@ describe('AuthController', () => {
       await AuthController.register(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Some of the arguments are missing' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'Some of the arguments are missing' });
     });
     it('should be return 400 if the email is not in the correct format', async () => {
       mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@!#@$%gmail.com', password: 'password' };
@@ -106,7 +106,7 @@ describe('AuthController', () => {
       await AuthController.register(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'Invalid email format' });
     });
     it('should be return 400 if the email already exist', async () => {
       mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'password' };
@@ -116,7 +116,7 @@ describe('AuthController', () => {
       await AuthController.register(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'This email already exist' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'This email already exist' });
     });
     it('should be return 400 if the password is less than eighth characters', async () => {
       mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'passwor' };
@@ -126,7 +126,7 @@ describe('AuthController', () => {
       await AuthController.register(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ error: 'The password need be more than 8 characters' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'The password need be more than 8 characters' });
     });
     it('should create user successfully', async () => {
       mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'password' };
