@@ -168,7 +168,7 @@ export class AuthController {
       const resultUser = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId]);
 
       if (resultUser.rows.length === 0) {
-        res.status(400).json({ message: 'We do not have a user for this id' });
+        res.status(400).json({ message: 'User not found' });
         return;
       }
 

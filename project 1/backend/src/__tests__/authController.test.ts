@@ -227,5 +227,15 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'The user id is missing' });
     });
+    it('should be return 400 if user is not found', async () => {
+      mockReq.params = { userId: 1 };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+
+      await AuthController.updateUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'User not found' });
+    });
   });
 });
