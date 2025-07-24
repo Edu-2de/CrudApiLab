@@ -34,5 +34,15 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Email or password is missing!' });
     });
+    it('should be return 400 if the user not exist', async () => {
+      mockReq.body = { email: 'test@gmail.com', password: 'password' };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+
+      await AuthController.login(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'This user not exist' });
+    });
   });
 });
