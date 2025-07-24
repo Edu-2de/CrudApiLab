@@ -186,7 +186,7 @@ describe('AuthController', () => {
     it('should be return 400 if no one user registered', async () => {
       mockPool.query.mockResolvedValueOnce({ rows: [] });
 
-      await AuthController.getAllUsers(mockRes, mockReq);
+      await AuthController.getAllUsers(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'No one user registered' });
