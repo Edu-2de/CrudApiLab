@@ -151,12 +151,22 @@ describe('AuthController', () => {
   });
   describe('getUserById', () => {
     it('should be return 400 if userId is missing', async () => {
-      mockReq.params = { }
+      mockReq.params = {};
 
       await AuthController.getUserById(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'The user id is missing' });
+    });
+    it('should be return 400 if user not found', async () => {
+      mockReq.params = { userId: 1 };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+
+      await AuthController.getUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'We do not have a user for this id' });
     });
   });
 });
