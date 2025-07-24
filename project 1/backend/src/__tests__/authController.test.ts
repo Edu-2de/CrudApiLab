@@ -143,6 +143,42 @@ describe('AuthController', () => {
       });
     });
   });
+  describe('getAllUsers', () => {
+    it('should be return 400 if no one user registered', async () => {
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+
+      await AuthController.getAllUsers(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No one user registered' });
+    });
+    it('should be return the users data successful', async () => {
+      const mockUsers = [
+        {
+          id: 1,
+          first_name: 'first',
+          second_name: 'second',
+          email: 'test@gmail.com',
+          role: 'user',
+        },
+        {
+          id: 2,
+          first_name: 'first2',
+          second_name: 'second2',
+          email: 'test2@gmail.com',
+          role: 'user',
+        },
+      ];
+      mockPool.query.mockResolvedValueOnce({ rows: mockUsers });
+
+      await AuthController.getAllUsers(mockReq, mockRes);
+
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: 'Users retrieved successfully',
+        users: mockUsers,
+      });
+    });
+  });
   describe('getUserById', () => {
     it('should be return 400 if userId is missing', async () => {
       mockReq.params = {};
@@ -179,42 +215,6 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'User retrieved successfully',
         user: mockUser,
-      });
-    });
-  });
-  describe('getAllUsers', () => {
-    it('should be return 400 if no one user registered', async () => {
-      mockPool.query.mockResolvedValueOnce({ rows: [] });
-
-      await AuthController.getAllUsers(mockReq, mockRes);
-
-      expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No one user registered' });
-    });
-    it('should be return the users data successful', async () => {
-      const mockUsers = [
-        {
-          id: 1,
-          first_name: 'first',
-          second_name: 'second',
-          email: 'test@gmail.com',
-          role: 'user',
-        },
-        {
-          id: 2,
-          first_name: 'first2',
-          second_name: 'second2',
-          email: 'test2@gmail.com',
-          role: 'user',
-        },
-      ];
-      mockPool.query.mockResolvedValueOnce({ rows: mockUsers });
-
-      await AuthController.getAllUsers(mockReq, mockRes);
-
-      expect(mockRes.json).toHaveBeenCalledWith({
-        message: 'Users retrieved successfully',
-        users: mockUsers,
       });
     });
   });
