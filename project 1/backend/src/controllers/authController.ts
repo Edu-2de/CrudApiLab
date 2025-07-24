@@ -255,6 +255,24 @@ export class AuthController {
         res.status(400).json({ message: 'User id is missing' });
         return;
       }
+
+      const resultUser = await pool.query(
+        `SELECT * FROM users WHERE id = $1`, 
+        [userId]
+      );
+
+      if(resultUser.rows.length === 0){
+        res.status(400).json({message: 'This user not exist'});
+        return;
+      }
+
+      const user = resultUser.rows[0];
+      const resultDelete = await pool.query(`DELETE FROM users WHERE id = $1`);
+
+      res.status(200).json({
+        message: 'User deleted successfully',
+        user: user
+      })
     } catch (error) {
       res.status(500).json({
         message: 'Error during delete user',
