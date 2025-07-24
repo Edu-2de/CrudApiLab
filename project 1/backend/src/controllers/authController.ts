@@ -10,18 +10,18 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       if (!email || !password) {
-        res.status(400).json({ error: 'Email or password is missing!' });
+        res.status(400).json({ message: 'Email or password is missing!' });
         return;
       }
       const result = await pool.query(`SELECT * FROM users WHERE email  = $1`, [email]);
       if (result.rows.length == 0) {
-        res.status(400).json({ error: 'This user not exist' });
+        res.status(400).json({ message: 'This user not exist' });
         return;
       }
       const user = result.rows[0];
       const isPasswordValid = await bcrypt.compare(password, user.password_hash);
       if (!isPasswordValid) {
-        res.status(400).json({ error: 'Invalid password!' });
+        res.status(400).json({ message: 'Invalid password!' });
         return;
       }
 
@@ -59,22 +59,22 @@ export class AuthController {
       const { first_name, second_name, email, password } = req.body;
 
       if (!first_name || !second_name || !email || !password) {
-        res.status(400).json({ error: 'Some of the arguments are missing' });
+        res.status(400).json({ message: 'Some of the arguments are missing' });
         return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        res.status(400).json({ error: 'Invalid email format' });
+        res.status(400).json({ message: 'Invalid email format' });
         return;
       }
 
       const verifyEmail = await pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
       if (verifyEmail.rows.length !== 0) {
-        res.status(400).json({ error: 'This email already exist' });
+        res.status(400).json({ message: 'This email already exist' });
       }
 
       if (password.length < 8) {
-        res.status(400).json({ error: 'The password need be more than 8 characters' });
+        res.status(400).json({ message: 'The password need be more than 8 characters' });
         return;
       }
 
@@ -107,7 +107,7 @@ export class AuthController {
       `);
 
       if (resultAllUsers.rows.length === 0) {
-        res.status(400).json({ error: 'No one user registered' });
+        res.status(400).json({ message: 'No one user registered' });
         return;
       }
 
