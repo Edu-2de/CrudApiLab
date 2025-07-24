@@ -58,9 +58,13 @@ export class AuthController {
     try {
       const { first_name, second_name, email, password } = req.body;
 
+      if(!first_name || !second_name || !email || !password){
+        res.status(400).json({error: 'Some of the arguments are missing'});
+        return
+      }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
-        res.status(400).json({ message: 'Invalid email format' });
+        res.status(400).json({ error: 'Invalid email format' });
         return;
       }
 
