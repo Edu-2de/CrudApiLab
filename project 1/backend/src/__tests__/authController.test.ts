@@ -239,22 +239,46 @@ describe('AuthController', () => {
     });
     it('should be return 400 if no fields to update', async () => {
       mockReq.params = { userId: 1 };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [0] });
+
+      mockReq.body = {};
+
+      await AuthController.updateUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No fields to update' });
+    });
+    it('should be return a successful response', async () => {
+      mockReq.params = { userId: 1 };
       const mockUser = {
         id: 1,
         first_name: 'first',
         second_name: 'second',
         email: 'test@gmail.com',
         role: 'user',
-      }
+      };
+      const mockUpdateUser = {
+        id: 1,
+        first_name: 'first',
+        second_name: 'second',
+        email: 'newtest@gmail.com',
+        role: 'user',
+      };
 
       mockPool.query.mockResolvedValueOnce({ rows: [mockUser] });
 
-      mockReq.body = {}
+      mockReq.body = { email: 'newtest@gmail.com' };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+      mockPool.query.mockResolvedValueOnce({ rows: [mockUpdateUser] });
 
       await AuthController.updateUserById(mockReq, mockRes);
 
-      expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No fields to update' });
+      expect(mockRes.json).toHaveBeenCalledWith({ 
+        message: 'User updated successfully',
+        user: mockUpdateUser
+       });
     });
   });
 });
