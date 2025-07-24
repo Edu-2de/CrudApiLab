@@ -267,7 +267,7 @@ export class AuthController {
       }
 
       const user = resultUser.rows[0];
-      await pool.query(`DELETE FROM users WHERE id = $1`);
+      await pool.query(`DELETE FROM users WHERE id = $1`,[userId]);
 
       res.status(200).json({
         message: 'User deleted successfully',

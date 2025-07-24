@@ -290,13 +290,35 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'User id is missing' });
     });
-    it('should be return 400 if user id is missing', async () => {
-      mockReq.params = {};
+    it('should be return 400 if user not exist', async () => {
+      mockReq.params = { userId: 1 };
+
+      mockPool.query.mockResolvedValueOnce({rows:[]})
 
       await AuthController.deleteUserById(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ message: 'User id is missing' });
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'This user not exist' });
+    });
+    it('should be return successful response ', async () => {
+      mockReq.params = { userId: 1 };
+      const mockUser = {
+        id: 1,
+        first_name: 'first',
+        second_name: 'second',
+        email: 'test@gmail.com',
+        role: 'user',
+      };
+
+      mockPool.query.mockResolvedValueOnce({rows:[mockUser]})
+
+      await AuthController.deleteUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.json).toHaveBeenCalledWith({ 
+        message: 'User deleted successfully',
+        user: mockUser
+       });
     });
   });
 });
