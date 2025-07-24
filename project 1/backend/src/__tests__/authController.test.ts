@@ -59,7 +59,6 @@ describe('AuthController', () => {
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid password!' });
-
     });
     it('should return success response with token on valid login', async () => {
       mockReq.body = { email: 'test@gmail.com', password: 'password' };
@@ -68,8 +67,8 @@ describe('AuthController', () => {
         first_name: 'first',
         second_name: 'second',
         email: 'test@gmail.com',
-        role: 'user'
-      }
+        role: 'user',
+      };
 
       mockPool.query.mockResolvedValueOnce({ rows: [mockUser] });
 
@@ -79,28 +78,35 @@ describe('AuthController', () => {
 
       await AuthController.login(mockReq, mockRes);
 
-      expect(mockRes.json).toHaveBeenCalledWith({ 
+      expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Login successful',
         token: 'mockedToken',
-        user:{
+        user: {
           id: 1,
           first_name: 'first',
           second_name: 'second',
           email: 'test@gmail.com',
-          role: 'user'
+          role: 'user',
         },
       });
-
     });
   });
   describe('register', () => {
-    it('should be return 400 if any of the arguments are missing', async() => {
-      mockReq.body = {first_name: 'first', second_name:'second', email: 'test@gmail.com'};
+    it('should be return 400 if any of the arguments are missing', async () => {
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com' };
 
       await AuthController.register(mockReq, mockRes);
-      
+
       expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({error:'Some of the arguments are missing'});
-    })
-  })
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Some of the arguments are missing' });
+    });
+    it('should be return 400 if the email is not in the correct format', async () => {
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@!#@$%gmail.com', password:'password'};
+
+      await AuthController.register(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
+    });
+  });
 });
