@@ -81,7 +81,7 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Login successful',
         token: 'mockedToken',
-        user: mockUser
+        user: mockUser,
       });
     });
   });
@@ -176,10 +176,20 @@ describe('AuthController', () => {
 
       await AuthController.getUserById(mockReq, mockRes);
 
-      expect(mockRes.json).toHaveBeenCalledWith({ 
+      expect(mockRes.json).toHaveBeenCalledWith({
         message: 'User retrieved successfully',
-        user: mockUser
-       });
+        user: mockUser,
+      });
+    });
+  });
+  describe('getAllUsers', () => {
+    it('should be return 400 if no one user registered', async () => {
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+
+      await AuthController.getAllUsers(mockRes, mockReq);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No one user registered' });
     });
   });
 });
