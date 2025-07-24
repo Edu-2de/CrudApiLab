@@ -81,13 +81,7 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({
         message: 'Login successful',
         token: 'mockedToken',
-        user: {
-          id: 1,
-          first_name: 'first',
-          second_name: 'second',
-          email: 'test@gmail.com',
-          role: 'user',
-        },
+        user: mockUser
       });
     });
   });
@@ -167,6 +161,25 @@ describe('AuthController', () => {
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'We do not have a user for this id' });
+    });
+    it('should return user data', async () => {
+      mockReq.params = { userId: 1 };
+      const mockUser = {
+        id: 1,
+        first_name: 'first',
+        second_name: 'second',
+        email: 'test@gmail.com',
+        role: 'user',
+      };
+
+      mockPool.query.mockResolvedValueOnce({ rows: [mockUser] });
+
+      await AuthController.getUserById(mockReq, mockRes);
+
+      expect(mockRes.json).toHaveBeenCalledWith({ 
+        message: 'User retrieved successfully',
+        user: mockUser
+       });
     });
   });
 });
