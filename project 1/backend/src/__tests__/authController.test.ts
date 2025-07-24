@@ -237,5 +237,24 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ message: 'User not found' });
     });
+    it('should be return 400 if no fields to update', async () => {
+      mockReq.params = { userId: 1 };
+      const mockUser = {
+        id: 1,
+        first_name: 'first',
+        second_name: 'second',
+        email: 'test@gmail.com',
+        role: 'user',
+      }
+
+      mockPool.query.mockResolvedValueOnce({ rows: [mockUser] });
+
+      mockReq.body = {}
+
+      await AuthController.updateUserById(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ message: 'No fields to update' });
+    });
   });
 });
