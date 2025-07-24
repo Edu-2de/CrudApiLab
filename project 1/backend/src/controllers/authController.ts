@@ -132,11 +132,9 @@ export class AuthController {
       }
 
       const resultUser = await pool.query(
-        `
-        SELECT 
+        `SELECT 
         id, first_name, second_name, email, role, created_at 
-        FROM users Where id = $1
-      `,
+        FROM users Where id = $1`,
         [userId]
       );
 
@@ -154,6 +152,61 @@ export class AuthController {
     } catch (error) {
       res.status(500).json({
         message: 'Error fetching user',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
+
+  static updateUserById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { userId } = req.params;
+      if (!userId) {
+        res.status(400).json({ message: 'The user id is missing' });
+        return;
+      }
+
+      const resultUser = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId]);
+
+      if (resultUser.rows.length === 0) {
+        res.status(400).json({ message: 'We do not have a user for this id' });
+        return;
+      }
+
+      const user = resultUser.rows[0];
+
+      const { first_name, second_name, email, password, role } = req.body;
+
+      if (email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          res.status(400).json({ message: 'Invalid email format' });
+          return;
+        }
+
+        const result_email = await pool.query(`SELECT * FROM users Where email = $1`, [email]);
+        if (result_email.rows.length != 0) {
+          res.status(400).json({ error: 'this email already have an account!' });
+          return;
+        }
+      }
+
+      if (password) {
+        if (password.length < 8) {
+          res.status(400).json({ message: 'Password must be at least 6 characters long' });
+          return;
+        }
+      }
+
+      if (role && role !== 'full_access' && role !== 'limit_access' && role !== 'user') {
+        res.status(400).json({ message: 'This role does not exist' });
+        return;
+      }
+
+      
+
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during update user',
         error: error instanceof Error ? error.message : String(error),
       });
     }
