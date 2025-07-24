@@ -58,9 +58,9 @@ export class AuthController {
     try {
       const { first_name, second_name, email, password } = req.body;
 
-      if(!first_name || !second_name || !email || !password){
-        res.status(400).json({error: 'Some of the arguments are missing'});
-        return
+      if (!first_name || !second_name || !email || !password) {
+        res.status(400).json({ error: 'Some of the arguments are missing' });
+        return;
       }
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
@@ -92,7 +92,32 @@ export class AuthController {
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Error during login',
+        message: 'Error during register',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
+
+  static getAllUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const resultAllUsers = await pool.query(`
+        SELECT 
+        id, first_name, second_name, email, role, created_at 
+        FROM users ORDER BY created_at DESC LIMIT 50
+      `);
+
+      if (resultAllUsers.rows.length === 0) {
+        res.status(400).json({ error: 'No one user registered' });
+        return;
+      }
+
+      res.json({
+        message: 'Users retrieved successfully',
+        users: resultAllUsers.rows,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching users',
         error: error instanceof Error ? error.message : String(error),
       });
     }
