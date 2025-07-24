@@ -82,13 +82,13 @@ export class AuthController {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       const newUserResult = await pool.query(
-        `INSERT INTO users(first_name, second_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, name, email, role`,
+        `INSERT INTO users(first_name, second_name, email, password_hash) VALUES ($1, $2, $3, $4) RETURNING id, first_name, second_name, email, role`,
         [first_name, second_name, email, hashedPassword]
       );
 
       res.status(201).json({
         message: 'User registered successfully',
-        user: newUserResult,
+        user: newUserResult.rows[0],
       });
     } catch (error) {
       res.status(500).json({

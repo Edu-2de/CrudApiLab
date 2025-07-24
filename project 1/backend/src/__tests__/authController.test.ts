@@ -101,7 +101,7 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Some of the arguments are missing' });
     });
     it('should be return 400 if the email is not in the correct format', async () => {
-      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@!#@$%gmail.com', password:'password'};
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@!#@$%gmail.com', password: 'password' };
 
       await AuthController.register(mockReq, mockRes);
 
@@ -109,9 +109,9 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
     });
     it('should be return 400 if the email already exist', async () => {
-      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password:'password'};
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'password' };
 
-      mockPool.query.mockResolvedValueOnce({rows: [0]})
+      mockPool.query.mockResolvedValueOnce({ rows: [0] });
 
       await AuthController.register(mockReq, mockRes);
 
@@ -119,14 +119,34 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'This email already exist' });
     });
     it('should be return 400 if the password is less than eighth characters', async () => {
-      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password:'passwor'};
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'passwor' };
 
-      mockPool.query.mockResolvedValueOnce({rows: []})
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
 
       await AuthController.register(mockReq, mockRes);
 
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'The password need be more than 8 characters' });
+    });
+    it('should create user successfully', async () => {
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password: 'password' };
+      const mockUser = {
+        id: 1,
+        first_name: 'first',
+        second_name: 'second',
+        email: 'test@gmail.com',
+        role: 'user',
+      };
+      mockPool.query.mockResolvedValueOnce({ rows: [] });
+      mockPool.query.mockResolvedValueOnce({ rows: [mockUser] });
+
+      await AuthController.register(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(201);
+      expect(mockRes.json).toHaveBeenCalledWith({
+        message: 'User registered successfully',
+        user: mockUser,
+      });
     });
   });
 });
