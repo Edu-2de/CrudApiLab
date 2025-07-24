@@ -108,5 +108,15 @@ describe('AuthController', () => {
       expect(mockRes.status).toHaveBeenCalledWith(400);
       expect(mockRes.json).toHaveBeenCalledWith({ error: 'Invalid email format' });
     });
+    it('should be return 400 if the email already exist', async () => {
+      mockReq.body = { first_name: 'first', second_name: 'second', email: 'test@gmail.com', password:'password'};
+
+      mockPool.query.mockResolvedValueOnce({rows: [0]})
+
+      await AuthController.register(mockReq, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.json).toHaveBeenCalledWith({ error: 'This email already exist' });
+    });
   });
 });

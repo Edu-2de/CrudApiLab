@@ -69,7 +69,7 @@ export class AuthController {
       }
 
       const verifyEmail = await pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
-      if (verifyEmail.rows.length > 0) {
+      if (verifyEmail.rows.length !== 0) {
         res.status(400).json({ error: 'This email already exist' });
       }
 
