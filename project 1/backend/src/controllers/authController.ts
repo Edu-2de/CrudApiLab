@@ -172,8 +172,6 @@ export class AuthController {
         return;
       }
 
-      const user = resultUser.rows[0];
-
       const { first_name, second_name, email, password, role } = req.body;
 
       if (email) {
@@ -202,8 +200,46 @@ export class AuthController {
         return;
       }
 
-      
+      const fields = [];
+      const values = [];
+      let idx = 1;
 
+      if (first_name) {
+        fields.push(`first_name = $${idx++}`);
+        values.push(first_name);
+      }
+
+      if (email) {
+        fields.push(`email = $${idx++}`);
+        values.push(email);
+      }
+
+      if (password) {
+        fields.push(`password_hash = $${idx++}`);
+        const hashedPassword = await bcrypt.hash(password, 10);
+        values.push(hashedPassword);
+      }
+
+      if (role) {
+        fields.push(`role = $${idx++}`);
+        values.push(role);
+      }
+
+      if (fields.length === 0) {
+        res.status(400).json({ message: 'No fields to update' });
+        return;
+      }
+
+      fields.push(`updated_at = CURRENT_TIMESTAMP`);
+      values.push(userId);
+
+      const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
+      const result1 = await pool.query(query, values);
+
+      res.json({
+        message: 'User updated successfully',
+        user: result1.rows[0],
+      });
     } catch (error) {
       res.status(500).json({
         message: 'Error during update user',
