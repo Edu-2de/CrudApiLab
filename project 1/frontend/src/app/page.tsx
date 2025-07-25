@@ -16,7 +16,7 @@ export default function Home() {
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const carrouselItem = carrouselItems[currentIndex];
+  const currentItem = carrouselItems[currentIndex];
 
   const prevSlide = React.useCallback(() => {
     setCurrentIndex(prev => (prev === 0 ? carrouselItems.length - 1 : prev - 1));
@@ -51,8 +51,20 @@ export default function Home() {
   }, [nextSlide, prevSlide]);
 
   return (
-    <div className="w-full bg-blue-950 bg-a h-auto">
-      <h1 className="">Project1</h1>
+    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center bg-neutral-100 px-0 py-0 mt-24 md:mt-30">
+      <div className="relative w-full max-w-7xl mx-auto rounded-2xl overflow-hidden shadow-2xl border border-neutral-400 bg-white/90">
+        <div
+          className="flex flex-col items-center justify-center h-[40vh] md:h-[60vh] px-6 md:px-24 transition-all duration-700"
+          style={{ backgroundColor: currentItem.backgroundColor, minHeight: 320 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-extrabold text-neutral-800 mb-6 text-center drop-shadow-sm tracking-tight">
+            {currentItem.title}
+          </h2>
+          <p className="mt-2 text-2xl md:text-4xl text-neutral-700 text-center max-w-2xl font-medium">
+            {currentItem.description}
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
