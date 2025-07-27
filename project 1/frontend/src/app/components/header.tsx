@@ -85,4 +85,13 @@ export default function Header() {
   const handleSubMenuMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
+
+  const [mobileOpenSubmenus, setMobileOpenSubmenus] = useState<{ [k: number]: boolean }>({});
+  const handleMobileSubmenuToggle = (idx: number) => {
+    setMobileOpenSubmenus((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+  };
+
 }
