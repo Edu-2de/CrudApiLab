@@ -88,10 +88,29 @@ export default function Header() {
 
   const [mobileOpenSubmenus, setMobileOpenSubmenus] = useState<{ [k: number]: boolean }>({});
   const handleMobileSubmenuToggle = (idx: number) => {
-    setMobileOpenSubmenus((prev) => ({
+    setMobileOpenSubmenus(prev => ({
       ...prev,
       [idx]: !prev[idx],
     }));
   };
 
+  return (
+    <header
+      ref={headerRef}
+      className={classNames(
+        'fixed top-0 left-0 w-full z-40 transition-all duration-300',
+        solid ? 'bg-white/80 backdrop-blur-md shadow border-b border-gray-200' : 'bg-transparent'
+      )}
+      style={{ backdropFilter: solid ? 'blur(8px)' : undefined }}
+    >
+      <div className="max-w-7xl mx-auto flex items-center h-20 px-4 md:px-8">
+        <div className="font-bold text-2xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
+          Logo
+        </div>
+        <nav className="flex-1 hidden md:block">
+          <ul className="flex space-x-8"></ul>
+        </nav>
+      </div>
+    </header>
+  );
 }
