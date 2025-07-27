@@ -46,5 +46,11 @@ const rightButton = [
 export default function Header(){
 
   const[openMenu, setOpenMenu] = useState<number | null>(null);
+  const[mobileMenuOpen, setMobileMenu] = useState(false);
+  const[solid, setSolid] = useState(false);
+
+  const headerRef = useRef<HTMLDivElement>(null);
+
+  
 
 }
