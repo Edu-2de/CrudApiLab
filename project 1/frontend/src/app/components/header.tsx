@@ -52,10 +52,12 @@ export default function Header() {
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (headerRef.current && !headerRef.current.contains(envent.target as Node)) {
+      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
         setOpenMenu(null);
         setMobileMenuOpen(false);
       }
     }
-  });
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 }
