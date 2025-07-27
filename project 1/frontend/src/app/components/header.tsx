@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 
-// Menu principal com submenus
 const menuItems = [
   {
     label: 'About',
