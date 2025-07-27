@@ -74,5 +74,16 @@ export default function Header() {
   const handleMenuMouseLeave = () => {
     timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
   };
-  
+
+  const handleMenuMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+
+  const handleSubMenuMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
+  };
+
+  const handleSubMenuMouseEnter = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
 }
