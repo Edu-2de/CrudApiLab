@@ -68,4 +68,11 @@ export default function Header() {
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMenuMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
+  };
+  
 }
