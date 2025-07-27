@@ -1,33 +1,50 @@
-"use client";
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import classNames from "classnames";
+'use client';
+import React, { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import classNames from 'classnames';
 
 // Menu principal com submenus
 const menuItems = [
   {
-    label: "About",
+    label: 'About',
     submenu: [
-      { label: "Example", href: "#" },
-      { label: "Example", href: "#" },
-      { label: "Example", href: "#" },
+      { label: 'Example', href: '#' },
+      { label: 'Example', href: '#' },
+      { label: 'Example', href: '#' },
     ],
   },
   {
-    label: "Products",
+    label: 'Products',
     submenu: [
-      { label: "Example", href: "#" },
-      { label: "Example", href: "#" },
-      { label: "Example", href: "#" },
+      { label: 'Example', href: '#' },
+      { label: 'Example', href: '#' },
+      { label: 'Example', href: '#' },
     ],
   },
   {
-    label: "Contact",
+    label: 'Contact',
     submenu: [
-      { label: "Example", href: "#" },
-      { label: "Example", href: "#" },
+      { label: 'Example', href: '#' },
+      { label: 'Example', href: '#' },
     ],
   },
 ];
 
+const rightButton = [
+  {
+    label: 'Enter',
+    onClick: () => alert('login'),
+    style: 'outline',
+  },
+  {
+    label: 'Sign up',
+    onClick: () => alert('register'),
+    style: 'solid',
+  },
+];
 
+export default function Header(){
+
+  const[openMenu, setOpenMenu] = useState<number | null>(null);
+
+}
