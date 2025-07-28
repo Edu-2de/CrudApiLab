@@ -38,15 +38,15 @@ export default function ProductRow() {
   ];
 
   return (
-    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-5">
+    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-1">
       <div className="relative h-[70vh] w-full max-w-[95%] mx-auto overflow-hidden flex gap-6  p-8">
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-between ${cardColors[idx % cardColors.length]}`}
+            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-between hover:rounded-full ${cardColors[idx % cardColors.length]}`}
           >
             <h3 className=" text-lg text-white mb-2">{cat.title}</h3>
-            <div className="flex flex-col gap-2 w-2xl">
+            <div className="flex flex-col gap-2 w-2xl ">
               {Object.values(cat.options).map((opt, i) => (
                 <button key={i} className=" text-gray-800 px-4 py-2 rounded transition">
                   {opt}
