@@ -125,8 +125,8 @@ export default function Header() {
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
-        <nav className="flex-1 flex justify-center">
-          <ul className="flex space-x-8">
+        <nav className="flex-1 flex justify-center ">
+          <ul className="flex space-x-8 ">
             {menuItems.map((item, idx) => (
               <li
                 key={item.label}
@@ -136,7 +136,7 @@ export default function Header() {
               >
                 <button
                   className={classNames(
-                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors',
+                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer',
                     openMenu === idx && 'text-black'
                   )}
                   type="button"
@@ -192,7 +192,7 @@ export default function Header() {
               <button
                 key={i}
                 onClick={btn.onClick}
-                className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition"
+                className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition cursor-pointer"
               >
                 {btn.label}
               </button>
