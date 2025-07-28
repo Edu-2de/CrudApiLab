@@ -10,7 +10,8 @@ export default function LoginRegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [name, setName] = useState("");
+  const [first_name, setfirst_name] = useState("");
+  const [second_name, setsecond_name] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -20,7 +21,8 @@ export default function LoginRegisterPage() {
 
   function handleSwitch() {
     setError(null);
-    setName("");
+    setfirst_name("");
+    setsecond_name("");
     setEmail("");
     setPass("");
     setConfirm("");
@@ -56,7 +58,7 @@ export default function LoginRegisterPage() {
         const res = await fetch("/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password: pass }),
+          body: JSON.stringify({first_name, second_name, email, password: pass }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -149,7 +151,7 @@ export default function LoginRegisterPage() {
                 type="text"
                 placeholder="Your name"
                 required
-                value={name}
+                value={first_name}
                 onChange={e => setName(e.target.value)}
                 className="pl-10 pr-3 py-2 rounded-lg border border-gray-200 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition input-text-black"
                 style={{ fontSize: "1.08rem" }}
