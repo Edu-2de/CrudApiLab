@@ -200,7 +200,7 @@ export default function Header() {
               <button
                 key={i}
                 onClick={() => (window.location.href = "/Login")}
-                className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition"
+                className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition cursor-pointer"
               >
                 {btn.label}
               </button>
