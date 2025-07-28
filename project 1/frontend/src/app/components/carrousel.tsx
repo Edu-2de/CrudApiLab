@@ -59,7 +59,7 @@ export default function Carrousel() {
         <Image className="rounded-2xl" src={currentItem.src} alt={currentItem.alt} width={1800} height={600} />
       </div>
       {/* Controls */}
-      <div className="absolute top-1/2 left-0 w-full flex justify-between items-center px-6 -translate-y-1/12 pointer-events-none">
+      <div className="absolute top-1/2 left-0 w-full flex justify-between items-center px-18 -translate-y-1/12 pointer-events-none">
         <div className="pointer-events-auto">
           <button
             onClick={prevSlide}
