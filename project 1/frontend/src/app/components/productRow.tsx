@@ -43,7 +43,7 @@ export default function ProductRow() {
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-between hover:rounded-full transition-all duration-700 ease-in-out ${cardColors[idx % cardColors.length]}`}
+            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-between hover:rounded-full transition-rounded transition-colors duration-300 ease-in-out ${cardColors[idx % cardColors.length]}`}
           >
             <h3 className=" text-lg text-white mb-2">{cat.title}</h3>
             <div className="flex flex-col gap-2 w-2xl ">
