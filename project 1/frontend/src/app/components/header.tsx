@@ -46,8 +46,25 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [solid, setSolid] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    function onScroll() {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 20) {
+        setHideHeader(true);
+      } else {
+        setHideHeader(false); 
+      }
+      lastScrollY.current = currentScrollY;
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -98,10 +115,11 @@ export default function Header() {
     <header
       ref={headerRef}
       className={classNames(
-        'fixed top-4 left-[3%] w-[94%] z-40 transition-all duration-300 rounded-full ',
-        solid ? 'bg-white/80 backdrop-blur-md shadow ' : 'bg-white'
+        'fixed top-4 left-[3%] w-[94%] z-40 transition-transform duration-300 rounded-full',
+        hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
+        'bg-white'
       )}
-      style={{ backdropFilter: solid ? 'blur(8px)' : undefined }}
+      style={{}}
     >
       <div className="max-w-8xl mx-auto flex items-center h-15 px-4 md:px-8">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
