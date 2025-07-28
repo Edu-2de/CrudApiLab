@@ -116,24 +116,22 @@ export default function Header() {
                 onMouseEnter={() => handleMenuMouseEnter(idx)}
                 onMouseLeave={handleMenuMouseLeave}
               >
-                <button 
+                <button
                   className={classNames(
-                    "flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors",
+                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors',
                     openMenu === idx && 'text-black'
                   )}
-                  type='button'
+                  type="button"
                   aria-haspopup={!!item.submenu}
                   aria-expanded={openMenu === idx}
-                  onClick={() =>
-                    setOpenMenu(openMenu === idx ? null : idx)
-                  }
+                  onClick={() => setOpenMenu(openMenu === idx ? null : idx)}
                 >
                   {item.label}
                   {item.submenu && (
                     <svg
                       className={classNames(
-                        "ml-1 w-4 h-4 text-gray-500 transform transition-transform duration-200",
-                        openMenu === idx ? "-rotate-180 -translate-y-0.5" : "rotate-0"
+                        'ml-1 w-4 h-4 text-gray-500 transform transition-transform duration-200',
+                        openMenu === idx ? '-rotate-180 -translate-y-0.5' : 'rotate-0'
                       )}
                       fill="none"
                       stroke="currentColor"
@@ -141,11 +139,7 @@ export default function Header() {
                       viewBox="0 0 24 24"
                       aria-hidden="true"
                     >
-                      <path
-                        d="M19 9l-7 7-7-7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M19 9l-7 7-7-7" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   )}
                 </button>
@@ -156,7 +150,7 @@ export default function Header() {
                     onMouseLeave={handleSubMenuMouseLeave}
                   >
                     <ul>
-                      {item.submenu.map((subitem) => (
+                      {item.submenu.map(subitem => (
                         <li key={subitem.label}>
                           <Link
                             href={subitem.href}
@@ -176,7 +170,7 @@ export default function Header() {
         </nav>
         <div className="hidden md:flex items-center space-x-4 ml-8">
           {rightButtons.map((btn, i) =>
-            btn.style === "solid" ? (
+            btn.style === 'solid' ? (
               <button
                 key={i}
                 onClick={btn.onClick}
