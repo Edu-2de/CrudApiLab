@@ -1,11 +1,6 @@
-"use client";
-
-const cardColors = [
-  "bg-[#8c9ca2]",
-  "bg-[#5c6150]",
-  "bg-[#8c8b91]",
-  "bg-[#8c8584]"
-];
+'use client';
+import React, { useState } from 'react';
+const cardColors = ['bg-[#8c9ca2]', 'bg-[#5c6150]', 'bg-[#8c8b91]', 'bg-[#8c8584]'];
 
 export default function ProductRow() {
   const categories = [
@@ -13,29 +8,31 @@ export default function ProductRow() {
       title: 'Best Sellers',
       options: {
         option1: 'shop men',
-        option2: 'shop women'
-      }
+        option2: 'shop women',
+      },
     },
     {
       title: 'New Arrivals',
       options: {
         option1: 'shop men',
-        option2: 'shop women'
-      }
+        option2: 'shop women',
+      },
     },
     {
       title: 'Mens',
       options: {
-        option1: 'shop men'
-      }
+        option1: 'shop men',
+      },
     },
     {
       title: 'Womans',
       options: {
-        option1: 'shop women'
-      }
+        option1: 'shop women',
+      },
     },
   ];
+
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   return (
     <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-1">
@@ -43,12 +40,14 @@ export default function ProductRow() {
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-between hover:rounded-[47%] transition-all duration-700 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
+            className={`rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-[47%] transition-all duration-700 ease-in-out select-none cursor-pointer group  ${
+              cardColors[idx % cardColors.length]
+            }`}
           >
             <h3 className=" text-lg text-white mb-2">{cat.title}</h3>
-            <div className="flex flex-col gap-2 w-2xl ">
+            <div className="flex flex-col  gap-2 w-2xl  ">
               {Object.values(cat.options).map((opt, i) => (
-                <button key={i} className=" text-gray-800 px-4 py-2 rounded transition">
+                <button key={i} className=" cursor-pointer text-transparent group-hover:text-white  px-4 py-2 rounded transition">
                   {opt}
                 </button>
               ))}
