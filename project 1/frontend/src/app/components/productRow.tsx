@@ -46,7 +46,7 @@ export default function ProductRow() {
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`group rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-full transition-rounded duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
+            className={`group rounded-lg shadow p-6 flex flex-col items-center min-h-[200px] min-w-[200px] justify-center hover:rounded-[46%] transition-all duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
             style={{
               backgroundImage: `url(${cat.src})`,
               backgroundSize: 'cover',
