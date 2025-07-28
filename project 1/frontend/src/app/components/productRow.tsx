@@ -46,12 +46,12 @@ export default function ProductRow() {
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`group rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-[47%] transition-all duration-700 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
+            className={`group rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-[10%] transition-rounded duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
             style={{
               backgroundImage: `url(${cat.src})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              transition: 'background-image 0.5s'
+              transition: 'background-image 1.5s'
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundImage = `url(${cat.src1})`}
             onMouseLeave={e => e.currentTarget.style.backgroundImage = `url(${cat.src})`}
