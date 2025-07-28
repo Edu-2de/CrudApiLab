@@ -249,7 +249,7 @@ export default function LoginRegisterPage() {
             className={`font-medium transition cursor-pointer ${
               mode === "register"
                 ? "text-black hover:underline"
-                : "text-indigo-600 hover:underline"
+                : "text-gray-700 hover:underline"
             }`}
             style={{ fontSize: "1.04rem" }}
             type="button"
