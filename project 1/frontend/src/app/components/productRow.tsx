@@ -31,6 +31,6 @@ export default function productRow() {
   ]
 
   return(
-    <div className=""></div>
+    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-20 bg-amber-950"></div>
   )
 }
