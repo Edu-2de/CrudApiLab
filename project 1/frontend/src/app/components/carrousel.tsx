@@ -54,7 +54,7 @@ export default function Carrousel() {
   }, [nextSlide, prevSlide]);
 
   return (
-    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center bg-neutral-100 px-0 py-0 md:mt-15">
+    <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-15">
       <div className="relative w-full mx-auto overflow-hidden flex justify-center">
         <Image className="rounded-2xl" src={currentItem.src} alt={currentItem.alt} width={1800} height={600} />
       </div>
@@ -79,7 +79,6 @@ export default function Carrousel() {
           </button>
         </div>
       </div>
-      
     </div>
   );
 }

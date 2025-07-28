@@ -46,8 +46,25 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [solid, setSolid] = useState(false);
+  const [hideHeader, setHideHeader] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    function onScroll() {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 20) {
+        setHideHeader(true);
+      } else {
+        setHideHeader(false); 
+      }
+      lastScrollY.current = currentScrollY;
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -98,17 +115,18 @@ export default function Header() {
     <header
       ref={headerRef}
       className={classNames(
-        'fixed top-4 left-[3%] w-[94%] z-40 transition-all duration-300 rounded-full ',
-        solid ? 'bg-white/80 backdrop-blur-md shadow ' : 'bg-white'
+        'fixed top-4 left-[3%] w-[94%] z-40 transition-transform duration-300 rounded-full',
+        hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
+        'bg-white'
       )}
-      style={{ backdropFilter: solid ? 'blur(8px)' : undefined }}
+      style={{}}
     >
       <div className="max-w-8xl mx-auto flex items-center h-15 px-4 md:px-8">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
-        <nav className="flex-1 flex justify-center">
-          <ul className="flex space-x-8">
+        <nav className="flex-1 flex justify-center ">
+          <ul className="flex space-x-8 ">
             {menuItems.map((item, idx) => (
               <li
                 key={item.label}
@@ -118,7 +136,7 @@ export default function Header() {
               >
                 <button
                   className={classNames(
-                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors',
+                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer',
                     openMenu === idx && 'text-black'
                   )}
                   type="button"
@@ -173,16 +191,16 @@ export default function Header() {
             btn.style === 'solid' ? (
               <button
                 key={i}
-                onClick={btn.onClick}
-                className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition"
+                onClick={() => (window.location.href = "/Login")}
+                className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition cursor-pointer"
               >
                 {btn.label}
               </button>
             ) : (
               <button
                 key={i}
-                onClick={btn.onClick}
-                className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition"
+                onClick={() => (window.location.href = "/Login")}
+                className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition cursor-pointer"
               >
                 {btn.label}
               </button>
