@@ -101,17 +101,17 @@ export default function Header() {
     <header
       ref={headerRef}
       className={classNames(
-        'fixed top-4 left-[3%] w-[94%] z-40 transition-transform duration-300 rounded-2xl',
+        'fixed top-0 w-full z-40 transition-transform duration-300',
         hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
         'bg-white'
       )}
       style={{}}
     >
-      <div className="max-w-8xl mx-auto flex items-center h-14 px-4 md:px-8">
+      <div className="max-w-8xl mx-auto flex items-center h-14 px- md:px-8 justify-around">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
-        <nav className="flex-1 flex justify-center ">
+        <nav className="flex justify-center ">
           <ul className="flex space-x-8 ">
             {menuItems.map((item, idx) => (
               <li
