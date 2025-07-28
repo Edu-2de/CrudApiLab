@@ -10,7 +10,8 @@ export default function LoginRegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [name, setName] = useState("");
+  const [first_name, setfirst_name] = useState("");
+  const [second_name, setsecond_name] = useState("");
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -20,7 +21,8 @@ export default function LoginRegisterPage() {
 
   function handleSwitch() {
     setError(null);
-    setName("");
+    setfirst_name("");
+    setsecond_name("");
     setEmail("");
     setPass("");
     setConfirm("");
@@ -56,7 +58,7 @@ export default function LoginRegisterPage() {
         const res = await fetch("/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, email, password: pass }),
+          body: JSON.stringify({first_name, second_name, email, password: pass }),
         });
         const data = await res.json();
         if (!res.ok) {
@@ -134,8 +136,8 @@ export default function LoginRegisterPage() {
         </h1>
         <p className="text-gray-500 mb-7 text-center" style={{ fontSize: "1.13rem" }}>
           {mode === "login"
-            ? "Access your account to manage your accounting."
-            : "Create your account and simplify your MEI management."}
+            ? "Access your account."
+            : "Create your account."}
         </p>
         <form
           className="w-full flex flex-col gap-4 transition-all"
@@ -143,18 +145,27 @@ export default function LoginRegisterPage() {
           autoComplete="off"
         >
           {mode === "register" && (
-            <div className="relative">
+            <><div className="relative">
               <FiUser className="absolute left-3 top-3 text-gray-400" />
               <input
                 type="text"
-                placeholder="Your name"
+                placeholder="Your first name"
                 required
-                value={name}
-                onChange={e => setName(e.target.value)}
+                value={first_name}
+                onChange={e => setfirst_name(e.target.value)}
                 className="pl-10 pr-3 py-2 rounded-lg border border-gray-200 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition input-text-black"
-                style={{ fontSize: "1.08rem" }}
-              />
-            </div>
+                style={{ fontSize: "1.08rem" }} />
+            </div><div className="relative">
+                <FiUser className="absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Your second name"
+                  required
+                  value={second_name}
+                  onChange={e => setsecond_name(e.target.value)}
+                  className="pl-10 pr-3 py-2 rounded-lg border border-gray-200 w-full bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-100 transition input-text-black"
+                  style={{ fontSize: "1.08rem" }} />
+              </div></>
           )}
           <div className="relative">
             <FiMail className="absolute left-3 top-3 text-gray-400" />
@@ -249,7 +260,7 @@ export default function LoginRegisterPage() {
             className={`font-medium transition cursor-pointer ${
               mode === "register"
                 ? "text-black hover:underline"
-                : "text-indigo-600 hover:underline"
+                : "text-gray-700 hover:underline"
             }`}
             style={{ fontSize: "1.04rem" }}
             type="button"
