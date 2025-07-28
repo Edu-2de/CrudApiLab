@@ -79,6 +79,7 @@ export default function Carrousel() {
           </button>
         </div>
       </div>
+      
     </div>
   );
 }
