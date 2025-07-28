@@ -191,7 +191,7 @@ export default function Header() {
             btn.style === 'solid' ? (
               <button
                 key={i}
-                onClick={btn.onClick}
+                onClick={() => (window.location.href = "/Login")}
                 className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition cursor-pointer"
               >
                 {btn.label}
@@ -199,7 +199,7 @@ export default function Header() {
             ) : (
               <button
                 key={i}
-                onClick={btn.onClick}
+                onClick={() => (window.location.href = "/Login")}
                 className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition"
               >
                 {btn.label}
