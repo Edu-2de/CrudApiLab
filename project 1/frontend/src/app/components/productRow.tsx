@@ -46,17 +46,16 @@ export default function ProductRow() {
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`group rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-[10%] transition-rounded duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
+            className={`group rounded-lg shadow p-6 flex flex-col items-center min-w-[200px] justify-center hover:rounded-full transition-rounded duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
             style={{
               backgroundImage: `url(${cat.src})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              transition: 'background-image 1.5s'
             }}
             onMouseEnter={e => e.currentTarget.style.backgroundImage = `url(${cat.src1})`}
             onMouseLeave={e => e.currentTarget.style.backgroundImage = `url(${cat.src})`}
           >
-            <h3 className="relative text-lg text-white mb-2 transition-all duration-700 ease-in-out border-2 border-white px-4 py-2 rounded-4xl group-hover:border-transparent ">{cat.title}</h3>
+            <h3 className="relative text-lg text-white mb-2 transition-all duration-700 ease-in-out border-2 border-white px-4 py-2 rounded-4xl group-hover:border-transparent group-hover:font-semibold">{cat.title}</h3>
             <div className="flex flex-col gap-2 w-2xl max-h-0 overflow-hidden group-hover:max-h-40 transition-all duration-700 ease-in-out">
               {Object.values(cat.options).map((opt, i) => (
                 <button key={i} className="relative left-[40%] rounded-4xl cursor-pointer text-gray-800 px-4 py-2 border-2 border-transparent opacity-0 group-hover:opacity-100 group-hover:text-white group-hover:border-white hover:bg-white hover:text-gray-800 transition-all duration-700 ease-in-out max-w-[20%]">
