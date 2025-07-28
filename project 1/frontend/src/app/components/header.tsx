@@ -98,7 +98,7 @@ export default function Header() {
     <header
       ref={headerRef}
       className={classNames(
-        'fixed top-4 left-[3%] w-[94%] z-40 transition-all duration-300 rounded-full',
+        'fixed top-4 left-[3%] w-[94%] z-40 transition-all duration-300 rounded-full ',
         solid ? 'bg-white/80 backdrop-blur-md shadow border-b border-gray-200' : 'bg-white'
       )}
       style={{ backdropFilter: solid ? 'blur(8px)' : undefined }}
