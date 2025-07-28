@@ -134,8 +134,8 @@ export default function LoginRegisterPage() {
         </h1>
         <p className="text-gray-500 mb-7 text-center" style={{ fontSize: "1.13rem" }}>
           {mode === "login"
-            ? "Access your account to manage your accounting."
-            : "Create your account and simplify your MEI management."}
+            ? "Access your account."
+            : "Create your account."}
         </p>
         <form
           className="w-full flex flex-col gap-4 transition-all"
