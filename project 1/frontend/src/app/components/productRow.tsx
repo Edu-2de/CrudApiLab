@@ -44,10 +44,10 @@ export default function ProductRow() {
               cardColors[idx % cardColors.length]
             }`}
           >
-            <h3 className=" text-lg text-white mb-2 mt-0 group-hover:mt-[-30%] group-hover:mb-5 transition-all duration-700 ease-in-out">{cat.title}</h3>
-            <div className="flex flex-col  gap-2 w-2xl  ">
+            <h3 className=" relative text-lg text-white mb-2 mt-0transition-all duration-700 ease-in-out">{cat.title}</h3>
+            <div className="flex flex-col  gap-2 w-2xl  translate-y-[200%]  group-hover:translate-y-[-60%]  transition-all duration-700 ease-in-out ">
               {Object.values(cat.options).map((opt, i) => (
-                <button key={i} className=" cursor-pointer translate-y-[200%] text-transparent  px-4 py-2 rounded group-hover:translate-y-0 group-hover:text-white transition-all duration-700 ease-in-out">
+                <button key={i} className="relative cursor-pointer text-transparent  px-4 py-2 rounded group-hover:text-white transition-all duration-700 ease-in-out">
                   {opt}
                 </button>
               ))}
