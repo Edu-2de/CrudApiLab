@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
-
+import { FiUser } from 'react-icons/fi';
 const menuItems = [
   {
     label: 'About',
@@ -29,19 +29,6 @@ const menuItems = [
   },
 ];
 
-const rightButtons = [
-  {
-    label: 'Enter',
-    onClick: () => alert('login'),
-    style: 'outline',
-  },
-  {
-    label: 'Sign up',
-    onClick: () => alert('register'),
-    style: 'solid',
-  },
-];
-
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -57,14 +44,13 @@ export default function Header() {
       if (currentScrollY > lastScrollY.current && currentScrollY > 20) {
         setHideHeader(true);
       } else {
-        setHideHeader(false); 
+        setHideHeader(false);
       }
       lastScrollY.current = currentScrollY;
     }
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -186,26 +172,11 @@ export default function Header() {
             ))}
           </ul>
         </nav>
-        <div className="hidden md:flex items-center space-x-4 ml-8">
-          {rightButtons.map((btn, i) =>
-            btn.style === 'solid' ? (
-              <button
-                key={i}
-                onClick={() => (window.location.href = "/Login")}
-                className="px-5 py-2 rounded bg-gray-900 text-white font-semibold shadow hover:bg-gray-700 transition cursor-pointer"
-              >
-                {btn.label}
-              </button>
-            ) : (
-              <button
-                key={i}
-                onClick={() => (window.location.href = "/Login")}
-                className="px-5 py-2 rounded border border-gray-900 text-gray-900 font-semibold hover:bg-gray-100 transition cursor-pointer"
-              >
-                {btn.label}
-              </button>
-            )
-          )}
+        <div className="flex items-center space-x-4 ml-8 text-black">
+          <FiUser
+            onClick={() => (window.location.href = '/Login')}
+            className="w-full z-50 text-4xl px-5 py-2  text-gray-900 hover:text-gray-500 transition cursor-pointer"
+          />
         </div>
       </div>
     </header>
