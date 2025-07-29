@@ -66,7 +66,7 @@ export default function Carrousel() {
       <div className="relative w-full mx-auto overflow-hidden flex justify-center">
         <div
           className={`relative w-full flex items-center justify-center select-none cursor-pointer `}
-          style={{ height: 600, maxWidth: 1950 }}
+          style={{ height: 600, maxWidth: 1800 }}
         >
           <Image
             className={`rounded-2xl transition-all duration-500 ease-in-out select-none ${transitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
