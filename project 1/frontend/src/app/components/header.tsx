@@ -3,42 +3,73 @@ import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import classNames from 'classnames';
 import { FiUser } from 'react-icons/fi';
+
 const menuItems = [
   {
     label: 'About',
     submenu: [
-      { label: 'Example', href: '#' },
-      { label: 'Example', href: '#' },
-      { label: 'Example', href: '#' },
+      { label: 'Our Story', href: '#' },
+      { label: 'Team', href: '#' },
+      { label: 'Careers', href: '#' },
+      { label: 'Press', href: '#' },
+      { label: 'Sustainability', href: '#' },
+      { label: 'Stores', href: '#' },
     ],
   },
   {
     label: 'Products',
     submenu: [
-      { label: 'Example', href: '#' },
-      { label: 'Example', href: '#' },
-      { label: 'Example', href: '#' },
+      { label: 'Shoes', href: '#' },
+      { label: 'Accessories', href: '#' },
+      { label: 'Collections', href: '#' },
+      { label: 'Gift Cards', href: '#' },
+      { label: 'Sale', href: '#' },
+      { label: 'Kids', href: '#' },
+      { label: 'Limited Edition', href: '#' },
+      { label: 'Custom', href: '#' },
     ],
   },
   {
-    label: 'Contact',
+    label: 'Support',
     submenu: [
-      { label: 'Example', href: '#' },
-      { label: 'Example', href: '#' },
+      { label: 'Contact Us', href: '#' },
+      { label: 'FAQ', href: '#' },
+      { label: 'Shipping', href: '#' },
+      { label: 'Returns', href: '#' },
+      { label: 'Order Tracking', href: '#' },
+      { label: 'Warranty', href: '#' },
+      { label: 'Size Guide', href: '#' },
+      { label: 'Live Chat', href: '#' },
+    ],
+  },
+  {
+    label: 'Account',
+    submenu: [
+      { label: 'Login', href: '/Login' },
+      { label: 'Register', href: '#' },
+      { label: 'Profile', href: '#' },
+      { label: 'Orders', href: '#' },
+      { label: 'Wishlist', href: '#' },
+      { label: 'Settings', href: '#' },
     ],
   },
 ];
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [solid, setSolid] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
+  const [submenuHover, setSubmenuHover] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
+
+  const[user, setUser] = useState<{first_name: string} | null>(null);
+  const [showDropdown, setShowDropdown] = useState(false);
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -55,17 +86,6 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (headerRef.current && !headerRef.current.contains(event.target as Node)) {
-        setOpenMenu(null);
-        setMobileMenuOpen(false);
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  useEffect(() => {
     function onScroll() {
       setSolid(window.scrollY > 10);
     }
@@ -73,34 +93,25 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleMenuMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleMenuMouseEnter = (idx: number) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setOpenMenu(idx);
+  };
+  const handleMenuMouseLeave = () => {
+    setTimeout(() => {
+      if (!submenuHover) setOpenMenu(null);
+    }, 80);
+  };
+  const handleSubmenuMouseEnter = () => setSubmenuHover(true);
+  const handleSubmenuMouseLeave = () => {
+    setSubmenuHover(false);
+    setOpenMenu(null);
   };
 
-  const handleSubMenuMouseLeave = () => {
-    timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
-  };
-
-  const handleSubMenuMouseEnter = () => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [mobileOpenSubmenus, setMobileOpenSubmenus] = useState<{ [k: number]: boolean }>({});
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleMobileSubmenuToggle = (idx: number) => {
-    setMobileOpenSubmenus(prev => ({
-      ...prev,
-      [idx]: !prev[idx],
-    }));
-  };
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    window.location.href = '/';
+  }
 
   return (
     <header
@@ -111,16 +122,16 @@ export default function Header() {
           ? "bg-white/80 backdrop-blur-md shadow border-b border-gray-200"
           : "bg-transparent",
         hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
-        
       )}
-      style={{}}
+      onMouseLeave={handleMenuMouseLeave}
+      onMouseEnter={() => {}}
     >
-      <div className="max-w-8xl mx-auto flex items-center h-14 px- md:px-8 justify-around">
+      <div className="max-w-[90%] mx-auto flex items-center h-14 px-4 md:px-8 justify-around">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
-        <nav className="flex justify-center ">
-          <ul className="flex space-x-8 ">
+        <nav className="flex-1 flex justify-center relative">
+          <ul className="flex space-x-8">
             {menuItems.map((item, idx) => (
               <li
                 key={item.label}
@@ -130,13 +141,14 @@ export default function Header() {
               >
                 <button
                   className={classNames(
-                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer',
+                    'flex items-center gap-1 py-4 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer bg-transparent font-semibold',
                     openMenu === idx && 'text-black'
                   )}
                   type="button"
                   aria-haspopup={!!item.submenu}
                   aria-expanded={openMenu === idx}
-                  onClick={() => setOpenMenu(openMenu === idx ? null : idx)}
+                  tabIndex={0}
+                  style={{ background: 'none', border: 'none' }}
                 >
                   {item.label}
                   {item.submenu && (
@@ -157,23 +169,22 @@ export default function Header() {
                 </button>
                 {item.submenu && openMenu === idx && (
                   <div
-                    className="absolute left-0 top-full mt-2 z-30 bg-white border border-gray-200 rounded-md min-w-[180px] shadow-xl animate-fade"
-                    onMouseEnter={handleSubMenuMouseEnter}
-                    onMouseLeave={handleSubMenuMouseLeave}
+                    className="fixed left-0 top-14 w-full z-50 bg-white/95 border-t border-gray-200 shadow-xl animate-fade"
+                    onMouseEnter={handleSubmenuMouseEnter}
+                    onMouseLeave={handleSubmenuMouseLeave}
                   >
-                    <ul>
+                    <div className="max-w-8xl mx-auto px-8 py-8 grid grid-cols-2 md:grid-cols-4 gap-8">
                       {item.submenu.map(subitem => (
-                        <li key={subitem.label}>
-                          <Link
-                            href={subitem.href}
-                            className="block px-5 py-2 text-gray-700 hover:bg-gray-100 hover:text-black text-sm transition-colors"
-                            onClick={() => setOpenMenu(null)}
-                          >
-                            {subitem.label}
-                          </Link>
-                        </li>
+                        <Link
+                          key={subitem.label}
+                          href={subitem.href}
+                          className="block px-6 py-4 text-gray-700 hover:bg-gray-100 hover:text-black text-base rounded transition-colors font-medium text-center"
+                          onClick={() => setOpenMenu(null)}
+                        >
+                          {subitem.label}
+                        </Link>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
               </li>
@@ -181,10 +192,34 @@ export default function Header() {
           </ul>
         </nav>
         <div className="flex items-center space-x-4 ml-8 text-black">
-          <FiUser
-            onClick={() => (window.location.href = '/Login')}
-            className="w-full z-50 text-4xl px-5 py-2  text-gray-900 hover:text-gray-500 transition cursor-pointer"
-          />
+          {!user ? (
+            <FiUser
+              onClick={() => (window.location.href = '/Login')}
+              className="w-full z-50 text-4xl px-5 py-2 text-gray-900 hover:text-gray-500 transition cursor-pointer"
+            />
+          ): (
+           <span className="relative">
+            <button
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-gray-700 font-bold text-lg shadow focus:outline-none border border-gray-300 transition hover:scale-105 hover:shadow-md cursor-pointer"
+              onClick={() => setShowDropdown((prev) => !prev)}
+              aria-label="User menu"
+              type="button"
+              style={{ transition: "all 0.15s" }}
+            >
+              {user.first_name?.charAt(0).toUpperCase() || <FiUser />}
+            </button>
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded shadow-lg z-50">
+                <button
+                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </span>
+          )}
         </div>
       </div>
     </header>

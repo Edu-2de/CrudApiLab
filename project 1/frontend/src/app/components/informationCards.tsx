@@ -4,7 +4,7 @@ import { FaTruck, FaShieldAlt, FaClock } from "react-icons/fa";
 export default function InformationCards() {
   return (
     <section className="w-full py-6">
-      <div className="w-[80%] mx-auto flex items-center justify-between gap-8">
+      <div className="w-[90%] mx-auto flex items-center justify-between gap-8">
         <div className="flex items-center gap-3">
           <FaTruck className="text-gray-900 text-xl" />
           <span className="text-gray-900 font-medium text-base">Nationwide Delivery</span>
