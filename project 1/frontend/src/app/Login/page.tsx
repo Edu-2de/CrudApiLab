@@ -95,7 +95,7 @@ export default function LoginRegisterPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#f7fafc] via-[#e3e8ee] to-[#cbd5e1] relative"
+      className="min-h-screen flex items-center justify-center bg-transparent relative"
       style={{ fontFamily: "Inter, sans-serif" }}
     >
       <button
@@ -118,8 +118,8 @@ export default function LoginRegisterPage() {
         ref={containerRef}
         className="relative w-full max-w-md mx-auto bg-white/90 rounded-3xl shadow-2xl px-8 py-10 flex flex-col items-center transition-all duration-500"
         style={{
-          boxShadow: "0 8px 32px 0 #cbd5e1cc",
-          border: "1.5px solid #e0e7ef",
+          boxShadow: "0 8px 20px 0 #cbd5e1cc",
+          border: "1.5px solid #ffff",
           minHeight: 420,
         }}
       >
