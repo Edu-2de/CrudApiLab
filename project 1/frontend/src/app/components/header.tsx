@@ -59,7 +59,7 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [solid, setSolid] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
-  const [isHoveringHeaderOrSub, setIsHoveringHeaderOrSub] = useState(false);
+  const [submenuHover, setSubmenuHover] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -86,27 +86,19 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Fecha o submenu só se mouse sair do header e do submenu
-  useEffect(() => {
-    if (!isHoveringHeaderOrSub) {
-      setOpenMenu(null);
-    }
-  }, [isHoveringHeaderOrSub]);
-
+  // Mantém submenu aberto enquanto mouse está no header ou submenu
   const handleMenuMouseEnter = (idx: number) => {
     setOpenMenu(idx);
-    setIsHoveringHeaderOrSub(true);
   };
   const handleMenuMouseLeave = () => {
     setTimeout(() => {
-      setIsHoveringHeaderOrSub(false);
+      if (!submenuHover) setOpenMenu(null);
     }, 80);
   };
-  const handleSubmenuMouseEnter = () => setIsHoveringHeaderOrSub(true);
+  const handleSubmenuMouseEnter = () => setSubmenuHover(true);
   const handleSubmenuMouseLeave = () => {
-    setTimeout(() => {
-      setIsHoveringHeaderOrSub(false);
-    }, 80);
+    setSubmenuHover(false);
+    setOpenMenu(null);
   };
 
   return (
@@ -120,9 +112,9 @@ export default function Header() {
         hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
       )}
       onMouseLeave={handleMenuMouseLeave}
-      onMouseEnter={() => setIsHoveringHeaderOrSub(true)}
+      onMouseEnter={() => {}}
     >
-      <div className="max-w-8xl mx-auto flex items-center h-14 px-4 md:px-8 justify-between">
+      <div className="max-w-8xl mx-auto flex items-center h-14 px-4 md:px-8 justify-around">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
@@ -137,7 +129,7 @@ export default function Header() {
               >
                 <button
                   className={classNames(
-                    'flex items-center gap-1 py-0.5 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer bg-transparent font-semibold',
+                    'flex items-center gap-1 py-4 text-1xl text-gray-800 hover:text-black transition-colors cursor-pointer bg-transparent font-semibold',
                     openMenu === idx && 'text-black'
                   )}
                   type="button"
