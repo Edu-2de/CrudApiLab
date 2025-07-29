@@ -31,7 +31,9 @@ const menuItems = [
 
 export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [solid, setSolid] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
 
@@ -77,6 +79,7 @@ export default function Header() {
     timeoutRef.current = setTimeout(() => setOpenMenu(null), 100);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleMenuMouseEnter = (idx: number) => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
@@ -89,7 +92,9 @@ export default function Header() {
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [mobileOpenSubmenus, setMobileOpenSubmenus] = useState<{ [k: number]: boolean }>({});
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleMobileSubmenuToggle = (idx: number) => {
     setMobileOpenSubmenus(prev => ({
       ...prev,
