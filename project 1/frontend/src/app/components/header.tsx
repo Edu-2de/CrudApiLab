@@ -114,7 +114,7 @@ export default function Header() {
       onMouseLeave={handleMenuMouseLeave}
       onMouseEnter={() => {}}
     >
-      <div className="max-w-8xl mx-auto flex items-center h-14 px-4 md:px-8 justify-around">
+      <div className="max-w-[90%] mx-auto flex items-center h-14 px-4 md:px-8 justify-around">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
           Logo
         </div>
