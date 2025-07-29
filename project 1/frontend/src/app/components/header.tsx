@@ -59,8 +59,7 @@ export default function Header() {
   const [openMenu, setOpenMenu] = useState<number | null>(null);
   const [solid, setSolid] = useState(false);
   const [hideHeader, setHideHeader] = useState(false);
-  const [submenuHover, setSubmenuHover] = useState(false);
-  const [headerHover, setHeaderHover] = useState(false);
+  const [isHoveringHeaderOrSub, setIsHoveringHeaderOrSub] = useState(false);
 
   const headerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
@@ -89,20 +88,26 @@ export default function Header() {
 
   // Fecha o submenu só se mouse sair do header e do submenu
   useEffect(() => {
-    if (!headerHover && !submenuHover) {
+    if (!isHoveringHeaderOrSub) {
       setOpenMenu(null);
     }
-  }, [headerHover, submenuHover]);
+  }, [isHoveringHeaderOrSub]);
 
   const handleMenuMouseEnter = (idx: number) => {
     setOpenMenu(idx);
-    setHeaderHover(true);
+    setIsHoveringHeaderOrSub(true);
   };
   const handleMenuMouseLeave = () => {
-    setHeaderHover(false);
+    setTimeout(() => {
+      setIsHoveringHeaderOrSub(false);
+    }, 80);
   };
-  const handleSubmenuMouseEnter = () => setSubmenuHover(true);
-  const handleSubmenuMouseLeave = () => setSubmenuHover(false);
+  const handleSubmenuMouseEnter = () => setIsHoveringHeaderOrSub(true);
+  const handleSubmenuMouseLeave = () => {
+    setTimeout(() => {
+      setIsHoveringHeaderOrSub(false);
+    }, 80);
+  };
 
   return (
     <header
@@ -114,11 +119,8 @@ export default function Header() {
           : "bg-transparent",
         hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
       )}
-      onMouseLeave={() => {
-        setHeaderHover(false);
-        setSubmenuHover(false);
-      }}
-      onMouseEnter={() => setHeaderHover(true)}
+      onMouseLeave={handleMenuMouseLeave}
+      onMouseEnter={() => setIsHoveringHeaderOrSub(true)}
     >
       <div className="max-w-8xl mx-auto flex items-center h-14 px-4 md:px-8 justify-between">
         <div className="font-bold text-1xl text-gray-900 mr-6 md:mr-14 select-none tracking-tight flex-shrink-0">
