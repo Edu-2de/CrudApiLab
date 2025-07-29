@@ -1,5 +1,4 @@
-import Image from "next/image";
-import React, { useState } from 'react';
+'use client'
 const cardColors = ['bg-[#8c9ca2]', 'bg-[#5c6150]', 'bg-[#8c8b91]', 'bg-[#8c8584]'];
 
 export default function ProductRow() {
@@ -42,7 +41,7 @@ export default function ProductRow() {
 
   return (
     <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-1">
-      <div className="relative h-[70vh] w-full max-w-[90%] mx-auto overflow-hidden flex gap-6 p-8 transition-all duration-700 ease-in-out">
+      <div className="relative h-[70vh] w-full max-w-[88%] mx-auto overflow-hidden flex gap-4 p-4 transition-all duration-700 ease-in-out">
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
