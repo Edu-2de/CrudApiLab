@@ -65,7 +65,7 @@ export default function Header() {
   const lastScrollY = useRef(0);
 
   const[user, setUser] = useState<{first_name: string} | null>(null);
-
+  const [showDropdown, setShowDropdown] = useState(false);
   useEffect(() => {
     const stored = localStorage.getItem("user");
     if (stored) setUser(JSON.parse(stored));
@@ -198,9 +198,27 @@ export default function Header() {
               className="w-full z-50 text-4xl px-5 py-2 text-gray-900 hover:text-gray-500 transition cursor-pointer"
             />
           ): (
-            <span className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 text-gray-500 font-bold text-lg shadow-sm">
+           <span className="relative">
+            <button
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-gray-700 font-bold text-lg shadow focus:outline-none border border-gray-300 transition hover:scale-105 hover:shadow-md cursor-pointer"
+              onClick={() => setShowDropdown((prev) => !prev)}
+              aria-label="User menu"
+              type="button"
+              style={{ transition: "all 0.15s" }}
+            >
               {user.first_name?.charAt(0).toUpperCase() || <FiUser />}
-            </span>
+            </button>
+            {showDropdown && (
+              <div className="absolute right-0 mt-2 w-36 bg-white border border-gray-200 rounded shadow-lg z-50">
+                <button
+                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </span>
           )}
         </div>
       </div>
