@@ -29,11 +29,8 @@ export default function HighlightsProductRow() {
   };
 
   return (
-    <section className="relative py-8 bg-transparent select-none ">
+    <section className="relative py-8 bg-transparent select-none  ">
       <div className="max-w-[1800px] mx-auto px-2 ">
-        <div className="flex flex-col items-center mb-6 w-full ">
-          <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">Highlights</h2>
-        </div>
         <div className="flex w-full justify-center items-stretch bg-white">
           {mockProducts.map((product) => {
             const showVariation = activeImage[product.id] === "variation";
