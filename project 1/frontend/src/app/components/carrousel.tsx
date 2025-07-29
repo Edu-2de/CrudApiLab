@@ -69,7 +69,7 @@ export default function Carrousel() {
           style={{ height: 600, maxWidth: 1870 }}
         >
           <Image
-            className={`rounded-4xl transition-all duration-500 ease-in-out select-none ${transitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
+            className={`rounded-2xl transition-all duration-500 ease-in-out select-none ${transitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
             src={carrouselItems[currentIndex].src}
             alt={carrouselItems[currentIndex].alt}
             width={1950}
