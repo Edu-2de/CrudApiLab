@@ -56,7 +56,7 @@ export default function Carrousel() {
   return (
     <div className="relative w-screen min-h-[50vh] md:min-h-[60vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-15">
       <div className="relative w-full mx-auto overflow-hidden flex justify-center">
-        <Image className="rounded-2xl" src={currentItem.src} alt={currentItem.alt} width={1600} height={400} />
+        <Image className="rounded-2xl" src={currentItem.src} alt={currentItem.alt} width={1650} height={400} />
       </div>
       
     </div>

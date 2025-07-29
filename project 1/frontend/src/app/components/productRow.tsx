@@ -42,7 +42,7 @@ export default function ProductRow() {
 
   return (
     <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex items-center justify-center px-0 py-0 mt-24 md:mt-1">
-      <div className="relative h-[70vh] w-full max-w-[95%] mx-auto overflow-hidden flex gap-6 p-8 transition-all duration-700 ease-in-out">
+      <div className="relative h-[70vh] w-full max-w-[90%] mx-auto overflow-hidden flex gap-6 p-8 transition-all duration-700 ease-in-out">
         {categories.map((cat, idx) => (
           <div
             key={cat.title}
