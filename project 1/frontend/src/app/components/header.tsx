@@ -107,6 +107,9 @@ export default function Header() {
       ref={headerRef}
       className={classNames(
         'fixed top-0 w-full z-40 transition-transform duration-300',
+        solid
+          ? "bg-white/80 backdrop-blur-md shadow border-b border-gray-200"
+          : "bg-transparent",
         hideHeader ? '-translate-y-[150%]' : 'translate-y-0',
         'bg-white'
       )}
