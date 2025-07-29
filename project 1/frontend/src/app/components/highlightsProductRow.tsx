@@ -31,6 +31,7 @@ export default function HighlightsProductRow() {
   return (
     <section className="relative py-8 bg-white select-none  ">
       <div className="max-w-[1800px] mx-auto px-2 ">
+      
         <div className="flex w-full justify-center items-stretch ">
           {mockProducts.map((product) => {
             const showVariation = activeImage[product.id] === "variation";
