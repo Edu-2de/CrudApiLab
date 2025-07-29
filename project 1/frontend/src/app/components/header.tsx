@@ -64,6 +64,8 @@ export default function Header() {
   const headerRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
 
+  const[user, setUser] = useState<{first_name: string} | null>(null);
+
   useEffect(() => {
     function onScroll() {
       const currentScrollY = window.scrollY;
@@ -86,7 +88,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Mantém submenu aberto enquanto mouse está no header ou submenu
   const handleMenuMouseEnter = (idx: number) => {
     setOpenMenu(idx);
   };
@@ -100,6 +101,12 @@ export default function Header() {
     setSubmenuHover(false);
     setOpenMenu(null);
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    setUser(null);
+    window.location.href = '/';
+  }
 
   return (
     <header
