@@ -1,21 +1,20 @@
 "use client";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const mockProducts = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
+  { id: 1, img: "/product1.jpg", variation: "/product1Variation.jpg", price: 120 },
+  { id: 2, img: "/product2.jpg", variation: "/product2Variation.jpg", price: 99 },
+  { id: 3, img: "/product3.jpg", variation: "/product3Variation.jpg", price: 89 },
+  { id: 4, img: "/product4.jpg", variation: "/product4Variation.jpg", price: 110 },
+  { id: 5, img: "/product5.jpg", variation: "/product5Variation.jpg", price: 105 },
+  { id: 6, img: "/product6.jpg", variation: "/product6Variation.jpg", price: 95 },
+  { id: 7, img: "/product7.jpg", variation: "/product7Variation.jpg", price: 130 },
+  { id: 8, img: "/product8.jpg", variation: "/product8Variation.jpg", price: 115 },
 ];
 
 const visibleCountDesktop = 4;
 const visibleCountTablet = 2;
 const visibleCountMobile = 1;
-const transitionTime = 400; 
 
 function getVisibleCount(width: number) {
   if (width < 640) return visibleCountMobile;
@@ -28,7 +27,6 @@ export default function HighlightsProductRow() {
     typeof window !== "undefined" ? window.innerWidth : 1200
   );
   const [visibleCount, setVisibleCount] = useState(getVisibleCount(windowWidth));
-
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
@@ -40,15 +38,8 @@ export default function HighlightsProductRow() {
 
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [selected, setSelected] = useState<number | null>(null);
-
-  const [dragStartX, setDragStartX] = useState<number | null>(null);
-  const [dragDelta, setDragDelta] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
 
   const listRef = useRef<HTMLDivElement>(null);
-  const autoSlideRef = useRef<NodeJS.Timeout | null>(null);
 
   const total = mockProducts.length;
   const extendedProducts = [
@@ -58,36 +49,28 @@ export default function HighlightsProductRow() {
   ];
   const realIndex = index + visibleCount;
 
+  // Aumente o tamanho dos cards e imagens
   const cardWidth =
     windowWidth >= 1024
-      ? 288
+      ? 400
       : windowWidth >= 640
-      ? 320
-      : windowWidth - 48;
-  const gap = windowWidth >= 1024 ? 32 : windowWidth >= 640 ? 32 : 16;
-  const slideWidth = cardWidth + gap;
+      ? 340
+      : Math.max(windowWidth - 48, 220);
+  const gap = windowWidth >= 1024 ? 48 : windowWidth >= 640 ? 32 : 16;
   const containerWidth = visibleCount * cardWidth + (visibleCount - 1) * gap;
-  const translate =
-    -realIndex * slideWidth +
-    (isDragging && dragStartX !== null ? dragDelta : 0);
+  const slideWidth = cardWidth + gap;
+  const translate = -realIndex * slideWidth;
 
-  const handleNext = useCallback(() => {
+  function handleNext() {
     if (isTransitioning) return;
     setIsTransitioning(true);
     setIndex((prev) => prev + 1);
-  }, [isTransitioning]);
-
-  useEffect(() => {
-    autoSlideRef.current = setInterval(() => {
-      handleNext();
-    }, 4000);
-    return () => {
-      if (autoSlideRef.current) {
-        clearInterval(autoSlideRef.current);
-      }
-    };
-  }, [handleNext]);
-
+  }
+  function handlePrev() {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+    setIndex((prev) => prev - 1);
+  }
   function handleTransitionEnd() {
     setIsTransitioning(false);
     if (index < 0) {
@@ -97,76 +80,46 @@ export default function HighlightsProductRow() {
     }
   }
 
-  function handlePrev() {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setIndex((prev) => prev - 1);
-  }
-
-  function handlePointerDown(e: React.PointerEvent) {
-    if (isTransitioning) return;
-    setIsDragging(true);
-    setDragStartX(e.clientX);
-    (e.target as HTMLElement).setPointerCapture(e.pointerId);
-  }
-  function handlePointerMove(e: React.PointerEvent) {
-    if (!isDragging || dragStartX === null) return;
-    setDragDelta(e.clientX - dragStartX);
-  }
-  function handlePointerUp(e: React.PointerEvent) {
-    if (!isDragging) return;
-    setIsDragging(false);
-    if (Math.abs(dragDelta) > 60) {
-      if (dragDelta < 0) handleNext();
-      else handlePrev();
-    } else {
-      setIsTransitioning(true);
-      setTimeout(() => setIsTransitioning(false), transitionTime);
-    }
-    setDragStartX(null);
-    setDragDelta(0);
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-  }
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 4000);
+    return () => clearInterval(timer);
+  });
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 bg-white select-none">
-      <div className="max-w-7xl mx-auto px-2 sm:px-4">
-        <div className="flex items-center mb-8 md:mb-10">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight text-left">
-            Highlights
-          </h2>
-          <div className="flex-1 border-b-2 border-gray-900 ml-4 sm:ml-6 rounded-full" />
+    <section className="relative py-8 bg-transparent select-none">
+      <div className="max-w-[1800px] mx-auto px-2">
+        <div className="flex flex-col items-center mb-6 w-full">
+          <h2 className="text-xl font-semibold text-gray-900 text-center mb-2">Highlights</h2>
         </div>
         <div className="relative">
-          {/* Carousel Controls */}
           <button
-            className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-blue-50 border border-blue-200 shadow px-2.5 py-2.5 rounded-full transition"
+            className="absolute left-2 top-1/2 -translate-y-1/2 z-10 p-0 m-0 bg-transparent border-none hover:scale-110 transition"
             onClick={handlePrev}
-            aria-label="Anterior"
+            aria-label="Previous"
             type="button"
             disabled={isTransitioning}
           >
-            <svg width={24} height={24} fill="none" stroke="#101828" strokeWidth={2} viewBox="0 0 24 24">
+            <svg width={32} height={32} fill="none" stroke="#222" strokeWidth={2} viewBox="0 0 24 24">
               <path d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
-            className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-20 bg-white hover:bg-blue-50 border border-blue-200 shadow px-2.5 py-2.5 rounded-full transition"
+            className="absolute right-2 top-1/2 -translate-y-1/2 z-10 p-0 m-0 bg-transparent border-none hover:scale-110 transition"
             onClick={handleNext}
             aria-label="Next"
             type="button"
             disabled={isTransitioning}
           >
-            <svg width={24} height={24} fill="none" stroke="#404754" strokeWidth={2} viewBox="0 0 24 24">
+            <svg width={32} height={32} fill="none" stroke="#222" strokeWidth={2} viewBox="0 0 24 24">
               <path d="M9 5l7 7-7 7" />
             </svg>
           </button>
-          {/* Carousel */}
           <div
             className="overflow-hidden mx-auto"
             ref={listRef}
             style={{
-              cursor: isDragging ? "grabbing" : "grab",
               width: containerWidth,
               maxWidth: "100%",
               boxSizing: "content-box",
@@ -174,88 +127,83 @@ export default function HighlightsProductRow() {
           >
             <div
               className={`
-                flex
-                ${windowWidth >= 640 ? "gap-8" : "gap-4"}
+                flex gap-12
                 ${isTransitioning ? "transition-transform duration-400 ease-in-out" : ""}
-                ${isDragging ? "select-none pointer-events-none" : ""}
               `}
               style={{
-                minHeight: windowWidth < 640 ? 260 : 340,
+                minHeight: windowWidth < 640 ? 280 : 420,
                 willChange: "transform",
                 transform: `translateX(${translate}px)`,
               }}
               onTransitionEnd={handleTransitionEnd}
-              onPointerDown={handlePointerDown}
-              onPointerMove={handlePointerMove}
-              onPointerUp={handlePointerUp}
-              onPointerLeave={isDragging ? handlePointerUp : undefined}
             >
               {extendedProducts.map((product, idx) => (
                 <div
                   key={product.id + "-" + idx}
                   className={`
-                    group relative flex flex-col items-center justify-between
-                    rounded-2xl border border-gray-200 bg-white shadow-[0_2px_12px_0_rgba(100,116,139,0.08)]
+                    group flex flex-col items-center justify-center
+                    rounded-2xl bg-transparent shadow-none
                     transition-all duration-300
                     cursor-pointer
                     ${windowWidth >= 1024
-                      ? "min-w-[288px] max-w-[288px]"
+                      ? "min-w-[400px] max-w-[400px]"
                       : windowWidth >= 640
-                      ? "min-w-[320px] max-w-[320px]"
+                      ? "min-w-[340px] max-w-[340px]"
                       : "min-w-[calc(100vw-48px)] max-w-[calc(100vw-48px)]"}
                     w-full
-                    ${hovered === product.id ? "scale-[1.035] shadow-md bg-gray-50 z-[60]" : ""}
-                    ${selected === product.id ? "ring-2 ring-gray-800" : ""}
                   `}
                   style={{
-                    minHeight: windowWidth < 640 ? 220 : 340,
+                    minHeight: windowWidth < 640 ? 280 : 420,
                     padding: windowWidth < 640
                       ? "1.2rem 0.7rem 1.1rem 0.7rem"
                       : "2.2rem 1.5rem 1.7rem 1.5rem",
                   }}
-                  onMouseEnter={() => setHovered(product.id)}
-                  onMouseLeave={() => setHovered(null)}
-                  onClick={() => setSelected(product.id === selected ? null : product.id)}
                   tabIndex={0}
                   aria-label="Product"
                   draggable={false}
                 >
                   <div
                     className={`
-                      w-full ${windowWidth < 640 ? "h-24" : "h-36"} rounded-xl mb-5 md:mb-7 
-                      bg-gray-50 border border-gray-200
-                      flex items-center justify-center
-                      transition-all duration-300
-                      ${hovered === product.id ? "shadow" : ""}
+                      relative w-full ${windowWidth < 640 ? "h-48" : "h-80"} rounded-xl mb-5
+                      bg-transparent flex items-center justify-center
                     `}
                   >
-                    <div className={`${windowWidth < 640 ? "w-12 h-12" : "w-20 h-20"} bg-gray-200 rounded-lg`} />
+                    {/* Imagem principal */}
+                    <img
+                      src={product.img}
+                      alt={`Product ${product.id}`}
+                      className="absolute inset-0 w-full h-full object-contain rounded-xl transition-all duration-500 group-hover:opacity-0 group-hover:invisible"
+                    />
+                    {/* Imagem de variação */}
+                    <img
+                      src={product.variation}
+                      alt={`Product ${product.id} variation`}
+                      className="absolute inset-0 w-full h-full object-contain rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-500"
+                    />
                   </div>
                   <div className="w-full text-center">
                     <div className={`font-semibold text-gray-900 ${windowWidth < 640 ? "text-base" : "text-lg"} mb-1`}>
                       Product {product.id}
                     </div>
-                    <div className={`text-gray-700 font-medium ${windowWidth < 640 ? "text-sm" : "text-base"} mb-2`}>
-                      R$ --
+                    <div className={`text-gray-700 font-normal ${windowWidth < 640 ? "text-sm" : "text-base"} mb-2`}>
+                      Variation: Product {product.id} variation
+                    </div>
+                    <div className={`text-gray-900 font-bold ${windowWidth < 640 ? "text-base" : "text-lg"} mb-2`}>
+                      ${product.price}
                     </div>
                     <button
                       className={`
                         mt-2 px-5 py-2 rounded-full font-semibold text-sm
-                        bg-gray-900 text-gray-800 border border-gray-900
+                        bg-gray-900 text-white border border-gray-900
                         transition-all duration-200
-                        group-hover:bg-gray-600 group-hover:text-gray-700
+                        hover:bg-gray-700
                         focus:outline-none focus:ring-2 focus:ring-gray-600
-                        shadow-sm
                       `}
                       tabIndex={-1}
                     >
                       View
                     </button>
                   </div>
-                  {/* Badge de novo */}
-                  <span className="absolute top-4 left-4  bg-gray-900 text-gray-800 text-xs font-bold px-3 py-1 rounded-full select-none border border-gray-900 shadow-sm">
-                    New
-                  </span>
                 </div>
               ))}
             </div>
