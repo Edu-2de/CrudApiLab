@@ -67,6 +67,11 @@ export default function Header() {
   const[user, setUser] = useState<{first_name: string} | null>(null);
 
   useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+
+  useEffect(() => {
     function onScroll() {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY.current && currentScrollY > 20) {
@@ -187,10 +192,16 @@ export default function Header() {
           </ul>
         </nav>
         <div className="flex items-center space-x-4 ml-8 text-black">
-          <FiUser
-            onClick={() => (window.location.href = '/Login')}
-            className="w-full z-50 text-4xl px-5 py-2 text-gray-900 hover:text-gray-500 transition cursor-pointer"
-          />
+          {!user ? (
+            <FiUser
+              onClick={() => (window.location.href = '/Login')}
+              className="w-full z-50 text-4xl px-5 py-2 text-gray-900 hover:text-gray-500 transition cursor-pointer"
+            />
+          ): (
+            <span className="flex items-center justify-center w-9 h-9 rounded-full bg-gray-200 text-gray-500 font-bold text-lg shadow-sm">
+              {user.first_name?.charAt(0).toUpperCase() || <FiUser />}
+            </span>
+          )}
         </div>
       </div>
     </header>
