@@ -143,4 +143,27 @@ export class BannerController {
       });
     }
   };
+  static disableBannerById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const bannerId = Number(req.params.bannerId);
+      if (!bannerId) {
+        res.status(400).json({ message: 'Banner id is missing' });
+        return;
+      }
+
+      const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
+      if(bannerCheckResult.rows.length === 0){
+        res.status(400).json({message: 'This id is not in the table'});
+        return;
+      }
+
+      const banner = bannerCheckResult.rows[0];
+
+      if(banner.active === false){
+        res.status(400).json({message: 'Banner is already disable'});
+        return;
+      }
+      
+    } catch (error) {}
+  };
 }
