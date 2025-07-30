@@ -13,12 +13,15 @@ export class BannerController {
       }
 
       const bannerResult = await pool.query(`SELECT * FROM banners WHERE image_url  = $1`, [image_url]);
-      if(bannerResult.rows.length !== 0){
-        res.status(400).json({message: 'There is already an image with this url'});
+      if (bannerResult.rows.length !== 0) {
+        res.status(400).json({ message: 'There is already an image with this url' });
         return;
       }
 
-      
+      const bannerAdd = await pool.query(
+        `INSERT INTO banner(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`,
+        [title, image_url, link_url]
+      );
     } catch (error) {}
   };
 }
