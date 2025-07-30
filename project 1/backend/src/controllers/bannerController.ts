@@ -42,12 +42,22 @@ export class BannerController {
       }
 
       const bannerExistsResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerExistsResult.rows.length !== 0) {
+      if (bannerExistsResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
       }
 
-      
-    } catch (error) {}
+      const bannerDeleteResult = await pool.query(`DELETE FROM banners WHERE id = $1`, [bannerId]);
+
+      res.status(200).json({
+        message: 'Banner deleted successfully',
+        banner: bannerExistsResult.rows[0]
+      })
+    } catch (error) {
+        res.status(500).json({
+        message: 'Error during delete banner',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
