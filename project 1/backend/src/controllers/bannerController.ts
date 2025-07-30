@@ -108,14 +108,36 @@ export class BannerController {
     }
   };
   static activeBannerById = async (req: Request, res: Response): Promise<void> => {
-    try{
+    try {
       const bannerId = Number(req.params.bannerId);
-      if(!bannerId){
-        res.status(400).json({message: 'Banner id is missing'});
+      if (!bannerId) {
+        res.status(400).json({ message: 'Banner id is missing' });
         return;
       }
-    }catch(error){
 
+      const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
+      if(bannerCheckResult.rows.length === 0){
+        res.status(400).json({message: 'This id is not in the table'})
+      }
+
+      const banner = bannerCheckResult.rows[0];
+
+      if(banner.active != false){
+        res.status(400).json({message: 'Banner is already active'});
+        return;
+      }
+
+      const bannerActiveResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1 RETURNING *`,[bannerId]);
+
+      res.json({
+        message: 'Banner updated successfully',
+        banner: bannerActiveResult.rows[0]
+      })
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during activating banner',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   };
 }
