@@ -116,23 +116,26 @@ export class BannerController {
       }
 
       const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if(bannerCheckResult.rows.length === 0){
-        res.status(400).json({message: 'This id is not in the table'})
+      if (bannerCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This id is not in the table' });
+        return;
       }
 
       const banner = bannerCheckResult.rows[0];
 
-      if(banner.active === true){
-        res.status(400).json({message: 'Banner is already active'});
+      if (banner.active === true) {
+        res.status(400).json({ message: 'Banner is already active' });
         return;
       }
 
-      const bannerActiveResult = await pool.query(`UPDATE banners SET active = TRUE WHERE id = $1 RETURNING *`,[bannerId]);
+      const bannerActiveResult = await pool.query(`UPDATE banners SET active = TRUE WHERE id = $1 RETURNING *`, [
+        bannerId,
+      ]);
 
       res.json({
         message: 'Banner updated successfully',
-        banner: bannerActiveResult.rows[0]
-      })
+        banner: bannerActiveResult.rows[0],
+      });
     } catch (error) {
       res.status(500).json({
         message: 'Error during activating banner',
