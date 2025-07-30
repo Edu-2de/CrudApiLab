@@ -152,18 +152,25 @@ export class BannerController {
       }
 
       const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if(bannerCheckResult.rows.length === 0){
-        res.status(400).json({message: 'This id is not in the table'});
+      if (bannerCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This id is not in the table' });
         return;
       }
 
       const banner = bannerCheckResult.rows[0];
 
-      if(banner.active === false){
-        res.status(400).json({message: 'Banner is already disable'});
+      if (banner.active === false) {
+        res.status(400).json({ message: 'Banner is already disable' });
         return;
       }
+
+      const bannerDisableResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1`, [bannerId]);
       
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during disable banner',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
