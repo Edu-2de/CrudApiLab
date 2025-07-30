@@ -40,6 +40,14 @@ export class BannerController {
         res.status(400).json({ message: 'banner id is missing' });
         return;
       }
+
+      const bannerExistsResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
+      if (bannerExistsResult.rows.length !== 0) {
+        res.status(400).json({ message: 'This id is not in the table' });
+        return;
+      }
+
+      
     } catch (error) {}
   };
 }
