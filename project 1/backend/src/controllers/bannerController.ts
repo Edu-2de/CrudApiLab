@@ -51,13 +51,26 @@ export class BannerController {
 
       res.status(200).json({
         message: 'Banner deleted successfully',
-        banner: bannerExistsResult.rows[0]
-      })
+        banner: bannerExistsResult.rows[0],
+      });
     } catch (error) {
-        res.status(500).json({
+      res.status(500).json({
         message: 'Error during delete banner',
         error: error instanceof Error ? error.message : String(error),
       });
+    }
+  };
+  static getBannerById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const bannerId = Number(req.params.bannerId);
+      if(!bannerId){
+        res.status(400).json({message: 'Banner id is missing'});
+        return;
+      };
+
+      
+    } catch (error) {
+
     }
   };
 }
