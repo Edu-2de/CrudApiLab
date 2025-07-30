@@ -19,7 +19,7 @@ export class BannerController {
       }
 
       const bannerAdd = await pool.query(
-        `INSERT INTO banner(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
+        `INSERT INTO banners(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
         [title, image_url, link_url]
       );
       res.status(201).json({
