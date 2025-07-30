@@ -63,14 +63,28 @@ export class BannerController {
   static getBannerById = async (req: Request, res: Response): Promise<void> => {
     try {
       const bannerId = Number(req.params.bannerId);
-      if(!bannerId){
-        res.status(400).json({message: 'Banner id is missing'});
+      if (!bannerId) {
+        res.status(400).json({ message: 'Banner id is missing' });
         return;
-      };
+      }
 
-      
+      const bannerGetResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
+      if (bannerGetResult.rows.length === 0) {
+        res.status(400).json({ message: 'This id is not in the table' });
+        return;
+      }
+
+      const banner = bannerGetResult.rows[0];
+
+      res.json({
+        message: 'Banner retrieved successfully',
+        banner: banner,
+      });
     } catch (error) {
-
+      res.status(500).json({
+        message: 'Error fetching banner',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   };
 }
