@@ -19,9 +19,18 @@ export class BannerController {
       }
 
       const bannerAdd = await pool.query(
-        `INSERT INTO banner(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP)`,
+        `INSERT INTO banner(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
         [title, image_url, link_url]
       );
-    } catch (error) {}
+      res.status(201).json({
+        message: 'Banner added successfully',
+        banner: bannerAdd.rows[0],
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during banner adding',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
