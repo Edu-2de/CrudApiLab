@@ -125,7 +125,7 @@ export class AuthController {
 
   static getUserById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId } = req.params;
+      const userId = Number(req.params.userId);
       if (!userId) {
         res.status(400).json({ message: 'The user id is missing' });
         return;
@@ -159,7 +159,7 @@ export class AuthController {
 
   static updateUserById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId } = req.params;
+      const userId = Number(req.params.userId);
       if (!userId) {
         res.status(400).json({ message: 'The user id is missing' });
         return;
@@ -250,7 +250,7 @@ export class AuthController {
 
   static deleteUserById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const { userId } = req.params;
+      const userId = Number(req.params.userId);
       if (!userId) {
         res.status(400).json({ message: 'User id is missing' });
         return;
