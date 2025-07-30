@@ -33,4 +33,13 @@ export class BannerController {
       });
     }
   };
+  static deleteBannerById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { bannerId } = req.params;
+      if (!bannerId) {
+        res.status(400).json({ message: 'banner id is missing' });
+        return;
+      }
+    } catch (error) {}
+  };
 }
