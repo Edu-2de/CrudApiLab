@@ -9,102 +9,106 @@ CREATE TABLE IF NOT EXISTS users (
   update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (first_name, second_name, email, password_hash, role)VALUES
-('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$o3Lx9SXG2xPq7pYLzaUq/uVWxioqy4mI/Q9BWMxJRTwE6CJGbBvzy', 'full_access')
-ON CONFLICT (email) DO NOTHING;
-
-INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
-('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$6E07uTkNqMJtfMwmkRE1EuAK38BFxCmihM7Tuf3MVuCJgiN8dMPOK',  'limit_access')
-ON CONFLICT (email) DO NOTHING;
-
-INSERT INTO users(first_name, second_name, email, password_hash, role)VALUES
+INSERT INTO users (first_name, second_name, email, password_hash, role) VALUES
+('Alex', 'Mind', 'alexmind@gmail.com', '$2b$10$o3Lx9SXG2xPq7pYLzaUq/uVWxioqy4mI/Q9BWMxJRTwE6CJGbBvzy', 'full_access'),
+('Val', 'Banding', 'vanbanding@gmail.com','$2b$10$6E07uTkNqMJtfMwmkRE1EuAK38BFxCmihM7Tuf3MVuCJgiN8dMPOK',  'limit_access'),
 ('Mario', 'Bros', 'mariobros@gmail.com','$2b$10$3MQb43.Blm.Ypl2TviJMzu7O87J5Lk2QieT8fsGsrCOf4RXunu67G',  'user')
 ON CONFLICT (email) DO NOTHING;
 
-
-
-CREATE TABLE IF NOT EXISTS professionals(
+CREATE TABLE IF NOT EXISTS banners (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
-  bio VARCHAR(100),
-  area_of_expertise VARCHAR(20) NOT NULL
-);
-
-INSERT INTO professionals(user_id, bio, area_of_expertise)VALUES
-('1', 'I have 40 years old and i love dogs', 'science')
-ON CONFLICT (user_id) DO NOTHING;
-
-
-
-CREATE TABLE IF NOT EXISTS courses(
-  id SERIAL PRIMARY KEY,
-  title VARCHAR(20) NOT NULL,
-  description VARCHAR(100),
-  price DECIMAL(10,2) NOT NULL,
-  professional_id INTEGER REFERENCES professionals(id) ON DELETE SET NULL,
+  title VARCHAR(100),
+  image_url VARCHAR(255) NOT NULL,
+  link_url VARCHAR(255),
+  active BOOLEAN DEFAULT TRUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO courses(title, description, price, professional_id)VALUES
-('MeiCourse', 'Course for meis', 200.00, 1);
+INSERT INTO banners (title, image_url, link_url, active) VALUES
+('banner1', '/photo1.jpg', '/sale', TRUE),
+('banner2', '/photo2.jpg', '/new', TRUE),
+('banner3', '/photo3.jpg', '/deals', TRUE);
 
+CREATE TABLE IF NOT EXISTS categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
+INSERT INTO categories (name, description) VALUES
+('Shoes', 'All types of shoes'),
+('Accessories', 'Fashion accessories'),
+('Kids', 'Products for kids');
 
-CREATE TABLE IF NOT EXISTS enrollments(
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  stock INTEGER DEFAULT 0,
+  category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL,
+  image_url VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO products (name, description, price, stock, category_id, image_url) VALUES
+('Product 1', 'First product description', 120.00, 50, 1, '/product1.jpg'),
+('Product 2', 'Second product description', 99.00, 40, 1, '/product2.jpg'),
+('Product 3', 'Third product description', 89.00, 30, 1, '/product3.jpg'),
+('Product 4', 'Fourth product description', 110.00, 20, 1, '/product4.jpg');
+
+CREATE TABLE IF NOT EXISTS product_images (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
+  image_url VARCHAR(255) NOT NULL
+);
+
+INSERT INTO product_images (product_id, image_url) VALUES
+(1, '/product1.jpg'),
+(1, '/product1Variation.jpg'),
+(2, '/product2.jpg'),
+(2, '/product2Variation.jpg'),
+(3, '/product3.jpg'),
+(3, '/product3Variation.jpg'),
+(4, '/product4.jpg'),
+(4, '/product4Variation.jpg');
+
+CREATE TABLE IF NOT EXISTS orders (
   id SERIAL PRIMARY KEY,
   user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
-  course_id INTEGER REFERENCES courses(id) ON DELETE SET NULL,
-  enrolled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'pending', 'suspended', 'completed', 'canceled'))
+  total DECIMAL(10,2) NOT NULL,
+  status VARCHAR(20) DEFAULT 'pending' CHECK(status IN ('pending', 'paid', 'shipped', 'delivered', 'canceled')),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO enrollments(user_id, course_id, status)VALUES
-(3, 1, 'active');
+INSERT INTO orders (user_id, total, status) VALUES
+(1, 219.00, 'pending'),
+(2, 99.00, 'paid');
 
-
-
-CREATE TABLE IF NOT EXISTS meis(
+CREATE TABLE IF NOT EXISTS order_items (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER UNIQUE REFERENCES users(id) ON DELETE SET NULL,
-  cnpj VARCHAR(100) UNIQUE NOT NULL,
-  business_name VARCHAR(100) NOT NULL,
-  opening_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  status VARCHAR(20) DEFAULT 'active' CHECK(status IN ('active', 'inactive', 'pending', 'suspended', 'closed'))
+  order_id INTEGER REFERENCES orders(id) ON DELETE CASCADE,
+  product_id INTEGER REFERENCES products(id) ON DELETE SET NULL,
+  quantity INTEGER NOT NULL,
+  price DECIMAL(10,2) NOT NULL
 );
 
-INSERT INTO meis(user_id, cnpj, business_name)VALUES
-(3, '12.345.678/0001-95', 'Food.ltd')
-ON CONFLICT (cnpj) DO NOTHING;
+INSERT INTO order_items (order_id, product_id, quantity, price) VALUES
+(1, 1, 1, 120.00),
+(1, 3, 1, 89.00),
+(2, 2, 1, 99.00);
 
-
-
-CREATE TABLE IF NOT EXISTS account_types (
+CREATE TABLE IF NOT EXISTS product_reviews (
   id SERIAL PRIMARY KEY,
-  type VARCHAR(20) UNIQUE DEFAULT 'basic' CHECK(type IN ('basic', 'advanced', 'premium')),
-  price DECIMAL(10,2) DEFAULT 0.00
-);
-
-INSERT INTO account_types(type, price)VALUES
-('basic', 100.00)
-ON CONFLICT (type) DO NOTHING;
-
-INSERT INTO account_types(type, price)VALUES
-('advanced', 150.00)
-ON CONFLICT (type) DO NOTHING;
-
-INSERT INTO account_types(type, price)VALUES
-('premium', 200.00)
-ON CONFLICT (type) DO NOTHING;
-
-
-
-CREATE TABLE IF NOT EXISTS user_account_types (
-  id SERIAL PRIMARY KEY,
+  product_id INTEGER REFERENCES products(id) ON DELETE CASCADE,
   user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
-  account_type_id INTEGER REFERENCES account_types(id) ON DELETE SET NULL,
-  start_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  end_date TIMESTAMP
+  rating INTEGER CHECK(rating >= 1 AND rating <= 5),
+  comment TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO user_account_types(user_id, account_type_id, start_date, end_date)VALUES
-(3, 2, NOW(), NOW() + INTERVAL '1 month');
+INSERT INTO product_reviews (product_id, user_id, rating, comment) VALUES
+(1, 1, 5, 'Amazing product!'),
+(2, 2, 4, 'Good value.'),
+(3, 3, 5, 'Very comfortable.');
