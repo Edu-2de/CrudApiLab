@@ -7,12 +7,12 @@ import InformationCards from "./components/informationCards"
 
 export default function Home() {
   return (
-    <>
+    <body>
       <Header/>
       <Carrousel/>
       <InformationCards/>
       <HighlightsProductRow/>
       <ProductRow/>
-    </>
+    </body>
   );
 }
