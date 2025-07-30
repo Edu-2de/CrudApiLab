@@ -122,12 +122,12 @@ export class BannerController {
 
       const banner = bannerCheckResult.rows[0];
 
-      if(banner.active != false){
+      if(banner.active === true){
         res.status(400).json({message: 'Banner is already active'});
         return;
       }
 
-      const bannerActiveResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1 RETURNING *`,[bannerId]);
+      const bannerActiveResult = await pool.query(`UPDATE banners SET active = TRUE WHERE id = $1 RETURNING *`,[bannerId]);
 
       res.json({
         message: 'Banner updated successfully',
