@@ -164,8 +164,16 @@ export class BannerController {
         return;
       }
 
-      const bannerDisableResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1`, [bannerId]);
-      
+      const bannerDisableResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1 RETURNING *`, [
+        bannerId,
+      ]);
+
+      const bannerDisable = bannerCheckResult.rows[0];
+
+      res.json({
+        message: 'Banner updated successfully',
+        banner: bannerDisable,
+      });
     } catch (error) {
       res.status(500).json({
         message: 'Error during disable banner',
