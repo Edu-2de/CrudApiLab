@@ -1,8 +1,6 @@
 import { Request, Response } from 'express';
 import pool from '../database/connection';
 
-const JWT_SECRET = process.env.JWT_SECRET || '';
-
 export class BannerController {
   static add = async (req: Request, res: Response): Promise<void> => {
     try {
