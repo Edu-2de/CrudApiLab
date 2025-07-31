@@ -34,4 +34,13 @@ export class CategoriesController {
       });
     }
   };
+  static deleteCategoryById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const categoryId = Number(req.params.categoryId);
+      if (!categoryId) {
+        res.status(400).json({ message: 'Category id is missing' });
+        return;
+      }
+    } catch (error) {}
+  };
 }
