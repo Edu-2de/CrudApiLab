@@ -87,6 +87,29 @@ export class BannerController {
       });
     }
   };
+  static getActiveBanners = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const bannerCheckResult = await pool.query(
+        `SELECT * FROM banners Where active = TRUE ORDER BY created_at DESC LIMIT 50`
+      );
+      if (bannerCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'No one banner active' });
+        return;
+      }
+
+      const banners = bannerCheckResult.rows;
+
+      res.json({
+        message: 'Banners retrieved successfully',
+        banners: banners,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching banners',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
   static getAllBanners = async (req: Request, res: Response): Promise<void> => {
     try {
       const bannerCheckResult = await pool.query(`SELECT * FROM banners ORDER BY created_at DESC LIMIT 50`);
