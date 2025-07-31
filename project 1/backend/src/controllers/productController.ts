@@ -9,7 +9,12 @@ export class ProductController {
         res.status(400).json({ message: 'Any of arguments is missing' });
         return;
       }
-      
+
+      const productNameCheckResult = await pool.query(`SELECT * FROM products WHERE name = $1`, [name]);
+      if (productNameCheckResult.rows.length !== 0) {
+        res.status(400).json({ message: 'This product already exist' });
+        return;
+      }
     } catch (error) {}
   };
 }
