@@ -4,7 +4,7 @@ import { AuthMiddleware } from '../middleware/authMiddleware';
 
 const router = Router();
 
-router.post('/', AuthMiddleware.requireAdmin, CategoryController.add);
+router.post('/', AuthMiddleware.requireAdmin, CategoryController.addCategory);
 
 router.delete('/:categoryId', AuthMiddleware.requireAdmin, CategoryController.deleteCategoryById);
 

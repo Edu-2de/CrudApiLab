@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import pool from '../database/connection';
 
 export class ProductController {
-  static add = async (req: Request, res: Response): Promise<void> => {
+  static addProduct = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, description, price, stock, category, image_url } = req.body;
       if (!name || !description || !price || !stock || !category || !image_url) {
@@ -46,9 +46,19 @@ export class ProductController {
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Error during banner adding',
+        message: 'Error during product adding',
         error: error instanceof Error ? error.message : String(error),
       });
     }
+  };
+  static deleteProductById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const productId = Number(req.params.productId);
+      if (!productId) {
+        res.status(400).json({ message: 'Product id is missing' });
+        return;
+      }
+      
+    } catch (error) {}
   };
 }

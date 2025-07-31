@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import pool from '../database/connection';
 
 export class CategoryController {
-  static add = async (req: Request, res: Response): Promise<void> => {
+  static addCategory = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, description } = req.body;
       if (!name || !description) {

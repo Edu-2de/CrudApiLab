@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import pool from '../database/connection';
 
 export class BannerController {
-  static add = async (req: Request, res: Response): Promise<void> => {
+  static addBanner = async (req: Request, res: Response): Promise<void> => {
     try {
       const { title, image_url, link_url } = req.body;
       if (!title || !image_url || !link_url) {
