@@ -111,4 +111,45 @@ export class CategoriesController {
       });
     }
   };
+  static updateCategoryById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const categoryId = Number(req.params.categoryId);
+      if (!categoryId) {
+        res.status(400).json({ message: 'Category is missing' });
+        return;
+      }
+
+      const { name, description } = req.body;
+      if (name) {
+        const checkNameResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [name]);
+        if (checkNameResult.rows.length !== 0) {
+          res.status(400).json({ message: 'This category already exist' });
+          return;
+        }
+      }
+
+      const fields = [];
+      const values = [];
+      let idx = 1;
+
+      if (name) {
+        fields.push(`name = $${idx++}`);
+        values.push(name);
+      }
+
+      if (description) {
+        fields.push(`description = $${idx++}`);
+      }
+
+      if (fields.length === 0) {
+        res.status(400).json({ message: 'No fields to update' });
+        return;
+      }
+
+      values.push(categoryId);
+      const query = `UPDATE categories SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
+      const result1 = await pool.query(query, values);
+
+    } catch (error) {}
+  };
 }
