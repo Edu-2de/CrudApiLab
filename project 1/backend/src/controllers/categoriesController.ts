@@ -10,7 +10,11 @@ export class CategoriesController {
         return;
       }
 
-      const checkCategorieResult = await pool.query
+      const checkCategoriesResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [name]);
+      if (checkCategoriesResult.rows.length !== 0) {
+        res.status(400).json({ message: 'This category already exist' });
+        return;
+      }
     } catch (error) {}
   };
 }
