@@ -191,7 +191,7 @@ export class BannerController {
         bannerId,
       ]);
 
-      const bannerDisable = bannerCheckResult.rows[0];
+      const bannerDisable = bannerDisableResult.rows[0];
 
       res.json({
         message: 'Banner updated successfully',
