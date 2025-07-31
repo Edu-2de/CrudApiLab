@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import pool from '../database/connection';
 
-export class CategoriesController {
+export class CategoryController {
   static add = async (req: Request, res: Response): Promise<void> => {
     try {
       const { name, description } = req.body;
