@@ -9,6 +9,8 @@ export class CategoriesController {
         res.status(400).json({ message: 'Name or description is missing' });
         return;
       }
+
+      const checkCategorieResult = await pool.query
     } catch (error) {}
   };
 }

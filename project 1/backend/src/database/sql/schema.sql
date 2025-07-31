@@ -31,7 +31,7 @@ INSERT INTO banners (title, image_url, link_url, active) VALUES
 
 CREATE TABLE IF NOT EXISTS categories (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(100) NOT NULL,
+  name UNIQUE VARCHAR(100) NOT NULL,
   description VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
