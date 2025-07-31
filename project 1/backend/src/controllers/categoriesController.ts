@@ -70,6 +70,11 @@ export class CategoriesController {
         res.status(400).json({ message: 'Category id is missing' });
         return;
       }
+      const checkCategoryResult = await pool.query(`SELECT * FROM categories WHERE id = $1`, [categoryId]);
+      if (checkCategoryResult.rows.length) {
+        res.status(400).json({ message: 'This id is not in the table' });
+        return;
+      }
     } catch (error) {}
   };
 }
