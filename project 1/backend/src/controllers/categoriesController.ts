@@ -139,6 +139,7 @@ export class CategoriesController {
 
       if (description) {
         fields.push(`description = $${idx++}`);
+        values.push(description);
       }
 
       if (fields.length === 0) {
@@ -150,6 +151,15 @@ export class CategoriesController {
       const query = `UPDATE categories SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
       const result1 = await pool.query(query, values);
 
-    } catch (error) {}
+      res.json({
+        message: 'Category updated successfully',
+        category: result1.rows[0],
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during update user',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
