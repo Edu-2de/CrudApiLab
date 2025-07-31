@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import { setupDB, testConnection } from './database/setup';
 import authRoutes from './routes/authRoutes';
 import bannerRoutes from './routes/bannerRoutes';
+import categoryRoutes from './routes/categoryRoutes';
 
 dotenv.config();
 const app = express();
@@ -26,6 +27,7 @@ const startServer = async () => {
 
     app.use('/user', authRoutes);
     app.use('/banner', bannerRoutes);
+    app.use('/category', categoryRoutes);
 
     app.listen(PORT, () => {
       console.log('Server running on port: ' + PORT);

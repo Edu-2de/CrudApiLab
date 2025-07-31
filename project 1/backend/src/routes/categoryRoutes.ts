@@ -13,3 +13,4 @@ router.get('/', CategoryController.getAllCategories);
 
 router.patch('/:categoryId', AuthMiddleware.requireAdmin, CategoryController.updateCategoryById);
 
+export default router;
