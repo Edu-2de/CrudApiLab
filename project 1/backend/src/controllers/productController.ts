@@ -88,7 +88,23 @@ export class ProductController {
         return;
       }
 
-      
-    } catch (error) {}
+      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This id is not in the table' });
+        return;
+      }
+
+      const product = productCheckResult.rows[0];
+
+      res.json({
+        message: 'Product retrieved successfully',
+        product: product,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching product',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
