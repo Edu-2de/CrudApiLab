@@ -9,7 +9,7 @@ router.delete('/:bannerId', AuthMiddleware.requireAdmin, BannerController.delete
 
 router.get('/:bannerId', AuthMiddleware.requireAdmin, BannerController.getBannerById);
 router.get('/active', AuthMiddleware.requireAdmin, BannerController.getActiveBanners);
-router.get('/all', AuthMiddleware.requireAdmin, BannerController.getAllBanners);
+router.get('/', AuthMiddleware.requireAdmin, BannerController.getAllBanners);
 
 router.patch('/active/:bannerId', AuthMiddleware.requireAdmin, BannerController.activeBannerById);
 router.patch('/disable/:bannerId', AuthMiddleware.requireAdmin, BannerController.disableBannerById);
