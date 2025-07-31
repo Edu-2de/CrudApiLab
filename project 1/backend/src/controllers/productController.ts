@@ -80,4 +80,15 @@ export class ProductController {
       });
     }
   };
+  static getProductById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const productId = Number(req.params.productId);
+      if (!productId) {
+        res.status(400).json({ message: 'Product id is missing' });
+        return;
+      }
+
+      
+    } catch (error) {}
+  };
 }
