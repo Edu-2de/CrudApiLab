@@ -15,6 +15,18 @@ export class ProductController {
         res.status(400).json({ message: 'This product already exist' });
         return;
       }
+
+      if (price <= 0 || price > 9999.99) {
+        res.status(400).json({ message: 'Invalid price' });
+        return;
+      }
+
+      if (stock <= 0 || stock > 9999){
+        res.status(400).json({message: 'Invalid stock'});
+        return;
+      }
+
+      
     } catch (error) {}
   };
 }
