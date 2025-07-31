@@ -90,4 +90,19 @@ export class CategoriesController {
       });
     }
   };
+  static getAllCategories = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const checkCategoriesResult = await pool.query(`SELECT * FROM categories ORDER BY created_at DESC LIMIT 50`);
+      if (checkCategoriesResult.rows.length === 0) {
+        res.status(400).json({ message: 'No one categories added' });
+        return;
+      }
+
+      const categories = checkCategoriesResult.rows;
+
+      res.json({
+        message: 'Categories retrieved successfully',
+      });
+    } catch (error) {}
+  };
 }
