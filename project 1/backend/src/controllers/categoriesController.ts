@@ -102,7 +102,13 @@ export class CategoriesController {
 
       res.json({
         message: 'Categories retrieved successfully',
+        categories: categories,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching categories',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
