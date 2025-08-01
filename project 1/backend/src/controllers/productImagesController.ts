@@ -96,8 +96,8 @@ export class ProductImagesController {
       });
     }
   };
-  static updateProductImageById = async(req: Request, res: Response): Promise<void> => {
-    try{
+  static updateProductImageById = async (req: Request, res: Response): Promise<void> => {
+    try {
       const imageProductId = Number(req.params.imageProductId);
       if (!imageProductId) {
         res.status(400).json({ message: 'image product id is missing' });
@@ -109,8 +109,21 @@ export class ProductImagesController {
         res.status(400).json({ message: 'image product not found' });
         return;
       }
-    }catch(error){
 
+      const { image_url } = req.body;
+
+      const productImageResult = await pool.query(`UPDATE FROM product_images(image_url) VALUES($1)`, [image_url]);
+      const productImage = productImageCheckResult.rows[0];
+
+      res.json({
+        message: 'Image product updated successfully',
+        productImage: productImage,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during update image product',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
-  }
+  };
 }
