@@ -60,6 +60,11 @@ export class ProductImagesController {
         message: 'Image product deleted successfully',
         imageProduct: imageProduct,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during delete image product',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
