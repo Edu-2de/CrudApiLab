@@ -175,11 +175,22 @@ export class ProductController {
         return;
       }
 
-      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      const productCheckResult = await pool.query(
+        `
+        SELECT 
+          p.*
+          c.*
+        FROM product p
+        INNER JOIN categories c ON p.category_id = c.id
+        WHERE id = $1`,
+        [productId]
+      );
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'Product not found' });
         return;
       }
+
+      const { name, description, price, stock, category_id, image_url, created_at } = req.body;
 
       
     } catch (error) {}
