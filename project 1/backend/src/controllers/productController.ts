@@ -167,4 +167,11 @@ export class ProductController {
       });
     }
   };
+  static updateProductById = async(req: Request, res: Response): Promise<void> => {
+    try{
+
+    }catch(error){
+      
+    }
+  }
 }
