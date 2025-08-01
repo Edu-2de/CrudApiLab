@@ -15,6 +15,14 @@ export class ProductImagesController {
         res.status(400).json({ message: 'Product not found' });
         return;
       }
+
+      const { image_url } = req.body;
+      if (!image_url) {
+        res.status(400).json({ message: 'image url is missing' });
+        return;
+      }
+
+      
     } catch (error) {}
   };
 }
