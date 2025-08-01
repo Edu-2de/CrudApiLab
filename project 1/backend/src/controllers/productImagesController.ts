@@ -67,13 +67,22 @@ export class ProductImagesController {
       });
     }
   };
-  static getProductImageById = async (req: Request, res: Response): Promise<void> => {
+  static getProductImagesById = async (req: Request, res: Response): Promise<void> => {
     try {
       const productId = Number(req.params.productId);
       if (!productId) {
         res.status(400).json({ message: 'Product id is missing' });
         return;
       }
+
+      const imagesProductCheckResult = await pool.query(`SELECT * FROM product_images WHERE product_id = $1`, [
+        productId,
+      ]);
+      if (imagesProductCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'No images for this product found' });
+        return;
+      }
+      
     } catch (error) {}
   };
 }
