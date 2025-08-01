@@ -174,6 +174,13 @@ export class ProductController {
         res.status(400).json({ message: 'Product id is missing' });
         return;
       }
+
+      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'Product not found' });
+        return;
+      }
+
       
     } catch (error) {}
   };
