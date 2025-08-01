@@ -128,4 +128,12 @@ export class ProductController {
       });
     }
   };
+
+  static getProductsByCategory = async(req: Request, res: Response): Promise<void> => {
+    try{
+
+    }catch(error){
+      
+    }
+  }
 }
