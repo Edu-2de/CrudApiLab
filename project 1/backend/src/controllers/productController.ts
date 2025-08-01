@@ -121,6 +121,11 @@ export class ProductController {
         message: 'Products retrieved successfully',
         products: products,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching users',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
