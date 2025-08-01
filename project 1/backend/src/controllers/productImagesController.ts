@@ -52,7 +52,14 @@ export class ProductImagesController {
         return;
       }
 
-      
+      const imageProduct = productImageCheckResult.rows[0];
+
+      const productImageResult = await pool.query(`DELETE FROM product_images WHERE id = $1`, [imageProductId]);
+
+      res.status(200).json({
+        message: 'Image product deleted successfully',
+        imageProduct: imageProduct,
+      });
     } catch (error) {}
   };
 }
