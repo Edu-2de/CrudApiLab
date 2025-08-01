@@ -107,5 +107,11 @@ export class ProductController {
       });
     }
   };
-  static getAllProducts = asy b\
+  static getAllProducts = async(req: Request, res: Response): Promise<void> => {
+    try{
+
+    }catch(error){
+      
+    }
+  }
 }
