@@ -128,7 +128,6 @@ export class ProductController {
       });
     }
   };
-
   static getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
     try {
       const { category } = req.body;
