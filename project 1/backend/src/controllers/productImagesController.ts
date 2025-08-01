@@ -103,6 +103,12 @@ export class ProductImagesController {
         res.status(400).json({ message: 'image product id is missing' });
         return;
       }
+
+      const productImageCheckResult = await pool.query(`SELECT * FROM product_images WHERE id = $1`, [imageProductId]);
+      if (productImageCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'image product not found' });
+        return;
+      }
     }catch(error){
 
     }
