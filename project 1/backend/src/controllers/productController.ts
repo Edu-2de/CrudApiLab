@@ -123,7 +123,7 @@ export class ProductController {
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Error fetching users',
+        message: 'Error fetching products',
         error: error instanceof Error ? error.message : String(error),
       });
     }
@@ -154,7 +154,12 @@ export class ProductController {
         return;
       }
 
-      
+      const productsCategory = productsCategoryResult.rows;
+
+      res.json({
+        message: 'Products retrieved successfully',
+        products: productsCategory,
+      });
     } catch (error) {}
   };
 }
