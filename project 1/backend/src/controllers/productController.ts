@@ -136,6 +136,15 @@ export class ProductController {
         res.status(400).json({ message: 'Category is missing' });
       }
 
+      const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE title = $1`, [category]);
+      if (categoryCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This category not exist' });
+        return;
+      }
+
+      const categoryResult = categoryCheckResult.rows[0];
+      const categoryId = categoryResult.id;
+
       
     } catch (error) {}
   };
