@@ -82,7 +82,18 @@ export class ProductImagesController {
         res.status(400).json({ message: 'No images for this product found' });
         return;
       }
-      
-    } catch (error) {}
+
+      const productImage = imagesProductCheckResult.rows[0];
+
+      res.json({
+        message: 'Images product retrieved successfully',
+        productImage: productImage,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching product images',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
