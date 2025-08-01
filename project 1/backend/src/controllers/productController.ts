@@ -114,6 +114,13 @@ export class ProductController {
         res.status(400).json({ message: 'No one product added' });
         return;
       }
+
+      const products = productCheckResult.rows;
+
+      res.json({
+        message: 'Products retrieved successfully',
+        products: products,
+      });
     } catch (error) {}
   };
 }
