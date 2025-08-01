@@ -32,7 +32,10 @@ export class ProductImagesController {
         productImage: productImageResult.rows[0],
       });
     } catch (error) {
-      
+      res.status(500).json({
+        message: 'Error during image adding',
+        error: error instanceof Error ? error.message : String(error),
+      });
     }
   };
 }
