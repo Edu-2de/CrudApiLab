@@ -22,7 +22,17 @@ export class ProductImagesController {
         return;
       }
 
+      const productImageResult = await pool.query(`INSERT INTO product_images(product_id, image_url) VALUES($1, $2)`, [
+        productId,
+        image_url,
+      ]);
+
+      res.status(201).json({
+        message: 'Image added successfully',
+        productImage: productImageResult.rows[0],
+      });
+    } catch (error) {
       
-    } catch (error) {}
+    }
   };
 }
