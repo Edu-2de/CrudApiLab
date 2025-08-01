@@ -139,7 +139,7 @@ export class ProductController {
 
       const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
       if (categoryCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'This category not exist' });
+        res.status(400).json({ message: 'This category does not exist' });
         return;
       }
 
@@ -151,7 +151,7 @@ export class ProductController {
       ]);
 
       if (productsCategoryResult.rows.length === 0) {
-        res.status(400).json({ message: 'No products with this category' });
+        res.status(400).json({ message: 'No products found for this category' });
         return;
       }
 
