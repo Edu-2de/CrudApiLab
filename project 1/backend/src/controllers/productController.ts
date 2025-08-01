@@ -145,6 +145,15 @@ export class ProductController {
       const categoryResult = categoryCheckResult.rows[0];
       const categoryId = categoryResult.id;
 
+      const productsCategoryResult = await pool.query(`SELECT * FROM products WHERE category_id = $1 LIMIT 50`, [
+        categoryId,
+      ]);
+
+      if (productsCategoryResult.rows.length === 0) {
+        res.status(400).json('No one product with this category');
+        return;
+      }
+
       
     } catch (error) {}
   };
