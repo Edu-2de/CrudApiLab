@@ -58,7 +58,7 @@ export class ProductImagesController {
 
       res.status(200).json({
         message: 'Image product deleted successfully',
-        imageProduct: imageProduct,
+        productImage: imageProduct,
       });
     } catch (error) {
       res.status(500).json({
