@@ -59,7 +59,7 @@ export class ProductController {
         return;
       }
 
-      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [productId]);
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
@@ -67,7 +67,7 @@ export class ProductController {
 
       const product = productCheckResult.rows[0];
 
-      const productDeleteResult = await pool.query(`DELETE FROM product WHERE id = $1`, [productId]);
+      const productDeleteResult = await pool.query(`DELETE FROM products WHERE id = $1`, [productId]);
 
       res.status(200).json({
         message: 'Product deleted successfully',
@@ -75,7 +75,7 @@ export class ProductController {
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Error during delete user',
+        message: 'Error during delete product',
         error: error instanceof Error ? error.message : String(error),
       });
     }
@@ -134,9 +134,10 @@ export class ProductController {
       const { category } = req.body;
       if (!category) {
         res.status(400).json({ message: 'Category is missing' });
+        return;
       }
 
-      const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE title = $1`, [category]);
+      const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
       if (categoryCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'This category not exist' });
         return;
@@ -150,7 +151,7 @@ export class ProductController {
       ]);
 
       if (productsCategoryResult.rows.length === 0) {
-        res.status(400).json('No one product with this category');
+        res.status(400).json({ message: 'No one product with this category' });
         return;
       }
 
