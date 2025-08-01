@@ -88,7 +88,7 @@ export class ProductController {
         return;
       }
 
-      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [productId]);
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
@@ -111,7 +111,7 @@ export class ProductController {
     try {
       const productCheckResult = await pool.query(`SELECT * FROM products ORDER BY created_at DESC LIMIT 50`);
       if (productCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'No one product added' });
+        res.status(400).json({ message: 'No products added' });
         return;
       }
 
@@ -151,7 +151,7 @@ export class ProductController {
       ]);
 
       if (productsCategoryResult.rows.length === 0) {
-        res.status(400).json({ message: 'No one product with this category' });
+        res.status(400).json({ message: 'No products with this category' });
         return;
       }
 
