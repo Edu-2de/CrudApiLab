@@ -107,4 +107,5 @@ export class ProductController {
       });
     }
   };
+  static getAllProducts = asy b\
 }
