@@ -178,9 +178,9 @@ export class ProductController {
       const productCheckResult = await pool.query(
         `
         SELECT 
-          p.*
+          p.*,
           c.*
-        FROM product p
+        FROM products p
         INNER JOIN categories c ON p.category_id = c.id
         WHERE id = $1`,
         [productId]
@@ -191,8 +191,9 @@ export class ProductController {
       }
 
       const { name, description, price, stock, category_id, image_url, created_at } = req.body;
-
       
+
+
     } catch (error) {}
   };
 }
