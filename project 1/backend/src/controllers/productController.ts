@@ -129,11 +129,14 @@ export class ProductController {
     }
   };
 
-  static getProductsByCategory = async(req: Request, res: Response): Promise<void> => {
-    try{
+  static getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { category } = req.body;
+      if (!category) {
+        res.status(400).json({ message: 'Category is missing' });
+      }
 
-    }catch(error){
       
-    }
-  }
+    } catch (error) {}
+  };
 }
