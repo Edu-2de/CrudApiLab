@@ -38,4 +38,15 @@ export class ProductImagesController {
       });
     }
   };
+  static deleteProductImageById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const imageProductId = Number(req.params.imageProductId);
+      if (!imageProductId) {
+        res.status(400).json({ message: 'image product id is missing' });
+        return;
+      }
+
+      
+    } catch (error) {}
+  };
 }
