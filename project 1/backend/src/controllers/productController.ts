@@ -59,7 +59,7 @@ export class ProductController {
         return;
       }
 
-      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [productId]);
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
@@ -67,7 +67,7 @@ export class ProductController {
 
       const product = productCheckResult.rows[0];
 
-      const productDeleteResult = await pool.query(`DELETE FROM product WHERE id = $1`, [productId]);
+      const productDeleteResult = await pool.query(`DELETE FROM products WHERE id = $1`, [productId]);
 
       res.status(200).json({
         message: 'Product deleted successfully',
@@ -75,7 +75,7 @@ export class ProductController {
       });
     } catch (error) {
       res.status(500).json({
-        message: 'Error during delete user',
+        message: 'Error during delete product',
         error: error instanceof Error ? error.message : String(error),
       });
     }
@@ -88,7 +88,7 @@ export class ProductController {
         return;
       }
 
-      const productCheckResult = await pool.query(`SELECT * FROM product WHERE id = $1`, [productId]);
+      const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [productId]);
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
@@ -107,5 +107,93 @@ export class ProductController {
       });
     }
   };
-  static getAllProducts = asy b\
+  static getAllProducts = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const productCheckResult = await pool.query(`SELECT * FROM products ORDER BY created_at DESC LIMIT 50`);
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'No products added' });
+        return;
+      }
+
+      const products = productCheckResult.rows;
+
+      res.json({
+        message: 'Products retrieved successfully',
+        products: products,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching products',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
+  static getProductsByCategory = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { category } = req.body;
+      if (!category) {
+        res.status(400).json({ message: 'Category is missing' });
+        return;
+      }
+
+      const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
+      if (categoryCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This category does not exist' });
+        return;
+      }
+
+      const categoryResult = categoryCheckResult.rows[0];
+      const categoryId = categoryResult.id;
+
+      const productsCategoryResult = await pool.query(`SELECT * FROM products WHERE category_id = $1 LIMIT 50`, [
+        categoryId,
+      ]);
+
+      if (productsCategoryResult.rows.length === 0) {
+        res.status(400).json({ message: 'No products found for this category' });
+        return;
+      }
+
+      const productsCategory = productsCategoryResult.rows;
+
+      res.json({
+        message: 'Products retrieved successfully',
+        products: productsCategory,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching products',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  };
+  static updateProductById = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const productId = Number(req.params.productId);
+      if (!productId) {
+        res.status(400).json({ message: 'Product id is missing' });
+        return;
+      }
+
+      const productCheckResult = await pool.query(
+        `
+        SELECT 
+          p.*,
+          c.*
+        FROM products p
+        INNER JOIN categories c ON p.category_id = c.id
+        WHERE id = $1`,
+        [productId]
+      );
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'Product not found' });
+        return;
+      }
+
+      const { name, description, price, stock, category_id, image_url, created_at } = req.body;
+      
+
+
+    } catch (error) {}
+  };
 }
