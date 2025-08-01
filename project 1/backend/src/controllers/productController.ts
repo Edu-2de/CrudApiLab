@@ -160,6 +160,11 @@ export class ProductController {
         message: 'Products retrieved successfully',
         products: productsCategory,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching products',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
