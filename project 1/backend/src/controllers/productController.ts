@@ -107,11 +107,13 @@ export class ProductController {
       });
     }
   };
-  static getAllProducts = async(req: Request, res: Response): Promise<void> => {
-    try{
-
-    }catch(error){
-      
-    }
-  }
+  static getAllProducts = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const productCheckResult = await pool.query(`SELECT * FROM products ORDER BY created_at DESC LIMIT 50`);
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'No one product added' });
+        return;
+      }
+    } catch (error) {}
+  };
 }
