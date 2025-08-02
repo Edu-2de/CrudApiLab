@@ -22,7 +22,7 @@ export class ProductImagesController {
         return;
       }
 
-      const productImageResult = await pool.query(`INSERT INTO product_images(product_id, image_url) VALUES($1, $2)`, [
+      const productImageResult = await pool.query(`INSERT INTO product_images(product_id, image_url) VALUES($1, $2) RETURNING *`, [
         productId,
         image_url,
       ]);
@@ -86,7 +86,7 @@ export class ProductImagesController {
       const productImage = imagesProductCheckResult.rows[0];
 
       res.json({
-        message: 'Images product retrieved successfully',
+        message: 'Product images retrieved successfully',
         productImage: productImage,
       });
     } catch (error) {
@@ -112,12 +112,15 @@ export class ProductImagesController {
 
       const { image_url } = req.body;
 
-      const productImageResult = await pool.query(`UPDATE FROM product_images(image_url) VALUES($1)`, [image_url]);
+      const productImageResult = await pool.query(
+        `UPDATE product_images SET image_url = $1 WHERE id = $2 RETURNING *`,
+        [image_url, imageProductId]
+      );
       const productImage = productImageCheckResult.rows[0];
 
       res.json({
         message: 'Image product updated successfully',
-        productImage: productImage,
+        productImage: productImageResult.rows[0],
       });
     } catch (error) {
       res.status(500).json({
