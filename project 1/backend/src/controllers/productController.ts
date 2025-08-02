@@ -227,6 +227,12 @@ export class ProductController {
           return;
         }
       }
+
+      const fields = [];
+      const values = [];
+      let idx = 1;
+
+      
     } catch (error) {}
   };
 }
