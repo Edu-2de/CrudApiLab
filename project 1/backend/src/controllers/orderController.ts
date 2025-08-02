@@ -51,6 +51,11 @@ export class OrderController {
       const orderResult = orderCheckResult.rows[0];
 
       const { status } = req.body;
+      if (orderResult.status === status) {
+        res.status(400).json({ message: 'This already is the status for this order' });
+        return;
+      }
+
       if (!status) {
         res.status(400).json({ message: 'Status is missing' });
         return;
