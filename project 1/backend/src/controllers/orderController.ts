@@ -17,7 +17,7 @@ export class OrderController {
       }
 
       const orderResult = await pool.query(
-        `INSERT INTO orders(user_id, total, status, created_at) VALUES($1, $2, $3, CURRENT_TIMESTAMP)`,
+        `INSERT INTO orders(user_id, total, status, created_at) VALUES($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
         [userId, total, 'pending']
       );
 
