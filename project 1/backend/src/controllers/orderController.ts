@@ -42,6 +42,14 @@ export class OrderController {
         return;
       }
 
+      const orderCheckResult = await pool.query(`SELECT * FROM orders WHERE id = $1`, [orderId]);
+      if (orderCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'This order not exist' });
+        return;
+      }
+
+      const orderResult = orderCheckResult.rows[0];
+
       const { status } = req.body;
       if (!status) {
         res.status(400).json({ message: 'Status is missing' });
@@ -58,8 +66,6 @@ export class OrderController {
         res.status(400).json({ message: 'Invalid status' });
         return;
       }
-
-      
     } catch (error) {}
   };
 }
