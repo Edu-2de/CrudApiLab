@@ -182,7 +182,7 @@ export class ProductController {
           c.*
         FROM products p
         INNER JOIN categories c ON p.category_id = c.id
-        WHERE id = $1`,
+        WHERE p.id = $1`,
         [productId]
       );
       if (productCheckResult.rows.length === 0) {
@@ -198,7 +198,7 @@ export class ProductController {
         }
       }
       if (stock) {
-        if (stock <= 0 || stock > 99) {
+        if (stock <= 0 || stock > 9999.99) {
           res.status(400).json({ message: 'Invalid stock quantity' });
           return;
         }
@@ -253,6 +253,10 @@ export class ProductController {
       if (image_url) {
         fields.push(`image_url = $${idx++}`);
         values.push(image_url);
+      }
+      if (fields.length === 0) {
+        res.status(400).json({ message: 'No fields to update' });
+        return;
       }
 
       values.push(productId);
