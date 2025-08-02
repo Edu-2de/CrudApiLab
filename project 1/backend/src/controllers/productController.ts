@@ -203,15 +203,6 @@ export class ProductController {
           return;
         }
       }
-      if (category) {
-        const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
-        if (categoryCheckResult.rows.length === 0) {
-          res.status(400).json({ message: 'This category not exists' });
-          return;
-        }
-        const categoryResult = categoryCheckResult.rows[0];
-        const category_id = categoryResult.id;
-      }
       if (image_url) {
         const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1`, [image_url]);
         if (imageCheckResult.rows.length !== 0) {
@@ -247,6 +238,17 @@ export class ProductController {
       if (stock) {
         fields.push(`stock = $${idx++}`);
         values.push(stock);
+      }
+      if (category) {
+        const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
+        if (categoryCheckResult.rows.length === 0) {
+          res.status(400).json({ message: 'This category not exists' });
+          return;
+        }
+        const categoryResult = categoryCheckResult.rows[0];
+        const category_id = categoryResult.id
+        fields.push(`category_id = $${idx++}`);
+        values.push(category_id);
       }
     } catch (error) {}
   };
