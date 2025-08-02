@@ -257,7 +257,18 @@ export class ProductController {
 
       values.push(productId);
 
-      
-    } catch (error) {}
+      const query = `UPDATE products SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
+      const result = await pool.query(query, values);
+
+      res.json({
+        message: 'Product updated successfully',
+        product: result.rows[0],
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error updating product',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
