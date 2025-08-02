@@ -232,7 +232,22 @@ export class ProductController {
       const values = [];
       let idx = 1;
 
-      
+      if (name) {
+        fields.push(`name = $${idx++}`);
+        values.push(name);
+      }
+      if (description) {
+        fields.push(`description = $${idx++}`);
+        values.push(description);
+      }
+      if (price) {
+        fields.push(`price = $${idx++}`);
+        values.push(price);
+      }
+      if (stock) {
+        fields.push(`stock = $${idx++}`);
+        values.push(stock);
+      }
     } catch (error) {}
   };
 }
