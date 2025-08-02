@@ -50,7 +50,19 @@ export class OrderController {
         res.status(400).json({ message: 'No orders found' });
         return;
       }
-    } catch (error) {}
+
+      const orders = ordersCheckResult.rows;
+
+      res.json({
+        message: 'Orders retrieved successfully',
+        orders: orders,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching orders',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 
   static updateOrderById = async (req: Request, res: Response): Promise<void> => {
