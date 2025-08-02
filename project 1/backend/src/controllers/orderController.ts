@@ -34,6 +34,18 @@ export class OrderController {
       });
     }
   };
+  static getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const userId = Number(req.params.userId);
+      if (userId) {
+        res.status(400).json({ message: 'User id is missing' });
+        return;
+      }
+
+      
+    } catch (error) {}
+  };
+
   static updateOrderById = async (req: Request, res: Response): Promise<void> => {
     try {
       const orderId = Number(req.params.orderId);
@@ -44,7 +56,7 @@ export class OrderController {
 
       const orderCheckResult = await pool.query(`SELECT * FROM orders WHERE id = $1`, [orderId]);
       if (orderCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'This order not exist' });
+        res.status(400).json({ message: 'Order not found' });
         return;
       }
 
