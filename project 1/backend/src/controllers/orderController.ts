@@ -35,10 +35,23 @@ export class OrderController {
     }
   };
   static updateOrder = async (req: Request, res: Response): Promise<void> => {
-    try{
+    try {
+      const { status } = req.body;
+      if (!status) {
+        res.status(400).json({ message: 'Status is missing' });
+        return;
+      }
 
-    }catch(error){
-      
-    }
-  }
+      if (
+        status !== 'pending' ||
+        status !== 'paid' ||
+        status !== 'shipped' ||
+        status !== 'delivered' ||
+        status !== 'canceled'
+      ) {
+        res.status(400).json({ message: 'Invalid status' });
+        return;
+      }
+    } catch (error) {}
+  };
 }
