@@ -46,6 +46,10 @@ export class OrderController {
         `SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50 `,
         [userId]
       );
+      if (ordersCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'No orders found' });
+        return;
+      }
     } catch (error) {}
   };
 
