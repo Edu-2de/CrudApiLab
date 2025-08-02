@@ -36,7 +36,7 @@ export class ProductController {
       const categoryId = categoryResult.id;
 
       const productAddResult = await pool.query(
-        `INSERT INTO products(name, description, price, stock, category_id, image_url, created_at) VALUES($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`,
+        `INSERT INTO products(name, description, price, stock, category_id, image_url, created_at) VALUES($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP) RETURNING *`,
         [name, description, price, stock, categoryId, image_url]
       );
 
@@ -182,7 +182,7 @@ export class ProductController {
           c.*
         FROM products p
         INNER JOIN categories c ON p.category_id = c.id
-        WHERE id = $1`,
+        WHERE p.id = $1`,
         [productId]
       );
       if (productCheckResult.rows.length === 0) {
@@ -190,10 +190,92 @@ export class ProductController {
         return;
       }
 
-      const { name, description, price, stock, category_id, image_url, created_at } = req.body;
-      
+      const { name, description, price, stock, category, image_url } = req.body;
+      if (price) {
+        if (price <= 0 || price >= 9999.99) {
+          res.status(400).json({ message: 'Invalid price' });
+          return;
+        }
+      }
+      if (stock) {
+        if (stock <= 0 || stock > 9999) {
+          res.status(400).json({ message: 'Invalid stock quantity' });
+          return;
+        }
+      }
+      if (image_url) {
+        const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1 AND id != $2`, [
+          image_url,
+          productId,
+        ]);
+        if (imageCheckResult.rows.length !== 0) {
+          res.status(400).json({ message: 'This image is already used by another product' });
+          return;
+        }
 
+        const productImageCheckResult = await pool.query(`SELECT * FROM product_images WHERE image_url = $1`, [
+          image_url,
+        ]);
+        if (productImageCheckResult.rows.length !== 0) {
+          res.status(400).json({ message: 'This image is already used by another product' });
+          return;
+        }
+      }
 
-    } catch (error) {}
+      const fields = [];
+      const values = [];
+      let idx = 1;
+
+      if (name) {
+        fields.push(`name = $${idx++}`);
+        values.push(name);
+      }
+      if (description) {
+        fields.push(`description = $${idx++}`);
+        values.push(description);
+      }
+      if (price) {
+        fields.push(`price = $${idx++}`);
+        values.push(price);
+      }
+      if (stock) {
+        fields.push(`stock = $${idx++}`);
+        values.push(stock);
+      }
+      if (category) {
+        const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
+        if (categoryCheckResult.rows.length === 0) {
+          res.status(400).json({ message: 'This category not exists' });
+          return;
+        }
+        const categoryResult = categoryCheckResult.rows[0];
+        const category_id = categoryResult.id;
+        fields.push(`category_id = $${idx++}`);
+        values.push(category_id);
+      }
+      if (image_url) {
+        fields.push(`image_url = $${idx++}`);
+        values.push(image_url);
+      }
+      if (fields.length === 0) {
+        res.status(400).json({ message: 'No fields to update' });
+        return;
+      }
+
+      values.push(productId);
+
+      const query = `UPDATE products SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
+      const result = await pool.query(query, values);
+
+      res.json({
+        message: 'Product updated successfully',
+        product: result.rows[0],
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error updating product',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }

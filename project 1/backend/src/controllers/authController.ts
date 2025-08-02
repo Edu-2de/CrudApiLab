@@ -15,7 +15,7 @@ export class AuthController {
       }
       const result = await pool.query(`SELECT * FROM users WHERE email  = $1`, [email]);
       if (result.rows.length == 0) {
-        res.status(400).json({ message: 'This user not exist' });
+        res.status(400).json({ message: 'This user does not exist"' });
         return;
       }
       const user = result.rows[0];
@@ -58,7 +58,7 @@ export class AuthController {
     try {
       const { first_name, second_name, email, password } = req.body;
 
-      if (!first_name || !second_name || !email || !password) {
+      if (!first_name || !email || !password) {
         res.status(400).json({ message: 'Some of the arguments are missing' });
         return;
       }
@@ -71,6 +71,7 @@ export class AuthController {
       const verifyEmail = await pool.query(`SELECT email FROM users WHERE email = $1`, [email]);
       if (verifyEmail.rows.length !== 0) {
         res.status(400).json({ message: 'This email already exist' });
+        return;
       }
 
       if (password.length < 8) {
@@ -107,7 +108,7 @@ export class AuthController {
       `);
 
       if (resultAllUsers.rows.length === 0) {
-        res.status(400).json({ message: 'No one user registered' });
+        res.status(400).json({ message: 'No users registered' });
         return;
       }
 
@@ -182,15 +183,15 @@ export class AuthController {
         }
 
         const result_email = await pool.query(`SELECT * FROM users Where email = $1`, [email]);
-        if (result_email.rows.length != 0) {
-          res.status(400).json({ error: 'this email already have an account!' });
+        if (result_email.rows.length !== 0 && result_email.rows[0].id !== userId) {
+          res.status(400).json({ error: 'This email already has an account!' });
           return;
         }
       }
 
       if (password) {
         if (password.length < 8) {
-          res.status(400).json({ message: 'Password must be at least 6 characters long' });
+          res.status(400).json({ message: 'Password must be at least 8 characters long' });
           return;
         }
       }
@@ -207,6 +208,11 @@ export class AuthController {
       if (first_name) {
         fields.push(`first_name = $${idx++}`);
         values.push(first_name);
+      }
+
+      if (second_name) {
+        fields.push(`second_name = $${idx++}`);
+        values.push(second_name);
       }
 
       if (email) {
@@ -230,7 +236,7 @@ export class AuthController {
         return;
       }
 
-      fields.push(`updated_at = CURRENT_TIMESTAMP`);
+      fields.push(`update_at = CURRENT_TIMESTAMP`);
       values.push(userId);
 
       const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
@@ -256,23 +262,20 @@ export class AuthController {
         return;
       }
 
-      const resultUser = await pool.query(
-        `SELECT * FROM users WHERE id = $1`, 
-        [userId]
-      );
+      const resultUser = await pool.query(`SELECT * FROM users WHERE id = $1`, [userId]);
 
-      if(resultUser.rows.length === 0){
-        res.status(400).json({message: 'This user not exist'});
+      if (resultUser.rows.length === 0) {
+        res.status(400).json({ message: 'This user does not exist"' });
         return;
       }
 
       const user = resultUser.rows[0];
-      await pool.query(`DELETE FROM users WHERE id = $1`,[userId]);
+      await pool.query(`DELETE FROM users WHERE id = $1`, [userId]);
 
       res.status(200).json({
         message: 'User deleted successfully',
-        user: user
-      })
+        user: user,
+      });
     } catch (error) {
       res.status(500).json({
         message: 'Error during delete user',
