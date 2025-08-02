@@ -204,7 +204,10 @@ export class ProductController {
         }
       }
       if (image_url) {
-        const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1`, [image_url]);
+        const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1 AND id != $2`, [
+          image_url,
+          productId,
+        ]);
         if (imageCheckResult.rows.length !== 0) {
           res.status(400).json({ message: 'This image is already used by another product' });
           return;
