@@ -71,6 +71,14 @@ export class OrderController {
         res.status(400).json({ message: 'Invalid status' });
         return;
       }
+
+      const orderNewResult = await pool.query(`UPDATE orders SET status = $1 WHERE id = $2 RETURNING *`, [
+        status,
+        orderId,
+      ]);
+      const orderNew = orderCheckResult.rows[0];
+
+      
     } catch (error) {}
   };
 }
