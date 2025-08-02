@@ -152,7 +152,24 @@ export class OrderController {
         return;
       }
 
-      
-    } catch (error) {}
+      const orderCheckResult = await pool.query(`SELECT * FROM orders WHERE id = $1`, [orderId]);
+      if (orderCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'Order not found' });
+        return;
+      }
+
+      const order = orderCheckResult.rows[0];
+
+      const orderDeleteResult = await pool.query(`DELETE FROM orders WHERE id = $1`, [orderId]);
+      res.status(200).json({
+        message: 'Order deleted successfully',
+        order: order,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error deleting order',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
