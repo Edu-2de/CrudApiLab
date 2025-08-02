@@ -210,6 +210,11 @@ export class AuthController {
         values.push(first_name);
       }
 
+      if (second_name) {
+        fields.push(`second_name = $${idx++}`);
+        values.push(second_name);
+      }
+
       if (email) {
         fields.push(`email = $${idx++}`);
         values.push(email);
@@ -231,7 +236,7 @@ export class AuthController {
         return;
       }
 
-      fields.push(`updated_at = CURRENT_TIMESTAMP`);
+      fields.push(`update_at = CURRENT_TIMESTAMP`);
       values.push(userId);
 
       const query = `UPDATE users SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
