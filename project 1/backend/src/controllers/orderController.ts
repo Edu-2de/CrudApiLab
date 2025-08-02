@@ -57,7 +57,12 @@ export class OrderController {
         message: 'Orders retrieved successfully',
         orders: orders,
       });
-    } catch (error) {}
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error fetching orders',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 
   static getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
