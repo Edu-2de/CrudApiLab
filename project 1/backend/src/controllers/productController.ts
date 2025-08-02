@@ -36,7 +36,7 @@ export class ProductController {
       const categoryId = categoryResult.id;
 
       const productAddResult = await pool.query(
-        `INSERT INTO products(name, description, price, stock, category_id, image_url, created_at) VALUES($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)`,
+        `INSERT INTO products(name, description, price, stock, category_id, image_url, created_at) VALUES($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP) RETURNING *`,
         [name, description, price, stock, categoryId, image_url]
       );
 

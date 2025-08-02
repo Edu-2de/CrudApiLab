@@ -37,7 +37,7 @@ export class OrderItemController {
       const price = product.price * quantity;
 
       const orderItemResult = await pool.query(
-        `INSERT INTO order_items(order_id, product_id, quantity, price) VALUES($1, $2, $3, $4)`,
+        `INSERT INTO order_items(order_id, product_id, quantity, price) VALUES($1, $2, $3, $4) RETURNING *`,
         [orderId, product_id, quantity, price]
       );
 
