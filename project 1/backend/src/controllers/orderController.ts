@@ -34,6 +34,17 @@ export class OrderController {
       });
     }
   };
+  static getOrdersByUser = async (req: any, res: Response): Promise<void> => {
+    try {
+      const userId = req.user.id;
+      if (!userId) {
+        res.status(400).json({ message: 'User id is missing' });
+        return;
+      }
+      
+    } catch (error) {}
+  };
+
   static getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
     try {
       const userId = Number(req.params.userId);
