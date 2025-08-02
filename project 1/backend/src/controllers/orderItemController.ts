@@ -22,6 +22,11 @@ export class OrderItemController {
         return;
       }
 
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        res.status(400).json({ message: 'Quantity must be a positive integer' });
+        return;
+      }
+
       const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [product_id]);
       if (productCheckResult.rows.length === 0) {
         res.status(400).json({ message: 'Product Not found' });
