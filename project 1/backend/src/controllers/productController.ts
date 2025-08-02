@@ -191,6 +191,12 @@ export class ProductController {
       }
 
       const { name, description, price, stock, category_id, image_url, created_at } = req.body;
+      if (price) {
+        if (price <= 0 || price >= 9999.99) {
+          res.status(400).json({ message: 'Invalid price' });
+          return;
+        }
+      }
       if (stock) {
         if (stock <= 0 || stock > 99) {
           res.status(400).json({ message: 'Invalid stock quantity' });
