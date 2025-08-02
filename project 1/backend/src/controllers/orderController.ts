@@ -41,7 +41,11 @@ export class OrderController {
         res.status(400).json({ message: 'User id is missing' });
         return;
       }
-      
+
+      const ordersCheckResult = await pool.query(
+        `SELECT * FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 50 `,
+        [userId]
+      );
     } catch (error) {}
   };
 
