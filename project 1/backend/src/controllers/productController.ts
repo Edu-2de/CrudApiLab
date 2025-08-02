@@ -190,7 +190,7 @@ export class ProductController {
         return;
       }
 
-      const { name, description, price, stock, category_id, image_url, created_at } = req.body;
+      const { name, description, price, stock, category, image_url } = req.body;
       if (price) {
         if (price <= 0 || price >= 9999.99) {
           res.status(400).json({ message: 'Invalid price' });
@@ -200,6 +200,30 @@ export class ProductController {
       if (stock) {
         if (stock <= 0 || stock > 99) {
           res.status(400).json({ message: 'Invalid stock quantity' });
+          return;
+        }
+      }
+      if (category) {
+        const categoryCheckResult = await pool.query(`SELECT * FROM categories WHERE name = $1`, [category]);
+        if (categoryCheckResult.rows.length === 0) {
+          res.status(400).json({ message: 'This category not exists' });
+          return;
+        }
+        const categoryResult = categoryCheckResult.rows[0];
+        const category_id = categoryResult.id;
+      }
+      if (image_url) {
+        const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1`, [image_url]);
+        if (imageCheckResult.rows.length !== 0) {
+          res.status(400).json({ message: 'This is already a image for other product' });
+          return;
+        }
+
+        const productImageCheckResult = await pool.query(`SELECT * FROM product_images WHERE image_url = $1`, [
+          image_url,
+        ]);
+        if (productImageCheckResult.rows.length !== 0) {
+          res.status(400).json({ message: 'This is already a image for other product' });
           return;
         }
       }
