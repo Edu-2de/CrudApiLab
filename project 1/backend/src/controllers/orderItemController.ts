@@ -10,6 +10,12 @@ export class OrderItemController {
         return;
       }
 
+      const orderCheckResult = await pool.query(`SELECT * FROM orders WHERE id = $1`, [orderId]);
+      if (orderCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'Order not found' });
+        return;
+      }
+
       
     } catch (error) {}
   };
