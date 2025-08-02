@@ -34,4 +34,11 @@ export class OrderController {
       });
     }
   };
+  static updateOrder = async (req: Request, res: Response): Promise<void> => {
+    try{
+
+    }catch(error){
+      
+    }
+  }
 }
