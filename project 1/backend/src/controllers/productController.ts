@@ -198,7 +198,7 @@ export class ProductController {
         }
       }
       if (stock) {
-        if (stock <= 0 || stock > 9999.99) {
+        if (stock <= 0 || stock > 9999) {
           res.status(400).json({ message: 'Invalid stock quantity' });
           return;
         }
@@ -206,7 +206,7 @@ export class ProductController {
       if (image_url) {
         const imageCheckResult = await pool.query(`SELECT * FROM products WHERE image_url = $1`, [image_url]);
         if (imageCheckResult.rows.length !== 0) {
-          res.status(400).json({ message: 'This is already a image for other product' });
+          res.status(400).json({ message: 'This image is already used by another product' });
           return;
         }
 
@@ -214,7 +214,7 @@ export class ProductController {
           image_url,
         ]);
         if (productImageCheckResult.rows.length !== 0) {
-          res.status(400).json({ message: 'This is already a image for other product' });
+          res.status(400).json({ message: 'This image is already used by another product' });
           return;
         }
       }
