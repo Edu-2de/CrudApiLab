@@ -78,7 +78,15 @@ export class OrderController {
       ]);
       const orderNew = orderCheckResult.rows[0];
 
-      
-    } catch (error) {}
+      res.json({
+        message: 'Order updated successfully',
+        oder: orderNew,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error updating order',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
