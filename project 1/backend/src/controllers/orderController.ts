@@ -37,7 +37,7 @@ export class OrderController {
   static getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
     try {
       const userId = Number(req.params.userId);
-      if (userId) {
+      if (!userId) {
         res.status(400).json({ message: 'User id is missing' });
         return;
       }
