@@ -15,6 +15,23 @@ export class OrderController {
         res.status(400).json({ message: 'Total is missing' });
         return;
       }
-    } catch (error) {}
+
+      const orderResult = await pool.query(
+        `INSERT INTO orders(user_id, total, status, created_at) VALUES($1, $2, $3, CURRENT_TIMESTAMP)`,
+        [userId, total, 'pending']
+      );
+
+      const order = orderResult.rows[0];
+
+      res.status(201).json({
+        message: 'Order added successfully',
+        order: order,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during order adding',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
