@@ -34,8 +34,14 @@ export class OrderController {
       });
     }
   };
-  static updateOrder = async (req: Request, res: Response): Promise<void> => {
+  static updateOrderById = async (req: Request, res: Response): Promise<void> => {
     try {
+      const orderId = Number(req.params.orderId);
+      if (!orderId) {
+        res.status(400).json({ message: 'Order id is missing' });
+        return;
+      }
+
       const { status } = req.body;
       if (!status) {
         res.status(400).json({ message: 'Status is missing' });
@@ -52,6 +58,8 @@ export class OrderController {
         res.status(400).json({ message: 'Invalid status' });
         return;
       }
+
+      
     } catch (error) {}
   };
 }
