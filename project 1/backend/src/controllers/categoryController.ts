@@ -72,7 +72,7 @@ export class CategoryController {
       }
 
       const checkCategoryResult = await pool.query(`SELECT * FROM categories WHERE id = $1`, [categoryId]);
-      if (checkCategoryResult.rows.length) {
+      if (checkCategoryResult.rows.length === 0) {
         res.status(400).json({ message: 'This id is not in the table' });
         return;
       }
