@@ -34,7 +34,24 @@ export class OrderItemController {
         return;
       }
 
-      
-    } catch (error) {}
+      const price = product.price * quantity;
+
+      const orderItemResult = await pool.query(
+        `INSERT INTO order_items(order_id, product_id, quantity, price) VALUES($1, $2, $3, $4)`,
+        [orderId, product_id, quantity, price]
+      );
+
+      const orderItem = orderCheckResult.rows[0];
+
+      res.status(201).json({
+        message: 'Item added to order successfully',
+        orderItem: orderItem,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Error during item adding',
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
   };
 }
