@@ -50,6 +50,13 @@ export class OrderController {
         res.status(400).json({ message: 'No orders found' });
         return;
       }
+
+      const orders = ordersCheckResult.rows;
+
+      res.json({
+        message: 'Orders retrieved successfully',
+        orders: orders,
+      });
     } catch (error) {}
   };
 
