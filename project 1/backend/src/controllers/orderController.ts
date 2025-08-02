@@ -61,13 +61,8 @@ export class OrderController {
         return;
       }
 
-      if (
-        status !== 'pending' ||
-        status !== 'paid' ||
-        status !== 'shipped' ||
-        status !== 'delivered' ||
-        status !== 'canceled'
-      ) {
+      const validStatuses = ['pending', 'paid', 'shipped', 'delivered', 'canceled'];
+      if (!validStatuses.includes(status)) {
         res.status(400).json({ message: 'Invalid status' });
         return;
       }
@@ -76,11 +71,11 @@ export class OrderController {
         status,
         orderId,
       ]);
-      const orderNew = orderCheckResult.rows[0];
+      const orderNew = orderNewResult.rows[0];
 
       res.json({
         message: 'Order updated successfully',
-        oder: orderNew,
+        order: orderNew,
       });
     } catch (error) {
       res.status(500).json({
