@@ -64,7 +64,6 @@ export class OrderController {
       });
     }
   };
-
   static getOrdersByUserId = async (req: Request, res: Response): Promise<void> => {
     try {
       const userId = Number(req.params.userId);
@@ -95,7 +94,6 @@ export class OrderController {
       });
     }
   };
-
   static updateOrderById = async (req: Request, res: Response): Promise<void> => {
     try {
       const orderId = Number(req.params.orderId);
@@ -146,4 +144,11 @@ export class OrderController {
       });
     }
   };
+  static deleteOrderById = async (req: Request, res: Response): Promise<void> => {
+    try{
+      
+    }catch(error){
+
+    }
+  }
 }
