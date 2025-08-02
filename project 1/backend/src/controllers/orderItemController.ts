@@ -16,6 +16,24 @@ export class OrderItemController {
         return;
       }
 
+      const { product_id, quantity } = req.body;
+      if (!product_id || !quantity) {
+        res.status(400).json({ message: 'Product id or quantity is missing' });
+        return;
+      }
+
+      const productCheckResult = await pool.query(`SELECT * FROM products WHERE id = $1`, [product_id]);
+      if (productCheckResult.rows.length === 0) {
+        res.status(400).json({ message: 'Product Not found' });
+        return;
+      }
+
+      const product = productCheckResult.rows[0];
+      if (quantity > product.stock) {
+        res.status(400).json({ message: 'Quantity is bigger than stock' });
+        return;
+      }
+
       
     } catch (error) {}
   };
