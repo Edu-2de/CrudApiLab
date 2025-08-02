@@ -246,10 +246,18 @@ export class ProductController {
           return;
         }
         const categoryResult = categoryCheckResult.rows[0];
-        const category_id = categoryResult.id
+        const category_id = categoryResult.id;
         fields.push(`category_id = $${idx++}`);
         values.push(category_id);
       }
+      if (image_url) {
+        fields.push(`image_url = $${idx++}`);
+        values.push(image_url);
+      }
+
+      values.push(productId);
+
+      
     } catch (error) {}
   };
 }
