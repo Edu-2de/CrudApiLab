@@ -1,15 +1,16 @@
 'use client';
 import Carrousel from "./components/carrousel"
-import Header from "./components/header"
 import HighlightsProductRow from "./components/highlightsProductRow"
 import InformationCards from "./components/informationCards"
 import TopPartsRow from "./components/topPartsRow"
 import ShoesRow from "./components/shoesRow"
 import BottomParts from "./components/bottomParts"
+import Footer from "./components/footer"
+import Header from './components/header';
 
 export default function Home() {
   return (
-    <body>
+    <>
       <Header/>
       <Carrousel/>
       <InformationCards/>
@@ -17,6 +18,7 @@ export default function Home() {
       <TopPartsRow/>
       <BottomParts/>
       <ShoesRow/>
-    </body>
+      <Footer/>
+    </>
   );
 }
