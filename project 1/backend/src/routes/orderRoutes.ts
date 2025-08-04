@@ -8,3 +8,7 @@ route.post('/', AuthMiddleware.requireAdmin, OrderController.addOrder);
 
 route.get('/', AuthMiddleware.requireAdmin, OrderController.getOrdersByUser);
 route.get('/:userId', AuthMiddleware.requireAdmin, OrderController.getOrdersByUserId);
+
+route.patch('/:orderId', AuthMiddleware.requireAdmin, OrderController.updateOrderById);
+
+route.delete('/:orderId', AuthMiddleware.requireAdmin, OrderController.deleteOrderById);
