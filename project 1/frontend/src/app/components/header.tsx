@@ -105,7 +105,7 @@ export default function Header() {
       {/* Black banner only at the top with smooth transition */}
       <div
         className={classNames(
-          'w-full bg-black text-white text-center py-2 text-sm font-semibold z-50 fixed top-0 left-0 transition-all duration-500',
+          'select-none w-full bg-black text-white text-center py-2 text-sm font-semibold z-50 fixed top-0 left-0 transition-all duration-500',
           showBanner ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
         style={{ minHeight: '32px' }}
@@ -114,7 +114,7 @@ export default function Header() {
       </div>
       <header
         ref={headerRef}
-        className={classNames('fixed w-full z-40 transition-all duration-500 bg-white', showBanner ? 'mt-[0px]' : '')}
+        className={classNames('fixed w-full z-40 transition-all duration-500 bg-white select-none', showBanner ? 'mt-[0px]' : '')}
         onMouseLeave={handleMenuMouseLeave}
         onMouseEnter={() => {}}
         style={{
