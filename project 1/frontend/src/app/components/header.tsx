@@ -62,11 +62,14 @@ export default function Header() {
 
   const headerRef = useRef<HTMLDivElement>(null);
 
+  const HEADER_HEIGHT = 56; // 14 * 4 (h-14) = 56px
+  const BANNER_HEIGHT = 32;
+
   const [user, setUser] = useState<{ first_name: string } | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
+    const stored = localStorage.getItem('user');
     if (stored) setUser(JSON.parse(stored));
   }, []);
 
@@ -102,19 +105,16 @@ export default function Header() {
       {/* Black banner only at the top with smooth transition */}
       <div
         className={classNames(
-          "w-full bg-black text-white text-center py-2 text-sm font-semibold z-50 fixed top-0 left-0 transition-all duration-500",
-          showBanner ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          'w-full bg-black text-white text-center py-2 text-sm font-semibold z-50 fixed top-0 left-0 transition-all duration-500',
+          showBanner ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         )}
-        style={{ minHeight: "32px" }}
+        style={{ minHeight: '32px' }}
       >
         Exclusive discounts on selected products!
       </div>
       <header
         ref={headerRef}
-        className={classNames(
-          'fixed w-full z-40 transition-all duration-500 bg-white',
-          showBanner ? 'mt-[0px]' : ''
-        )}
+        className={classNames('fixed w-full z-40 transition-all duration-500 bg-white', showBanner ? 'mt-[0px]' : '')}
         onMouseLeave={handleMenuMouseLeave}
         onMouseEnter={() => {}}
         style={{
@@ -166,6 +166,9 @@ export default function Header() {
                   {item.submenu && openMenu === idx && (
                     <div
                       className="fixed left-0 top-14 w-full z-50 bg-white/95 border-t border-gray-200 shadow-xl animate-fade"
+                      style={{
+                        top: showBanner ? `${BANNER_HEIGHT + HEADER_HEIGHT}px` : `${HEADER_HEIGHT}px`,
+                      }}
                       onMouseEnter={handleSubmenuMouseEnter}
                       onMouseLeave={handleSubmenuMouseLeave}
                     >
@@ -197,10 +200,10 @@ export default function Header() {
               <span className="relative">
                 <button
                   className="flex items-center justify-center w-9 h-9 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 text-gray-700 font-bold text-lg shadow focus:outline-none border border-gray-300 transition hover:scale-105 hover:shadow-md cursor-pointer"
-                  onClick={() => setShowDropdown((prev) => !prev)}
+                  onClick={() => setShowDropdown(prev => !prev)}
                   aria-label="User menu"
                   type="button"
-                  style={{ transition: "all 0.15s" }}
+                  style={{ transition: 'all 0.15s' }}
                 >
                   {user.first_name?.charAt(0).toUpperCase() || <FiUser />}
                 </button>
