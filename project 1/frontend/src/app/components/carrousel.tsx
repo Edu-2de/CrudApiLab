@@ -77,12 +77,12 @@ export default function Carrousel() {
             draggable={false}
             priority
           />
-          <div className="absolute bottom-6 left-0 w-full flex justify-center items-center gap-3 z-10">
+          <div className="absolute bottom-2 left-0 w-full flex justify-center items-center gap-3 z-10">
             {carrouselItems.map((item, idx) => (
               <button
                 key={item.src}
                 onClick={() => !transitioning && setCurrentIndex(idx)}
-                className={`w-4 h-4 rounded-full border-2 border-white transition-all duration-300
+                className={`cursor-pointer w-3 h-3 rounded-full border-2 border-white transition-all duration-300
                   ${currentIndex === idx ? 'bg-white shadow-lg scale-110' : 'bg-gray-400 opacity-60'}
                   hover:scale-110`}
                 aria-label={`Go to slide ${idx + 1}`}
