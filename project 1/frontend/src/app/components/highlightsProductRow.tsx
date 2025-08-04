@@ -42,7 +42,7 @@ export default function HighlightsProductRow() {
     <section className="relative py-8 bg-transparent select-none">
       <div className="max-w-[1800px] mx-auto ">
         <h2 className="text-2xl md:text-1xl text-gray-900 text-start
-         mb-1 mt-5 font-semibold">Highlights</h2>
+         mb-1 font-semibold">Highlights</h2>
         <div className="flex w-full justify-center items-stretch  px-2">
           {mockProducts.map(product => {
             const showVariation = activeImage[product.id] === 'variation';
