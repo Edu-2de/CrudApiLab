@@ -6,6 +6,7 @@ import InformationCards from "./components/informationCards"
 import TopPartsRow from "./components/topPartsRow"
 import ShoesRow from "./components/shoesRow"
 import BottomParts from "./components/bottomParts"
+import Footer from "./components/footer"
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
       <TopPartsRow/>
       <BottomParts/>
       <ShoesRow/>
+      <Footer/>
     </>
   );
 }
