@@ -4,7 +4,7 @@ import Header from "./components/header"
 import HighlightsProductRow from "./components/highlightsProductRow"
 import InformationCards from "./components/informationCards"
 import TopPartsRow from "./components/topPartsRow"
-import NewShoesRow from "./components/newShoesRow"
+import ShoesRow from "./components/shoesRow"
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       <InformationCards/>
       <HighlightsProductRow/>
       <TopPartsRow/>
-      <NewShoesRow/>
+      <ShoesRow/>
     </body>
   );
 }

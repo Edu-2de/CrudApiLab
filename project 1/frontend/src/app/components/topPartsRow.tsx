@@ -50,7 +50,7 @@ export default function TopPartsRow() {
   };
 
   return (
-    <section className="w-full relative">
+    <section className="w-full relative mt-10">
       {/* Left Arrow */}
       <button
         className="cursor-pointer absolute left-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
