@@ -62,11 +62,11 @@ export default function Carrousel() {
   }, [transitioning]);
 
   return (
-    <div className="relative w-screen min-h-[50vh] md:min-h-[60vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-15 left-[0%]">
+    <div className="relative w-screen min-h-[50vh] md:min-h-[60vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-17 left-[0%]">
       <div className="relative w-full mx-auto overflow-hidden flex justify-center">
         <div
           className={`relative w-full flex items-center justify-center select-none cursor-pointer `}
-          style={{ height: 600, maxWidth: 1800 }}
+          style={{ height: 600, maxWidth: 2000 }}
         >
           <Image
             className={`rounded-2xl transition-all duration-800 ease-in-out select-none ${transitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
