@@ -1,10 +1,10 @@
 'use client';
 import Carrousel from "./components/carrousel"
 import Header from "./components/header"
-import ProductRow from "./components/shoesRow"
 import HighlightsProductRow from "./components/highlightsProductRow"
 import InformationCards from "./components/informationCards"
 import TopPartsRow from "./components/topPartsRow"
+import NewShoesRow from "./components/newShoesRow"
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       <InformationCards/>
       <HighlightsProductRow/>
       <TopPartsRow/>
-      <ProductRow/>
+      <NewShoesRow/>
     </body>
   );
 }

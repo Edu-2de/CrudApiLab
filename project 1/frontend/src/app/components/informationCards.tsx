@@ -3,7 +3,7 @@ import { FaTruck, FaShieldAlt, FaClock } from "react-icons/fa";
 
 export default function InformationCards() {
   return (
-    <section className="w-full py-6 select-none">
+    <section className="w-full pt-6 select-none">
       <div className="w-[90%] mx-auto flex items-center justify-center gap-8">
         <div className="flex items-center gap-3">
           <FaTruck className="text-gray-900 text-xl" />

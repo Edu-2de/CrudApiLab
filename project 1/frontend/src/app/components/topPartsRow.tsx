@@ -53,21 +53,21 @@ export default function TopPartsRow() {
     <section className="w-full relative">
       {/* Left Arrow */}
       <button
-        className="absolute left-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
+        className="cursor-pointer absolute left-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
         style={{ pointerEvents: 'auto' }}
         onClick={() => scroll('left')}
         aria-label="Scroll left"
       >
-        <FiChevronLeft size={20} className="text-white drop-shadow" />
+        <FiChevronLeft size={25} className="text-gray-900 drop-shadow" />
       </button>
       {/* Right Arrow */}
       <button
-        className="absolute right-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
+        className="cursor-pointer absolute right-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
         style={{ pointerEvents: 'auto' }}
         onClick={() => scroll('right')}
         aria-label="Scroll right"
       >
-        <FiChevronRight size={20} className="text-white drop-shadow" />
+        <FiChevronRight size={25} className="text-gray-900 drop-shadow" />
       </button>
       <div
         ref={scrollRef}
