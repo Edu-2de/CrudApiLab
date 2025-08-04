@@ -9,7 +9,7 @@ import BottomParts from "./components/bottomParts"
 
 export default function Home() {
   return (
-    <body>
+    <>
       <Header/>
       <Carrousel/>
       <InformationCards/>
@@ -17,6 +17,6 @@ export default function Home() {
       <TopPartsRow/>
       <BottomParts/>
       <ShoesRow/>
-    </body>
+    </>
   );
 }

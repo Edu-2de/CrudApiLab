@@ -25,25 +25,25 @@ export default function BottomParts() {
 
   const part = showShorts ? shorts : pants;
 
-  // If pants is selected, swap the order of image/text
+  const flexDirection = showShorts
+    ? 'md:flex-row'
+    : 'md:flex-row-reverse';
+
   const Content = () => (
     <>
       {/* Image */}
-      <div className="relative w-full md:w-1/2 flex items-center justify-center bg-black/5 min-h-[350px] md:min-h-[500px]">
-        <div className="relative w-auto h-auto max-w-full max-h-[500px] flex items-center justify-center">
-          <Image
-            src={part.img}
-            alt={part.title}
-            width={500}
-            height={500}
-            className="object-contain"
-            priority
-            style={{ maxWidth: '100%', maxHeight: '500px', width: 'auto', height: 'auto' }}
-          />
-        </div>
+      <div className="relative w-full md:w-1/2 min-h-[450px] md:min-h-[700px] h-[450px] md:h-auto">
+        <Image
+          src={part.img}
+          alt={part.title}
+          fill
+          className="object-cover w-full h-full"
+          priority
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
       </div>
       {/* Text & Actions */}
-      <div className="relative w-full md:w-1/2 bg-white flex flex-col items-start justify-center py-12 px-8 md:px-16 min-h-[350px]">
+      <div className="relative w-full md:w-1/2 bg-white flex flex-col items-start justify-center py-16 px-8 md:px-20 min-h-[450px] md:min-h-[700px]">
         <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-2">{part.title}</h2>
         <div className="text-lg md:text-xl font-medium text-gray-700 mb-2">{part.subtitle}</div>
         <div className="text-base md:text-lg text-gray-500 mb-8 max-w-md">{part.description}</div>
@@ -86,15 +86,8 @@ export default function BottomParts() {
   );
 
   return (
-    <section className="w-full flex flex-col md:flex-row items-stretch justify-center min-h-[500px] mt-16">
-      {showShorts ? <Content /> : <Content />}
-      <style jsx>{`
-        @media (min-width: 768px) {
-          section {
-            flex-direction: ${showShorts ? 'row' : 'row-reverse'};
-          }
-        }
-      `}</style>
+    <section className={`w-full flex flex-col ${flexDirection} items-stretch justify-center min-h-[900px] mt-16`}>
+      <Content />
     </section>
   );
 }
