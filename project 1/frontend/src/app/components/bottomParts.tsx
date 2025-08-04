@@ -86,7 +86,7 @@ export default function BottomParts() {
   );
 
   return (
-    <section className={`w-full flex flex-col ${flexDirection} items-stretch justify-center min-h-[900px] mt-16`}>
+    <section className={`w-full flex flex-col ${flexDirection} items-stretch justify-center min-h-[900px] mt-3`}>
       <Content />
     </section>
   );
