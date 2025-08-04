@@ -41,11 +41,11 @@ export default function ShoesRow() {
 
   return (
     <div className="relative w-screen min-h-[60vh] md:min-h-[70vh] flex flex-col items-center justify-center px-0 py-0 mt-24 md:mt-1">
-      <div className="relative h-[70vh] w-full max-w-[96%] mx-auto overflow-hidden flex gap-4 p-4 transition-all duration-700 ease-in-out">
+      <div className="relative h-[70vh] w-full max-w-[100%] mx-auto overflow-hidden flex transition-all duration-100 ease-in-out">
         {shoesCategories.map((cat, idx) => (
           <div
             key={cat.title}
-            className={`group rounded-lg shadow p-6 flex flex-col items-center min-h-[200px] min-w-[200px] justify-center hover:rounded-[46%] transition-all duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
+            className={`group shadow p-6 flex flex-col items-center min-h-[200px] min-w-[200px] justify-center hover:rounded-[30%] transition-all duration-900 ease-in-out select-none cursor-pointer ${cardColors[idx % cardColors.length]}`}
             style={{
               backgroundImage: `url(${cat.src})`,
               backgroundSize: 'cover',
