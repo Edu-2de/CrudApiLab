@@ -6,6 +6,9 @@ import { setupDB, testConnection } from './database/setup';
 import authRoutes from './routes/authRoutes';
 import bannerRoutes from './routes/bannerRoutes';
 import categoryRoutes from './routes/categoryRoutes';
+import orderItemRoutes from './routes/orderItemRoutes';
+import orderRoutes from './routes/orderRoutes';
+import productRoutes from './routes/productRoutes';
 
 dotenv.config();
 const app = express();
@@ -28,6 +31,10 @@ const startServer = async () => {
     app.use('/user', authRoutes);
     app.use('/banner', bannerRoutes);
     app.use('/category', categoryRoutes);
+    app.use('/orderItem', orderItemRoutes);
+    app.use('/order', orderRoutes);
+    app.use('/product', productRoutes);
+    
 
     app.listen(PORT, () => {
       console.log('Server running on port: ' + PORT);
