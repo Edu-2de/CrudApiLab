@@ -62,11 +62,11 @@ export default function Carrousel() {
   }, [transitioning]);
 
   return (
-    <div className="relative w-screen min-h-[50vh] md:min-h-[60vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-15 left-[0%]">
+    <div className="relative w-screen min-h-[50vh] md:min-h-[60vh] flex items-center justify-center bg-transparent px-0 py-0 md:mt-17 left-[0%]">
       <div className="relative w-full mx-auto overflow-hidden flex justify-center">
         <div
           className={`relative w-full flex items-center justify-center select-none cursor-pointer `}
-          style={{ height: 600, maxWidth: 1800 }}
+          style={{ height: 600, maxWidth: 2000 }}
         >
           <Image
             className={`rounded-2xl transition-all duration-800 ease-in-out select-none ${transitioning ? 'opacity-0 scale-95' : 'opacity-100 scale-100'}`}
@@ -77,12 +77,12 @@ export default function Carrousel() {
             draggable={false}
             priority
           />
-          <div className="absolute bottom-6 left-0 w-full flex justify-center items-center gap-3 z-10">
+          <div className="absolute bottom-2 left-0 w-full flex justify-center items-center gap-3 z-10">
             {carrouselItems.map((item, idx) => (
               <button
                 key={item.src}
                 onClick={() => !transitioning && setCurrentIndex(idx)}
-                className={`w-4 h-4 rounded-full border-2 border-white transition-all duration-300
+                className={`cursor-pointer w-3 h-3 rounded-full border-2 border-white transition-all duration-300
                   ${currentIndex === idx ? 'bg-white shadow-lg scale-110' : 'bg-gray-400 opacity-60'}
                   hover:scale-110`}
                 aria-label={`Go to slide ${idx + 1}`}
