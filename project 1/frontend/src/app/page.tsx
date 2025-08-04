@@ -5,6 +5,7 @@ import HighlightsProductRow from "./components/highlightsProductRow"
 import InformationCards from "./components/informationCards"
 import TopPartsRow from "./components/topPartsRow"
 import ShoesRow from "./components/shoesRow"
+import BottomParts from "./components/bottomParts"
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <InformationCards/>
       <HighlightsProductRow/>
       <TopPartsRow/>
+      <BottomParts/>
       <ShoesRow/>
     </body>
   );
