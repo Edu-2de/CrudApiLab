@@ -12,7 +12,7 @@ interface AuthRequest extends Request {
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export class AuthMiddleware {
-  static authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
+   static authenticateToken = (req: AuthRequest, res: Response, next: NextFunction): void => {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
 
@@ -31,18 +31,33 @@ export class AuthMiddleware {
       });
     }
   };
-
-  static requireAdmin = (req: AuthRequest, res: Response, next: NextFunction): void => {
-    if (!req.user) {
-      res.status(401).json({ message: 'Access denied. No user information.' });
-      return;
+  static requireAdmin(req: any, res: any, next: any) {
+    console.log('🔍 Verifying....');
+    console.log('Headers:', req.headers.authorization);
+    
+    const authHeader = req.headers.authorization;
+    const token = authHeader && authHeader.split(' ')[1];
+    
+    if (!token) {
+      console.log('❌ Token not found');
+      return res.status(401).json({ message: 'Access token required' });
     }
 
-    if (req.user.role !== 'full_access') {
-      res.status(403).json({ message: 'Access denied. Full access required.' });
-      return;
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
+      console.log('👤 User: ', decoded);
+      
+      if (decoded.role !== 'full_access' && decoded.role !== 'limit_access') {
+        console.log('❌ Role:', decoded.role);
+        return res.status(403).json({ message: 'Admin access required' });
+      }
+      
+      req.user = decoded;
+      console.log('✅ Admin access accepted');
+      next();
+    } catch (error) {
+      console.log('❌ Invalid Token:', error);
+      return res.status(403).json({ message: 'Invalid token' });
     }
-
-    next();
-  };
+  }
 }
