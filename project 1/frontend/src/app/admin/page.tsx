@@ -11,9 +11,8 @@ export default function AdminPage() {
   useEffect(() => {
     const fetchAdminData = async () => {
       try {
-        const token = localStorage.getItem('auth-token');
+        const token = localStorage.getItem('auth-token'); // ← TOKEN, não 'user'
         
-        // Se não tem token, redireciona para login
         if (!token) {
           router.push('/Login');
           return;
@@ -27,7 +26,6 @@ export default function AdminPage() {
 
         if (!res.ok) {
           if (res.status === 401 || res.status === 403) {
-            // Token inválido ou sem permissão, redireciona para login
             localStorage.removeItem('auth-token');
             router.push('/Login');
             return;
@@ -39,7 +37,6 @@ export default function AdminPage() {
         setData(data);
       } catch (error) {
         setError('Error loading admin panel');
-        // Em caso de erro, também redireciona
         router.push('/Login');
       } finally {
         setLoading(false);
@@ -49,7 +46,7 @@ export default function AdminPage() {
     fetchAdminData();
   }, [router]);
 
-  // Mostra loading enquanto verifica autenticação
+
   if (loading) {
     return <div className="p-4">Loading...</div>;
   }

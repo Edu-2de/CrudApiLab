@@ -78,6 +78,8 @@ export default function LoginRegisterPage() {
           setError(data.message || "Invalid email or password.");
         } else {
           localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("auth-token", data.token); 
+
           window.location.href = "/";
         }
       }
