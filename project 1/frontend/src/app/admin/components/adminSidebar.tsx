@@ -1,12 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { 
   FiHome, 
   FiUsers, 
   FiShoppingBag, 
   FiSettings, 
   FiLogOut,
-  FiMenu,
   FiX,
   FiPackage,
   FiTrendingUp
@@ -21,8 +21,13 @@ const menuItems = [
   { icon: FiSettings, label: 'Settings', href: '/admin/settings' },
 ];
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+interface AdminSidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+}
+
+export default function AdminSidebar({ sidebarOpen, setSidebarOpen }: AdminSidebarProps) {
+  const pathname = usePathname();
 
   const handleLogout = () => {
     localStorage.removeItem('auth-token');
@@ -30,8 +35,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     window.location.href = '/Login';
   };
 
+  const isActive = (href: string) => {
+    if (href === '/admin') {
+      return pathname === '/admin';
+    }
+    return pathname.startsWith(href);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <>
       {/* Mobile backdrop */}
       {sidebarOpen && (
         <div 
@@ -58,16 +70,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2">
-            {menuItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 hover:text-gray-900 transition-colors duration-200 group"
-              >
-                <item.icon className="w-5 h-5 mr-3 text-gray-500 group-hover:text-gray-700" />
-                <span className="font-medium">{item.label}</span>
-              </a>
-            ))}
+            {menuItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 group ${
+                    active 
+                      ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-500' 
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                >
+                  <item.icon className={`w-5 h-5 mr-3 ${
+                    active 
+                      ? 'text-blue-600' 
+                      : 'text-gray-500 group-hover:text-gray-700'
+                  }`} />
+                  <span className="font-medium">{item.label}</span>
+                </a>
+              );
+            })}
           </nav>
 
           {/* User section */}
@@ -91,30 +114,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </div>
         </div>
       </div>
-
-      {/* Main content */}
-      <div className="flex-1 flex flex-col lg:ml-0">
-        {/* Top bar */}
-        <header className="bg-white shadow-sm border-b border-gray-200 h-16 flex items-center justify-between px-6">
-          <button
-            onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 rounded-md hover:bg-gray-100"
-          >
-            <FiMenu className="w-5 h-5 text-gray-600" />
-          </button>
-          
-          <div className="flex items-center space-x-4">
-            <div className="text-sm text-gray-600">
-              Welcome back, Admin!
-            </div>
-          </div>
-        </header>
-
-        {/* Page content */}
-        <main className="flex-1 p-6 overflow-auto">
-          {children}
-        </main>
-      </div>
-    </div>
+    </>
   );
 }
