@@ -70,6 +70,7 @@ export default function Header() {
 
   useEffect(() => {
     const stored = localStorage.getItem('user');
+    localStorage.getItem('auth-token');
     if (stored) setUser(JSON.parse(stored));
   }, []);
 
@@ -114,7 +115,10 @@ export default function Header() {
       </div>
       <header
         ref={headerRef}
-        className={classNames('fixed w-full z-40 transition-all duration-500 bg-white select-none', showBanner ? 'mt-[0px]' : '')}
+        className={classNames(
+          'fixed w-full z-40 transition-all duration-500 bg-white select-none',
+          showBanner ? 'mt-[0px]' : ''
+        )}
         onMouseLeave={handleMenuMouseLeave}
         onMouseEnter={() => {}}
         style={{
