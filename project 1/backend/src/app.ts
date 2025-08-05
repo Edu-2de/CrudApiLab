@@ -9,6 +9,7 @@ import categoryRoutes from './routes/categoryRoutes';
 import orderItemRoutes from './routes/orderItemRoutes';
 import orderRoutes from './routes/orderRoutes';
 import productRoutes from './routes/productRoutes';
+import adminRoutes from './routes/adminRoutes';
 
 dotenv.config();
 const app = express();
@@ -34,7 +35,7 @@ const startServer = async () => {
     app.use('/orderItem', orderItemRoutes);
     app.use('/order', orderRoutes);
     app.use('/product', productRoutes);
-    
+    app.use('/admin', adminRoutes);
 
     app.listen(PORT, () => {
       console.log('Server running on port: ' + PORT);
