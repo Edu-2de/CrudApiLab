@@ -19,7 +19,8 @@ export default function HighlightsProductRow() {
   useEffect(() => {
     const handleResize = () => {
       const width = window.innerWidth;
-      if (width < 640) setScreenSize('sm');
+      if (width < 480) setScreenSize('xs');
+      else if (width < 640) setScreenSize('sm');
       else if (width < 768) setScreenSize('md');
       else if (width < 1024) setScreenSize('lg');
       else if (width < 1280) setScreenSize('xl');
@@ -54,78 +55,86 @@ export default function HighlightsProductRow() {
     });
   };
 
-  // Responsive configurations
+  // Responsive configurations - Otimizado para mostrar todos os 4 produtos
   const getResponsiveConfig = () => {
     switch (screenSize) {
-      case 'sm':
+      case 'xs': // < 480px (mobile muito pequeno)
         return {
-          cardWidth: 'w-[280px]',
-          cardHeight: 'h-[400px]',
-          imageHeight: 'h-[320px]',
-          padding: 'p-3',
+          cardWidth: 'w-[160px]',
+          cardHeight: 'h-[240px]',
+          imageHeight: 'h-[140px]',
+          gap: 'gap-1',
+          titleSize: 'text-xs',
+          priceSize: 'text-xs',
+          arrowSize: 16,
+          containerPadding: 'px-2',
+          layout: 'grid grid-cols-2',
+          spacing: 'space-y-3'
+        };
+      case 'sm': // 480px - 640px (mobile)
+        return {
+          cardWidth: 'w-[180px]',
+          cardHeight: 'h-[280px]',
+          imageHeight: 'h-[180px]',
           gap: 'gap-2',
           titleSize: 'text-sm',
           priceSize: 'text-xs',
+          arrowSize: 18,
+          containerPadding: 'px-3',
+          layout: 'grid grid-cols-2',
+          spacing: 'space-y-4'
+        };
+      case 'md': // 640px - 768px (tablet pequeno)
+        return {
+          cardWidth: 'w-[200px]',
+          cardHeight: 'h-[320px]',
+          imageHeight: 'h-[220px]',
+          gap: 'gap-3',
+          titleSize: 'text-sm',
+          priceSize: 'text-sm',
           arrowSize: 20,
           containerPadding: 'px-4',
-          gridCols: 'grid-cols-1',
-          overflow: 'overflow-x-auto'
+          layout: 'grid grid-cols-2',
+          spacing: 'space-y-4'
         };
-      case 'md':
+      case 'lg': // 768px - 1024px (tablet/desktop pequeno)
+        return {
+          cardWidth: 'w-[240px]',
+          cardHeight: 'h-[380px]',
+          imageHeight: 'h-[280px]',
+          gap: 'gap-4',
+          titleSize: 'text-base',
+          priceSize: 'text-sm',
+          arrowSize: 22,
+          containerPadding: 'px-6',
+          layout: 'grid grid-cols-4',
+          spacing: 'space-y-0'
+        };
+      case 'xl': // 1024px - 1280px (desktop)
+        return {
+          cardWidth: 'w-[280px]',
+          cardHeight: 'h-[420px]',
+          imageHeight: 'h-[320px]',
+          gap: 'gap-5',
+          titleSize: 'text-lg',
+          priceSize: 'text-base',
+          arrowSize: 24,
+          containerPadding: 'px-8',
+          layout: 'grid grid-cols-4',
+          spacing: 'space-y-0'
+        };
+      default: // 2xl (desktop grande)
         return {
           cardWidth: 'w-[320px]',
           cardHeight: 'h-[480px]',
-          imageHeight: 'h-[380px]',
-          padding: 'p-4',
-          gap: 'gap-3',
-          titleSize: 'text-base',
-          priceSize: 'text-sm',
-          arrowSize: 24,
-          containerPadding: 'px-6',
-          gridCols: 'grid-cols-2',
-          overflow: 'overflow-x-auto'
-        };
-      case 'lg':
-        return {
-          cardWidth: 'w-[360px]',
-          cardHeight: 'h-[520px]',
-          imageHeight: 'h-[420px]',
-          padding: 'p-4',
-          gap: 'gap-4',
-          titleSize: 'text-lg',
-          priceSize: 'text-base',
-          arrowSize: 28,
-          containerPadding: 'px-8',
-          gridCols: 'grid-cols-3',
-          overflow: 'overflow-x-auto'
-        };
-      case 'xl':
-        return {
-          cardWidth: 'w-[400px]',
-          cardHeight: 'h-[580px]',
-          imageHeight: 'h-[480px]',
-          padding: 'p-5',
-          gap: 'gap-4',
-          titleSize: 'text-lg',
-          priceSize: 'text-base',
-          arrowSize: 28,
-          containerPadding: 'px-10',
-          gridCols: 'grid-cols-4',
-          overflow: 'overflow-visible'
-        };
-      default: // 2xl
-        return {
-          cardWidth: 'w-[460px]',
-          cardHeight: 'h-[650px]',
-          imageHeight: 'h-[550px]',
-          padding: 'p-6',
-          gap: 'gap-5',
+          imageHeight: 'h-[360px]',
+          gap: 'gap-6',
           titleSize: 'text-xl',
           priceSize: 'text-lg',
-          arrowSize: 32,
-          containerPadding: 'px-12',
-          gridCols: 'grid-cols-4',
-          overflow: 'overflow-visible'
+          arrowSize: 26,
+          containerPadding: 'px-10',
+          layout: 'grid grid-cols-4',
+          spacing: 'space-y-0'
         };
     }
   };
@@ -139,8 +148,8 @@ export default function HighlightsProductRow() {
           Highlights
         </h2>
         
-        <div className={`${config.overflow} ${config.containerPadding}`}>
-          <div className={`flex ${config.gap} ${screenSize === 'sm' ? 'w-max' : 'justify-center'}`}>
+        <div className={`${config.containerPadding}`}>
+          <div className={`${config.layout} ${config.gap} ${config.spacing} justify-items-center`}>
             {mockProducts.map(product => {
               const showVariation = activeImage[product.id] === 'variation';
               return (
@@ -152,15 +161,15 @@ export default function HighlightsProductRow() {
                     transition-all duration-300
                     cursor-pointer
                     ${config.cardWidth} ${config.cardHeight}
-                    flex-shrink-0
+                    hover:scale-105
                   `}
                   tabIndex={0}
-                  aria-label="Product"
+                  aria-label={`Product ${product.id}`}
                   draggable={false}
                   onMouseEnter={() => handleMouseEnter(product.id)}
                   onMouseLeave={() => handleMouseLeave(product.id)}
                 >
-                  <div className={`relative w-full ${config.imageHeight} rounded-xl mb-3 bg-[#e6e4da] flex items-center justify-center overflow-hidden`}>
+                  <div className={`relative w-full ${config.imageHeight} rounded-xl mb-2 bg-[#e6e4da] flex items-center justify-center overflow-hidden`}>
                     {/* Main image */}
                     <Image
                       src={product.img}
@@ -170,7 +179,7 @@ export default function HighlightsProductRow() {
                         showVariation ? 'opacity-0 invisible' : 'opacity-100 visible'
                       }`}
                       draggable={false}
-                      sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 360px, (max-width: 1280px) 400px, 460px"
+                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
                       priority={product.id <= 2}
                     />
 
@@ -179,54 +188,69 @@ export default function HighlightsProductRow() {
                       src={product.variation}
                       alt={`Product ${product.id} variation`}
                       fill
-                      className={`absolute inset-0 w-full h-full object-cover rounded-xl transition-all duration-500 ${
+                      className={`absolute inset-0 w-full h-full object-contain rounded-xl transition-all duration-500 ${
                         showVariation ? 'opacity-100 visible' : 'opacity-0 invisible'
                       }`}
                       draggable={false}
-                      sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 360px, (max-width: 1280px) 400px, 460px"
+                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
                     />
 
-                    {/* Arrow buttons */}
-                    <div
-                      className={`absolute inset-0 flex items-center justify-between px-2 md:px-4 z-10 transition-opacity duration-300 ${
-                        hovered === product.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                      }`}
-                    >
-                      <button
-                        aria-label="Show previous image"
-                        className="bg-white/80 hover:bg-white/90 rounded-full p-1 md:p-2 shadow-lg transition"
-                        onClick={e => {
-                          e.stopPropagation();
-                          handleArrow(product.id, 'left');
-                        }}
-                        tabIndex={-1}
+                    {/* Arrow buttons - só aparecem em telas maiores que mobile */}
+                    {screenSize !== 'xs' && screenSize !== 'sm' && (
+                      <div
+                        className={`absolute inset-0 flex items-center justify-between px-2 z-10 transition-opacity duration-300 ${
+                          hovered === product.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                        }`}
                       >
-                        <svg width={config.arrowSize} height={config.arrowSize} fill="none" stroke="currentColor" strokeWidth={2}>
-                          <path d="M17 7l-6 7 6 7" />
-                        </svg>
-                      </button>
-                      <button
-                        aria-label="Show next image"
-                        className="bg-white/80 hover:bg-white/90 rounded-full p-1 md:p-2 shadow-lg transition"
+                        <button
+                          aria-label="Show previous image"
+                          className="bg-white/80 hover:bg-white/90 rounded-full p-1 shadow-lg transition"
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleArrow(product.id, 'left');
+                          }}
+                          tabIndex={-1}
+                        >
+                          <svg width={config.arrowSize} height={config.arrowSize} fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M17 7l-6 7 6 7" />
+                          </svg>
+                        </button>
+                        <button
+                          aria-label="Show next image"
+                          className="bg-white/80 hover:bg-white/90 rounded-full p-1 shadow-lg transition"
+                          onClick={e => {
+                            e.stopPropagation();
+                            handleArrow(product.id, 'right');
+                          }}
+                          tabIndex={-1}
+                        >
+                          <svg width={config.arrowSize} height={config.arrowSize} fill="none" stroke="currentColor" strokeWidth={2}>
+                            <path d="M11 7l6 7-6 7" />
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+
+                    {/* Touch indicator para mobile */}
+                    {(screenSize === 'xs' || screenSize === 'sm') && (
+                      <div
+                        className="absolute bottom-2 right-2 bg-white/80 rounded-full px-2 py-1 text-xs text-gray-600 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
                         onClick={e => {
                           e.stopPropagation();
                           handleArrow(product.id, 'right');
                         }}
-                        tabIndex={-1}
                       >
-                        <svg width={config.arrowSize} height={config.arrowSize} fill="none" stroke="currentColor" strokeWidth={2}>
-                          <path d="M11 7l6 7-6 7" />
-                        </svg>
-                      </button>
-                    </div>
+                        Tap
+                      </div>
+                    )}
                   </div>
                   
                   {/* Product info */}
-                  <div className="w-full flex flex-col items-center mt-2">
-                    <span className={`${config.titleSize} text-gray-700 font-medium mb-1`}>
+                  <div className="w-full flex flex-col items-center">
+                    <span className={`${config.titleSize} text-gray-700 font-medium mb-1 text-center leading-tight`}>
                       Product {product.id}
                     </span>
-                    <span className={`${config.priceSize} text-gray-500`}>
+                    <span className={`${config.priceSize} text-gray-500 font-semibold`}>
                       ${product.price}
                     </span>
                   </div>
@@ -237,14 +261,11 @@ export default function HighlightsProductRow() {
         </div>
       </div>
 
+      {/* Mobile touch interaction */}
       <style jsx global>{`
-        @media (max-width: 1023px) {
-          .overflow-x-auto {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-          }
-          .overflow-x-auto::-webkit-scrollbar {
-            display: none;
+        @media (max-width: 640px) {
+          .group:active {
+            transform: scale(0.98);
           }
         }
       `}</style>
