@@ -1,5 +1,6 @@
+'use client';
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const categories = [
@@ -36,46 +37,78 @@ const categories = [
 export default function TopPartsRow() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [hoverGender, setHoverGender] = useState<{ [key: number]: 'men' | 'women' | null }>({});
+  const [screenSize, setScreenSize] = useState('lg');
 
-  const CARD_WIDTH = 600;
-  const CARD_HEIGHT = 700;
+  // Responsive dimensions
+  const getCardDimensions = () => {
+    if (typeof window === 'undefined') return { width: 600, height: 700 };
+    
+    const width = window.innerWidth;
+    if (width < 640) return { width: 280, height: 350 }; // sm
+    if (width < 768) return { width: 320, height: 400 }; // md
+    if (width < 1024) return { width: 400, height: 500 }; // lg
+    if (width < 1280) return { width: 500, height: 600 }; // xl
+    return { width: 600, height: 700 }; // 2xl
+  };
+
+  const [cardDimensions, setCardDimensions] = useState(getCardDimensions());
+
+  useEffect(() => {
+    const handleResize = () => {
+      setCardDimensions(getCardDimensions());
+      const width = window.innerWidth;
+      if (width < 640) setScreenSize('sm');
+      else if (width < 768) setScreenSize('md');
+      else if (width < 1024) setScreenSize('lg');
+      else if (width < 1280) setScreenSize('xl');
+      else setScreenSize('2xl');
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
+      const scrollAmount = screenSize === 'sm' ? cardDimensions.width : cardDimensions.width + 8;
       scrollRef.current.scrollBy({
-        left: direction === 'left' ? -CARD_WIDTH : CARD_WIDTH,
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
         behavior: 'smooth',
       });
     }
   };
 
   return (
-    <section className="w-full relative mt-10">
+    <section className="w-full relative mt-6 md:mt-10">
       {/* Left Arrow */}
       <button
-        className="cursor-pointer absolute left-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
+        className="cursor-pointer absolute left-1 md:left-2 top-1/2 z-20 -translate-y-1/2 bg-white/80 hover:bg-white/90 rounded-full p-1 md:p-2 shadow-lg transition"
         style={{ pointerEvents: 'auto' }}
         onClick={() => scroll('left')}
         aria-label="Scroll left"
       >
-        <FiChevronLeft size={25} className="text-gray-900 drop-shadow" />
+        <FiChevronLeft size={screenSize === 'sm' ? 20 : 25} className="text-gray-900" />
       </button>
+      
       {/* Right Arrow */}
       <button
-        className="cursor-pointer absolute right-2 top-1/2 z-20 -translate-y-1/2 bg-transparent hover:bg-white/20 rounded-full p-1 shadow transition"
+        className="cursor-pointer absolute right-1 md:right-2 top-1/2 z-20 -translate-y-1/2 bg-white/80 hover:bg-white/90 rounded-full p-1 md:p-2 shadow-lg transition"
         style={{ pointerEvents: 'auto' }}
         onClick={() => scroll('right')}
         aria-label="Scroll right"
       >
-        <FiChevronRight size={25} className="text-gray-900 drop-shadow" />
+        <FiChevronRight size={screenSize === 'sm' ? 20 : 25} className="text-gray-900" />
       </button>
+
       <div
         ref={scrollRef}
-        className="flex w-full min-h-[700px] gap-0 overflow-x-auto scrollbar-hide"
+        className="flex w-full gap-2 md:gap-2 overflow-x-auto scrollbar-hide px-4 md:px-6"
         style={{
           overflowY: 'hidden',
           scrollBehavior: 'smooth',
           WebkitOverflowScrolling: 'touch',
+          minHeight: `${cardDimensions.height}px`,
         }}
       >
         {categories.map((cat, idx) => {
@@ -86,14 +119,11 @@ export default function TopPartsRow() {
           return (
             <div
               key={cat.label}
-              className={`relative flex-shrink-0 w-[${CARD_WIDTH}px] h-[${CARD_HEIGHT}px] group cursor-pointer`}
+              className="relative flex-shrink-0 group cursor-pointer rounded-lg md:rounded-xl overflow-hidden bg-gray-900"
               style={{
-                width: `${CARD_WIDTH}px`,
-                height: `${CARD_HEIGHT}px`,
-                zIndex: 1,
-                marginRight: idx !== categories.length - 1 ? '8px' : '0',
-                background: '#111',
-                overflow: 'hidden',
+                width: `${cardDimensions.width}px`,
+                height: `${cardDimensions.height}px`,
+                minWidth: `${cardDimensions.width}px`,
               }}
               onMouseLeave={() => setHoverGender(prev => ({ ...prev, [idx]: null }))}
             >
@@ -102,27 +132,38 @@ export default function TopPartsRow() {
                 alt={cat.label}
                 fill
                 className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-[1.02]"
-                style={{}}
-                sizes="(max-width: 900px) 100vw, 600px"
+                sizes="(max-width: 640px) 280px, (max-width: 768px) 320px, (max-width: 1024px) 400px, (max-width: 1280px) 500px, 600px"
                 priority={idx === 0}
               />
              
-              <div className="absolute inset-0 pointer-events-none rounded transition-all duration-300 group-hover:bg-black/30" />
+              {/* Hover overlay */}
+              <div className="absolute inset-0 transition-all duration-300 group-hover:bg-black/30" />
               
-              <div className="absolute bottom-8 left-8 z-20">
-                <div className="text-white text-xl md:text-2xl font-bold drop-shadow-lg flex flex-col gap-2">
-                  <span className="text-white">{cat.label}</span>
+              {/* Content */}
+              <div className={`absolute ${screenSize === 'sm' ? 'bottom-4 left-4' : 'bottom-6 left-6 md:bottom-8 md:left-8'} z-10`}>
+                <div className={`text-white font-bold drop-shadow-lg flex flex-col gap-1 md:gap-2 ${
+                  screenSize === 'sm' ? 'text-lg' : screenSize === 'md' ? 'text-xl' : 'text-xl md:text-2xl'
+                }`}>
+                  <span className="text-white leading-tight">{cat.label}</span>
                   {cat.hasGender && (
-                    <div className="hidden group-hover:flex gap-2 mt-2">
+                    <div className={`hidden group-hover:flex gap-1 md:gap-2 ${screenSize === 'sm' ? 'mt-1' : 'mt-2'}`}>
                       <button
-                        className="bg-white/20 hover:bg-white/40 text-white text-xs px-3 py-1 rounded-full font-medium transition"
+                        className={`bg-white/20 hover:bg-white/40 text-white font-medium transition rounded-full ${
+                          screenSize === 'sm' 
+                            ? 'text-xs px-2 py-1' 
+                            : 'text-xs md:text-sm px-3 py-1 md:px-4 md:py-2'
+                        }`}
                         onMouseEnter={() => setHoverGender(prev => ({ ...prev, [idx]: 'men' }))}
                         onMouseLeave={() => setHoverGender(prev => ({ ...prev, [idx]: null }))}
                       >
                         Men
                       </button>
                       <button
-                        className="bg-white/20 hover:bg-white/40 text-white text-xs px-3 py-1 rounded-full font-medium transition"
+                        className={`bg-white/20 hover:bg-white/40 text-white font-medium transition rounded-full ${
+                          screenSize === 'sm' 
+                            ? 'text-xs px-2 py-1' 
+                            : 'text-xs md:text-sm px-3 py-1 md:px-4 md:py-2'
+                        }`}
                         onMouseEnter={() => setHoverGender(prev => ({ ...prev, [idx]: 'women' }))}
                         onMouseLeave={() => setHoverGender(prev => ({ ...prev, [idx]: null }))}
                       >
@@ -133,11 +174,13 @@ export default function TopPartsRow() {
                 </div>
               </div>
           
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent pointer-events-none rounded" />
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             </div>
           );
         })}
       </div>
+
       <style jsx global>{`
         .scrollbar-hide {
           scrollbar-width: none;
