@@ -55,7 +55,7 @@ export default function HighlightsProductRow() {
     });
   };
 
-  // Responsive configurations - Otimizado para mostrar todos os 4 produtos
+  // Responsive configurations - Otimizado para telas pequenas, mantendo grandes em desktop
   const getResponsiveConfig = () => {
     switch (screenSize) {
       case 'xs': // < 480px (mobile muito pequeno)
@@ -97,42 +97,42 @@ export default function HighlightsProductRow() {
           layout: 'grid grid-cols-2',
           spacing: 'space-y-4'
         };
-      case 'lg': // 768px - 1024px (tablet/desktop pequeno)
+      case 'lg': // 768px - 1024px (tablet/desktop pequeno) - MANTÉM GRANDES
         return {
-          cardWidth: 'w-[240px]',
-          cardHeight: 'h-[380px]',
-          imageHeight: 'h-[280px]',
-          gap: 'gap-4',
-          titleSize: 'text-base',
-          priceSize: 'text-sm',
-          arrowSize: 22,
+          cardWidth: 'w-[320px]',
+          cardHeight: 'h-[480px]',
+          imageHeight: 'h-[380px]',
+          gap: 'gap-3',
+          titleSize: 'text-lg',
+          priceSize: 'text-base',
+          arrowSize: 24,
           containerPadding: 'px-6',
           layout: 'grid grid-cols-4',
           spacing: 'space-y-0'
         };
-      case 'xl': // 1024px - 1280px (desktop)
+      case 'xl': // 1024px - 1280px (desktop) - MANTÉM GRANDES
         return {
-          cardWidth: 'w-[280px]',
-          cardHeight: 'h-[420px]',
-          imageHeight: 'h-[320px]',
-          gap: 'gap-5',
-          titleSize: 'text-lg',
-          priceSize: 'text-base',
-          arrowSize: 24,
+          cardWidth: 'w-[350px]',
+          cardHeight: 'h-[520px]',
+          imageHeight: 'h-[420px]',
+          gap: 'gap-4',
+          titleSize: 'text-xl',
+          priceSize: 'text-lg',
+          arrowSize: 26,
           containerPadding: 'px-8',
           layout: 'grid grid-cols-4',
           spacing: 'space-y-0'
         };
-      default: // 2xl (desktop grande)
+      default: // 2xl (desktop grande) - MANTÉM GRANDES E PRÓXIMOS
         return {
-          cardWidth: 'w-[320px]',
-          cardHeight: 'h-[480px]',
-          imageHeight: 'h-[360px]',
-          gap: 'gap-6',
-          titleSize: 'text-xl',
-          priceSize: 'text-lg',
-          arrowSize: 26,
-          containerPadding: 'px-10',
+          cardWidth: 'w-[380px]',
+          cardHeight: 'h-[580px]',
+          imageHeight: 'h-[480px]',
+          gap: 'gap-4',
+          titleSize: 'text-2xl',
+          priceSize: 'text-xl',
+          arrowSize: 28,
+          containerPadding: 'px-12',
           layout: 'grid grid-cols-4',
           spacing: 'space-y-0'
         };
@@ -143,7 +143,7 @@ export default function HighlightsProductRow() {
 
   return (
     <section className="relative py-4 md:py-8 bg-transparent select-none">
-      <div className="max-w-[1800px] mx-auto">
+      <div className="max-w-[1900px] mx-auto">
         <h2 className={`${config.titleSize} text-gray-900 text-start mb-4 md:mb-6 font-semibold ${config.containerPadding}`}>
           Highlights
         </h2>
@@ -179,7 +179,7 @@ export default function HighlightsProductRow() {
                         showVariation ? 'opacity-0 invisible' : 'opacity-100 visible'
                       }`}
                       draggable={false}
-                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
+                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 320px, (max-width: 1280px) 350px, 380px"
                       priority={product.id <= 2}
                     />
 
@@ -192,19 +192,19 @@ export default function HighlightsProductRow() {
                         showVariation ? 'opacity-100 visible' : 'opacity-0 invisible'
                       }`}
                       draggable={false}
-                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 240px, (max-width: 1280px) 280px, 320px"
+                      sizes="(max-width: 480px) 160px, (max-width: 640px) 180px, (max-width: 768px) 200px, (max-width: 1024px) 320px, (max-width: 1280px) 350px, 380px"
                     />
 
                     {/* Arrow buttons - só aparecem em telas maiores que mobile */}
                     {screenSize !== 'xs' && screenSize !== 'sm' && (
                       <div
-                        className={`absolute inset-0 flex items-center justify-between px-2 z-10 transition-opacity duration-300 ${
+                        className={`absolute inset-0 flex items-center justify-between px-3 z-10 transition-opacity duration-300 ${
                           hovered === product.id ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
                         }`}
                       >
                         <button
                           aria-label="Show previous image"
-                          className="bg-white/80 hover:bg-white/90 rounded-full p-1 shadow-lg transition"
+                          className="bg-white/80 hover:bg-white/90 rounded-full p-2 shadow-lg transition"
                           onClick={e => {
                             e.stopPropagation();
                             handleArrow(product.id, 'left');
@@ -217,7 +217,7 @@ export default function HighlightsProductRow() {
                         </button>
                         <button
                           aria-label="Show next image"
-                          className="bg-white/80 hover:bg-white/90 rounded-full p-1 shadow-lg transition"
+                          className="bg-white/80 hover:bg-white/90 rounded-full p-2 shadow-lg transition"
                           onClick={e => {
                             e.stopPropagation();
                             handleArrow(product.id, 'right');
