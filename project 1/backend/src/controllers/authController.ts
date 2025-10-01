@@ -23,6 +23,16 @@ export class AuthController {
     }
   }
 
+  static async getCurrentUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId = req.user!.id;
+      const user = await UserService.getById(userId);
+      sendSuccess(res, { user }, 'Current user retrieved successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
+
   static async getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const users = await UserService.getAll();
