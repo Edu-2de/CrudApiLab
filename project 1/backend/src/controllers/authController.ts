@@ -5,16 +5,23 @@ import pool from '../database/connection';
 import { AppError } from '../utils/appError';
 import { sendSuccess } from '../utils/response';
 import { loginSchema, registerSchema } from '../validators/authValidator';
+import { LoginDto, RegisterDto, UpdateUserDto, UserParamsDto } from '../dtos/auth.dto';
+
+
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
 export class AuthController {
   static async login(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+
+      const {email, password} = req.validatedData as LoginDto;
+
+
       const { error } = loginSchema.validate(req.body);
       if (error) throw new AppError(error.details[0].message, 400);
 
-      const { email, password } = req.body;
+
       const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
       if (result.rows.length === 0) throw new AppError('User not found', 404);
 
