@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import pool from '../database/connection';
 import { AppError } from '../utils/AppError';
 import { sendSuccess } from '../utils/response';
-import { loginSchema, registerSchema } from '../validators/auth';
+import { loginSchema, registerSchema } from '../validators/authValidator';
 
 const JWT_SECRET = process.env.JWT_SECRET || '';
 
@@ -24,19 +24,24 @@ export class AuthController {
 
       const token = jwt.sign(
         { id: user.id, first_name: user.first_name, email: user.email, role: user.role },
-        JWT_SECRET, { expiresIn: '1h' }
+        JWT_SECRET,
+        { expiresIn: '1h' }
       );
 
-      sendSuccess(res, {
-        token,
-        user: {
-          id: user.id,
-          first_name: user.first_name,
-          second_name: user.second_name,
-          email: user.email,
-          role: user.role,
+      sendSuccess(
+        res,
+        {
+          token,
+          user: {
+            id: user.id,
+            first_name: user.first_name,
+            second_name: user.second_name,
+            email: user.email,
+            role: user.role,
+          },
         },
-      }, 'Login successful');
+        'Login successful'
+      );
     } catch (err) {
       next(err);
     }
@@ -107,7 +112,6 @@ export class AuthController {
       let idx = 1;
 
       if (email) {
-        // Validação de email com Joi ou direto
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) throw new AppError('Invalid email format', 400);
 
@@ -118,15 +122,27 @@ export class AuthController {
       if (password && password.length < 8) throw new AppError('Password must be at least 8 characters', 400);
       if (role && !['full_access', 'limit_access', 'user'].includes(role)) throw new AppError('Invalid role', 400);
 
-      if (first_name) { fields.push(`first_name = $${idx++}`); values.push(first_name); }
-      if (second_name) { fields.push(`second_name = $${idx++}`); values.push(second_name); }
-      if (email) { fields.push(`email = $${idx++}`); values.push(email); }
+      if (first_name) {
+        fields.push(`first_name = $${idx++}`);
+        values.push(first_name);
+      }
+      if (second_name) {
+        fields.push(`second_name = $${idx++}`);
+        values.push(second_name);
+      }
+      if (email) {
+        fields.push(`email = $${idx++}`);
+        values.push(email);
+      }
       if (password) {
         fields.push(`password_hash = $${idx++}`);
         const hashedPassword = await bcrypt.hash(password, 10);
         values.push(hashedPassword);
       }
-      if (role) { fields.push(`role = $${idx++}`); values.push(role); }
+      if (role) {
+        fields.push(`role = $${idx++}`);
+        values.push(role);
+      }
 
       if (fields.length === 0) throw new AppError('No fields to update', 400);
 
