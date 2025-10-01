@@ -1,5 +1,5 @@
 import pool from '../database/connection';
-import { User, CreateUserData, PublicUser } from '../entities/user';
+import { User, CreateUserData, PublicUser } from '../entities/User';
 
 export class UserRepository {
   static async findByEmail(email: string): Promise<User | null> {
