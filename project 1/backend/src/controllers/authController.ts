@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import pool from '../database/connection';
-import { AppError } from '../utils/AppError';
+import { AppError } from '../utils/appError';
 import { sendSuccess } from '../utils/response';
 import { loginSchema, registerSchema } from '../validators/authValidator';
 

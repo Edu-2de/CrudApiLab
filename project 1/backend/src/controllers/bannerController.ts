@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import pool from '../database/connection';
-import { AppError } from '../utils/AppError';
+import { AppError } from '../utils/appError';
 import { sendSuccess } from '../utils/response';
 import { bannerSchema } from '../validators/bannerValidator';
 
