@@ -6,3 +6,9 @@ export interface Banner {
   active: boolean;
   created_at: Date;
 }
+
+export interface CreateBannerData {
+  title: string;
+  image_url: string;
+  link_url?: string;
+}

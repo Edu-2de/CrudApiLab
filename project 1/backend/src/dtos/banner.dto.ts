@@ -1,8 +1,9 @@
-import { IsString, IsUrl, IsOptional, IsBoolean, IsNumberString } from 'class-validator';
+import { IsString, IsUrl, IsOptional, IsBoolean, IsNumberString, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateBannerDto {
   @IsString({ message: 'Title must be a string' })
+  @MinLength(3, { message: 'Title must be at least 3 characters' })
   title!: string;
 
   @IsUrl({}, { message: 'Image URL must be a valid URL' })
@@ -16,6 +17,7 @@ export class CreateBannerDto {
 export class UpdateBannerDto {
   @IsOptional()
   @IsString({ message: 'Title must be a string' })
+  @MinLength(3, { message: 'Title must be at least 3 characters' })
   title?: string;
 
   @IsOptional()
