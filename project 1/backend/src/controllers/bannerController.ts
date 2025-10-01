@@ -24,31 +24,20 @@ export class BannerController {
       next(err);
     }
   };
-  static deleteBannerById = async (req: Request, res: Response): Promise<void> => {
+  static deleteBannerById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const bannerId = Number(req.params.bannerId);
-      if (!bannerId) {
-        res.status(400).json({ message: 'banner id is missing' });
-        return;
-      }
+      if (!bannerId) throw new AppError('Banner id is missing', 400);
 
       const bannerExistsResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerExistsResult.rows.length === 0) {
-        res.status(400).json({ message: 'This id is not in the table' });
-        return;
-      }
+      if (bannerExistsResult.rows.length === 0) throw new AppError('This id is not in the table', 400);
 
+      const banner = bannerExistsResult.rows[0];
       const bannerDeleteResult = await pool.query(`DELETE FROM banners WHERE id = $1`, [bannerId]);
 
-      res.status(200).json({
-        message: 'Banner deleted successfully',
-        banner: bannerExistsResult.rows[0],
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error during delete banner',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      sendSuccess(res, { banner }, 'Banner deleted successfully', 200);
+    } catch (err) {
+      next(err);
     }
   };
   static getBannerById = async (req: Request, res: Response): Promise<void> => {
