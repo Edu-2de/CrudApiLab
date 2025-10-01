@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthService } from '../services/authService';
-import { UserService } from '../services/userService';
 import { sendSuccess } from '../utils/response';
 import { LoginDto, RegisterDto, UpdateUserDto } from '../dtos/auth.dto';
 
@@ -26,7 +25,7 @@ export class AuthController {
   static async getCurrentUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const userId = req.user!.id;
-      const user = await UserService.getById(userId);
+      const user = await AuthService.getCurrentUser(userId);
       sendSuccess(res, { user }, 'Current user retrieved successfully');
     } catch (err) {
       next(err);
@@ -35,7 +34,7 @@ export class AuthController {
 
   static async getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const users = await UserService.getAll();
+      const users = await AuthService.getAllUsers();
       sendSuccess(res, { users }, 'Users retrieved successfully');
     } catch (err) {
       next(err);
@@ -45,7 +44,7 @@ export class AuthController {
   static async getUserById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { userId } = req.validatedData;
-      const user = await UserService.getById(userId);
+      const user = await AuthService.getUserById(userId);
       sendSuccess(res, { user }, 'User retrieved successfully');
     } catch (err) {
       next(err);
@@ -55,7 +54,7 @@ export class AuthController {
   static async updateUserById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { userId } = req.params;
-      const user = await UserService.updateById(parseInt(userId), req.validatedData as UpdateUserDto);
+      const user = await AuthService.updateUserById(parseInt(userId), req.validatedData as UpdateUserDto);
       sendSuccess(res, { user }, 'User updated successfully');
     } catch (err) {
       next(err);
@@ -65,7 +64,7 @@ export class AuthController {
   static async deleteUserById(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { userId } = req.params;
-      const user = await UserService.deleteById(parseInt(userId));
+      const user = await AuthService.deleteUserById(parseInt(userId));
       sendSuccess(res, { user }, 'User deleted successfully');
     } catch (err) {
       next(err);
