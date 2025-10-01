@@ -1,61 +1,43 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import pool from '../database/connection';
+import { AppError } from '../utils/appError';
+import { sendSuccess } from '../utils/response';
+import { bannerSchema } from '../validators/bannerValidator';
 
 export class BannerController {
-  static addBanner = async (req: Request, res: Response): Promise<void> => {
+  static addBanner = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const { error } = bannerSchema.validate(req.body);
+      if (error) throw new AppError(error.details[0].message, 400);
+
       const { title, image_url, link_url } = req.body;
-      if (!title || !image_url || !link_url) {
-        res.status(400).json({ message: 'Any of arguments of the banner is missing' });
-        return;
-      }
-
       const bannerResult = await pool.query(`SELECT * FROM banners WHERE image_url  = $1`, [image_url]);
-      if (bannerResult.rows.length !== 0) {
-        res.status(400).json({ message: 'There is already an image with this url' });
-        return;
-      }
+      if (bannerResult.rows.length !== 0) throw new AppError('There is already an image with this url', 400);
 
-      const bannerAdd = await pool.query(
+      const banner = await pool.query(
         `INSERT INTO banners(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
         [title, image_url, link_url]
       );
-      res.status(201).json({
-        message: 'Banner added successfully',
-        banner: bannerAdd.rows[0],
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error during banner adding',
-        error: error instanceof Error ? error.message : String(error),
-      });
+
+      sendSuccess(res, { banner: banner.rows[0] }, 'Banner added successfully', 201);
+    } catch (err) {
+      next(err);
     }
   };
-  static deleteBannerById = async (req: Request, res: Response): Promise<void> => {
+  static deleteBannerById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const bannerId = Number(req.params.bannerId);
-      if (!bannerId) {
-        res.status(400).json({ message: 'banner id is missing' });
-        return;
-      }
+      if (!bannerId) throw new AppError('Banner id is missing', 400);
 
       const bannerExistsResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerExistsResult.rows.length === 0) {
-        res.status(400).json({ message: 'This id is not in the table' });
-        return;
-      }
+      if (bannerExistsResult.rows.length === 0) throw new AppError('This id is not in the table', 400);
 
+      const banner = bannerExistsResult.rows[0];
       const bannerDeleteResult = await pool.query(`DELETE FROM banners WHERE id = $1`, [bannerId]);
 
-      res.status(200).json({
-        message: 'Banner deleted successfully',
-        banner: bannerExistsResult.rows[0],
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error during delete banner',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      sendSuccess(res, { banner }, 'Banner deleted successfully', 200);
+    } catch (err) {
+      next(err);
     }
   };
   static getBannerById = async (req: Request, res: Response): Promise<void> => {
