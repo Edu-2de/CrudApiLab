@@ -12,5 +12,14 @@ export class RequestHelper{
     return value;
   }
 
-  static 
+  static extractNumber(req: Request, key: string, required: boolean = true): number {
+    const value = this.extractValue(req, key,  required);
+    const numValue = Number(value);
+
+    if(required && (isNaN(numValue) || numValue <= 0)){
+      throw new AppError(`${key} must be a valid positive number`, 400);
+    }
+
+    return numValue;
+  }
 }
