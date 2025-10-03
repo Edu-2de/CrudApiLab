@@ -67,6 +67,18 @@ export class BannerController {
       const { bannerId } = req.params;
       const result = await BannerService.toggleActiveBanner(parseInt(bannerId));
 
+      sendSuccess(res, result, 'Banner changed successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async setActiveBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.params;
+      const { active } = req.validatedData as BannerStatusDto;
+      const result = await BannerService.setActiveBanner(parseInt(bannerId), active);
+
       sendSuccess(res, result, 'Banner activated successfully');
     } catch (err) {
       next(err);
