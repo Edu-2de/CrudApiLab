@@ -30,4 +30,14 @@ export class BannerController {
       next(err);
     }
   }
+
+  static async getByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.validatedData;
+      const banner = await BannerService.getByIdBanner(bannerId);
+      sendSuccess(res, { banner }, 'Banner retrieved successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
