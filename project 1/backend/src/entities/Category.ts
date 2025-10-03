@@ -5,7 +5,7 @@ export interface Category{
   created_at: Date;
 }
 
-export interface CreateCategory{
+export interface CreateData{
   name: string;
-  description: string;
+  description?: string;
 }
