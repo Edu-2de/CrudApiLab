@@ -6,7 +6,7 @@ export class BannerRepository {
     const { title, image_url, link_url } = bannerData;
     const result = await pool.query(
       'INSERT INTO banners(title, image_url, link_url, active) VALUES ($1, $2, $3, $4) RETURNING *',
-      [title, image_url, link_url || null, true] // active = true por padrão
+      [title, image_url, link_url || null, true] 
     );
     return result.rows[0];
   }
