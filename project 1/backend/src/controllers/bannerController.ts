@@ -61,4 +61,15 @@ export class BannerController {
       next(err);
     }
   }
+
+  static async toggleActiveBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.params;
+      const result = await BannerService.toggleActiveBanner(parseInt(bannerId));
+
+      sendSuccess(res, result, 'Banner activated successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
