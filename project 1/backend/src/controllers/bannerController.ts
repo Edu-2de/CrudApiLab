@@ -50,4 +50,15 @@ export class BannerController {
       next(err);
     }
   }
+
+  static async deleteByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.params;
+      const banner = await BannerService.deleteByIdBanner(parseInt(bannerId));
+
+      sendSuccess(res, { banner }, 'Banner deleted successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
