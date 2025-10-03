@@ -40,4 +40,14 @@ export class BannerController {
       next(err);
     }
   }
+
+  static async updateByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.params;
+      const banner = await BannerService.updateByIdBanner(parseInt(bannerId), req.validatedData as UpdateBannerDto);
+      sendSuccess(res, { banner }, 'Banner updated successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
