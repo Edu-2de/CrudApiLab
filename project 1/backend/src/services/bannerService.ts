@@ -4,7 +4,7 @@ import { Banner } from '../entities/Banner';
 import { AppError } from '../utils/appError';
 
 export class BannerService {
-  static async create(createBannerDto: CreateBannerDto): Promise<Banner> {
+  static async createBanner(createBannerDto: CreateBannerDto): Promise<Banner> {
     const { title, image_url, link_url } = createBannerDto;
 
     const bannerData = {
@@ -17,7 +17,7 @@ export class BannerService {
     return banner;
   }
 
-  static async getAll(): Promise<Banner[]> {
+  static async getAllBanners(): Promise<Banner[]> {
     const banners = await BannerRepository.findAll();
     if (banners.length === 0) {
       throw new AppError('No banners found', 404);
@@ -25,7 +25,7 @@ export class BannerService {
     return banners;
   }
 
-  static async getActive(): Promise<Banner[]> {
+  static async getActiveBanner(): Promise<Banner[]> {
     const banners = await BannerRepository.findActive();
     if (banners.length === 0) {
       throw new AppError('No active banners found', 404);
@@ -33,7 +33,7 @@ export class BannerService {
     return banners;
   }
 
-  static async getById(bannerId: number): Promise<Banner> {
+  static async getByIdBanner(bannerId: number): Promise<Banner> {
     const banner = await BannerRepository.findById(bannerId);
     if (!banner) {
       throw new AppError('Banner not found', 404);
@@ -41,7 +41,7 @@ export class BannerService {
     return banner;
   }
 
-  static async updateById(bannerId: number, updateDto: UpdateBannerDto): Promise<Banner> {
+  static async updateByIdBanner(bannerId: number, updateDto: UpdateBannerDto): Promise<Banner> {
     const banner = await BannerRepository.findById(bannerId);
     if (!banner) {
       throw new AppError('Banner not found', 404);
@@ -56,7 +56,7 @@ export class BannerService {
     return updatedBanner;
   }
 
-  static async deleteById(bannerId: number): Promise<Banner> {
+  static async deleteByIdBanner(bannerId: number): Promise<Banner> {
     const banner = await BannerRepository.findById(bannerId);
     if (!banner) {
       throw new AppError('Banner not found', 404);
@@ -66,7 +66,7 @@ export class BannerService {
     return deletedBanner;
   }
 
-  static async toggleActive(bannerId: number): Promise<Banner> {
+  static async toggleActiveBanner(bannerId: number): Promise<Banner> {
     const banner = await BannerRepository.findById(bannerId);
     if (!banner) {
       throw new AppError('Banner not found', 404);
@@ -76,7 +76,7 @@ export class BannerService {
     return updatedBanner;
   }
 
-  static async setActive(bannerId: number, active: boolean): Promise<Banner> {
+  static async setActiveBanner(bannerId: number, active: boolean): Promise<Banner> {
     const banner = await BannerRepository.findById(bannerId);
     if (!banner) {
       throw new AppError('Banner not found', 404);
