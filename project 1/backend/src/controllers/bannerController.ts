@@ -1,187 +1,87 @@
 import { Request, Response, NextFunction } from 'express';
-import pool from '../database/connection';
-import { AppError } from '../utils/appError';
+import { BannerService } from '../services/bannerService';
 import { sendSuccess } from '../utils/response';
-import { bannerSchema } from '../validators/bannerValidator';
+import { BannerParamsDto, BannerStatusDto, CreateBannerDto, UpdateBannerDto } from '../dtos/banner.dto';
 
 export class BannerController {
-  static addBanner = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  static async createBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { error } = bannerSchema.validate(req.body);
-      if (error) throw new AppError(error.details[0].message, 400);
-
-      const { title, image_url, link_url } = req.body;
-      const bannerResult = await pool.query(`SELECT * FROM banners WHERE image_url  = $1`, [image_url]);
-      if (bannerResult.rows.length !== 0) throw new AppError('There is already an image with this url', 400);
-
-      const banner = await pool.query(
-        `INSERT INTO banners(title, image_url, link_url, created_at) VALUES ($1, $2, $3, CURRENT_TIMESTAMP) RETURNING *`,
-        [title, image_url, link_url]
-      );
-
-      sendSuccess(res, { banner: banner.rows[0] }, 'Banner added successfully', 201);
+      const result = await BannerService.createBanner(req.validatedData as CreateBannerDto);
+      sendSuccess(res, result, 'Banner added successful');
     } catch (err) {
       next(err);
     }
-  };
-  static deleteBannerById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  }
+
+  static async getAllBanners(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerId = Number(req.params.bannerId);
-      if (!bannerId) throw new AppError('Banner id is missing', 400);
-
-      const bannerExistsResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerExistsResult.rows.length === 0) throw new AppError('This id is not in the table', 400);
-
-      const banner = bannerExistsResult.rows[0];
-      const bannerDeleteResult = await pool.query(`DELETE FROM banners WHERE id = $1`, [bannerId]);
-
-      sendSuccess(res, { banner }, 'Banner deleted successfully', 200);
+      const banners = await BannerService.getAllBanners();
+      sendSuccess(res, { banners }, 'Banners retrieved successfully');
     } catch (err) {
       next(err);
     }
-  };
-  static getBannerById = async (req: Request, res: Response): Promise<void> => {
+  }
+
+  static async getActiveBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerId = Number(req.params.bannerId);
-      if (!bannerId) {
-        res.status(400).json({ message: 'Banner id is missing' });
-        return;
-      }
-
-      const bannerGetResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerGetResult.rows.length === 0) {
-        res.status(400).json({ message: 'This id is not in the table' });
-        return;
-      }
-
-      const banner = bannerGetResult.rows[0];
-
-      res.json({
-        message: 'Banner retrieved successfully',
-        banner: banner,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error fetching banner',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      const activeBanners = await BannerService.getActiveBanner();
+      sendSuccess(res, { activeBanners }, 'Banners retrieved successfully');
+    } catch (err) {
+      next(err);
     }
-  };
-  static getActiveBanners = async (req: Request, res: Response): Promise<void> => {
+  }
+
+  static async getByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerCheckResult = await pool.query(
-        `SELECT * FROM banners Where active = TRUE ORDER BY created_at DESC LIMIT 50`
-      );
-      if (bannerCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'No one banner active' });
-        return;
-      }
-
-      const banners = bannerCheckResult.rows;
-
-      res.json({
-        message: 'Banners retrieved successfully',
-        banners: banners,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error fetching banners',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      const { bannerId } = req.validatedData;
+      const banner = await BannerService.getByIdBanner(bannerId);
+      sendSuccess(res, { banner }, 'Banner retrieved successfully');
+    } catch (err) {
+      next(err);
     }
-  };
-  static getAllBanners = async (req: Request, res: Response): Promise<void> => {
+  }
+
+  static async updateByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerCheckResult = await pool.query(`SELECT * FROM banners ORDER BY created_at DESC LIMIT 50`);
-      if (bannerCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'No  banners added' });
-        return;
-      }
-      const banners = bannerCheckResult.rows;
-
-      res.json({
-        message: 'Banners retrieved successfully',
-        banners: banners,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error fetching banners',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      const { bannerId } = req.params;
+      const banner = await BannerService.updateByIdBanner(parseInt(bannerId), req.validatedData as UpdateBannerDto);
+      sendSuccess(res, { banner }, 'Banner updated successfully');
+    } catch (err) {
+      next(err);
     }
-  };
-  static activeBannerById = async (req: Request, res: Response): Promise<void> => {
+  }
+
+  static async deleteByIdBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerId = Number(req.params.bannerId);
-      if (!bannerId) {
-        res.status(400).json({ message: 'Banner id is missing' });
-        return;
-      }
+      const { bannerId } = req.params;
+      const banner = await BannerService.deleteByIdBanner(parseInt(bannerId));
 
-      const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'This id is not in the table' });
-        return;
-      }
-
-      const banner = bannerCheckResult.rows[0];
-
-      if (banner.active === true) {
-        res.status(400).json({ message: 'Banner is already active' });
-        return;
-      }
-
-      const bannerActiveResult = await pool.query(`UPDATE banners SET active = TRUE WHERE id = $1 RETURNING *`, [
-        bannerId,
-      ]);
-
-      res.json({
-        message: 'Banner updated successfully',
-        banner: bannerActiveResult.rows[0],
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error during activating banner',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      sendSuccess(res, { banner }, 'Banner deleted successfully');
+    } catch (err) {
+      next(err);
     }
-  };
-  static disableBannerById = async (req: Request, res: Response): Promise<void> => {
+  }
+
+  static async toggleActiveBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const bannerId = Number(req.params.bannerId);
-      if (!bannerId) {
-        res.status(400).json({ message: 'Banner id is missing' });
-        return;
-      }
+      const { bannerId } = req.params;
+      const result = await BannerService.toggleActiveBanner(parseInt(bannerId));
 
-      const bannerCheckResult = await pool.query(`SELECT * FROM banners WHERE id = $1`, [bannerId]);
-      if (bannerCheckResult.rows.length === 0) {
-        res.status(400).json({ message: 'This id is not in the table' });
-        return;
-      }
-
-      const banner = bannerCheckResult.rows[0];
-
-      if (banner.active === false) {
-        res.status(400).json({ message: 'Banner is already disable' });
-        return;
-      }
-
-      const bannerDisableResult = await pool.query(`UPDATE banners SET active = FALSE WHERE id = $1 RETURNING *`, [
-        bannerId,
-      ]);
-
-      const bannerDisable = bannerDisableResult.rows[0];
-
-      res.json({
-        message: 'Banner updated successfully',
-        banner: bannerDisable,
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error during disable banner',
-        error: error instanceof Error ? error.message : String(error),
-      });
+      sendSuccess(res, result, 'Banner changed successfully');
+    } catch (err) {
+      next(err);
     }
-  };
+  }
+
+  static async setActiveBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { bannerId } = req.params;
+      const { active } = req.validatedData as BannerStatusDto;
+      const result = await BannerService.setActiveBanner(parseInt(bannerId), active);
+
+      sendSuccess(res, result, 'Banner activated successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
