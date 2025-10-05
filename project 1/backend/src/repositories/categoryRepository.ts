@@ -33,7 +33,7 @@ export class CategoryRepository {
   }
 
   static async findByProductId(productId: number): Promise<Category[]>{
-    const result = await pool.query('SELECT c.name FROM categories c INNER JOIN products p ON p.category_id = c.id WHERE p.id = $1', [productId]);
+    const result = await pool.query('SELECT c.* FROM categories c INNER JOIN products p ON p.category_id = c.id WHERE p.id = $1', [productId]);
     return result.rows;
   }
 }
