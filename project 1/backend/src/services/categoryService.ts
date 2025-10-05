@@ -16,5 +16,13 @@ export class CategoryService {
     return category;
   }
 
+  static async getAllCategories(): Promise<Category[]>{
+    const categories  = await CategoryRepository.findAll();
+    if(categories.length === 0){
+      throw new AppError('No categories found', 404);
+    }
+    return categories;
+  }
+
   
 }
