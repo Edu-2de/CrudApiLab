@@ -1,4 +1,4 @@
-import { IsString, IsUrl, IsOptional, IsBoolean, IsNumberString, MinLength } from 'class-validator';
+import { IsString, IsOptional, IsNumberString } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class CreateCategoryDto {
