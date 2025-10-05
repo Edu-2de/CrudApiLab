@@ -24,5 +24,13 @@ export class CategoryService {
     return categories;
   }
 
+  static async getCategoryById(categoryId: number): Promise<Category>{
+    const category = await CategoryRepository.findById(categoryId);
+    if(!category){
+      throw new AppError('Category not found', 404);
+    }
+    return category;
+  }
+
   
 }
