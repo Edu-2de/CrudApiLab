@@ -20,3 +20,8 @@ export class UpdateCategoryDto {
   description!: string
 }
 
+export class CategoryParamsDto {
+  @IsNumberString({}, {message: 'Category ID must be a valid number'})
+  @Transform(({value}) => parseInt(value, 10))
+  categoryId!: number;
+}
