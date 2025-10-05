@@ -26,4 +26,14 @@ export class CategoryRepository {
     const result = await pool.query(query, [...values, id]);
     return result.rows[0];
   }
+
+  static async delete(id: number): Promise<Category>{
+    const result = await pool.query('DELETE FROM categories WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0];
+  }
+
+  static async findByProductId(productId: number): Promise<Category[]>{
+    const result = await pool.query('SELECT c.name FROM categories c INNER JOIN products p ON p.category_id = c.id WHERE p.id = $1', [productId]);
+    return result.rows;
+  }
 }
