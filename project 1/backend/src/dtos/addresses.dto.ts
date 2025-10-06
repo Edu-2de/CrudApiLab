@@ -34,4 +34,11 @@ export class UpdateAddressDto{
   @IsString()
   @MinLength(10, { message: 'Address line must be at least 10 characters' })
   address_line1!: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(10, { message: 'Address line must be at least 10 characters' })
+  address_line2!: string;
+
+  
 }
