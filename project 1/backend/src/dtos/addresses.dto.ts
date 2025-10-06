@@ -23,4 +23,8 @@ export class CreateAddressDto{
   @IsNumber()
   @MinLength(5, { message: 'State must be at least 2 characters' })
   postal_code!: string
+
+  @IsString()
+  @MinLength(5, { message: 'Country must be at least 2 characters' })
+  country!: string
 }
