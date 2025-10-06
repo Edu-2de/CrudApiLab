@@ -16,5 +16,9 @@ export class CreateAddressDto{
   @MinLength(5, { message: 'City must be at least 5 characters' })
   city!: string
 
-  
+  @IsString()
+  @MinLength(2, { message: 'State must be at least 2 characters' })
+  state!: string
+
+
 }
