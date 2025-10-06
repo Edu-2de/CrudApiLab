@@ -34,7 +34,9 @@ export class CategoryController{
 
   static async getByProductIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
     try{
-
+      const {productId} = req.validatedData;
+      const category = await CategoryService.getCategoryByProductId(productId);
+      sendSuccess(res, {category}, 'Category retrieved successfully')
     }catch(err){
       next(err);
     }
