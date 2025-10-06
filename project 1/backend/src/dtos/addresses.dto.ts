@@ -59,3 +59,10 @@ export class UpdateAddressDto {
   @MinLength(5, { message: 'Country must be at least 2 characters' })
   country!: string;
 }
+
+
+export class AddressParamsDto {
+  @IsNumberString({}, {message: 'Address ID must be a valid number'})
+  @Transform(({value}) => parseInt(value, 10))
+  addressId!: number;
+}
