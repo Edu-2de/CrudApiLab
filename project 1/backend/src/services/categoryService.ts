@@ -32,7 +32,7 @@ export class CategoryService {
     return category;
   }
 
-  static async updateByIdCategory(categoryId: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+  static async updateByIdCategory(parseInt: (string: string, radix?: number) => number, categoryId: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const category = await CategoryRepository.findById(categoryId);
     if (!category) {
       throw new AppError('Category not found', 404);

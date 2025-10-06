@@ -34,7 +34,9 @@ export class CategoryController{
 
   static async updateByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
     try{
-
+      const {categoryId} = req.validatedData;
+      const category = await CategoryService.updateByIdCategory(parseInt, (categoryId), req.validatedData as UpdateCategoryDto);
+      sendSuccess(res, {category}, 'Category updated successfully')
     }catch(err){
       next(err);
     }
