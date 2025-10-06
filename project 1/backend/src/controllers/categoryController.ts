@@ -41,4 +41,12 @@ export class CategoryController{
       next(err);
     }
   }
+
+  static async deleteByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
+    try{
+
+    }catch(err){
+      next(err);
+    }
+  }
 }
