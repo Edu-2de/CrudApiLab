@@ -21,4 +21,12 @@ export class CategoryController{
       next(err);
     }
   }
+
+  static async getByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
+    try{
+
+    }catch(err){
+      next(err);
+    }
+  }
 }
