@@ -32,6 +32,14 @@ export class CategoryController{
     }
   }
 
+  static async getByProductIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
+    try{
+
+    }catch(err){
+      next(err);
+    }
+  }
+
   static async updateByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void> {
     try{
       const {categoryId} = req.validatedData;
