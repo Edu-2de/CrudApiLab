@@ -24,7 +24,9 @@ export class CategoryController{
 
   static async getByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
     try{
-
+      const {categoryId} = req.validatedData;
+      const category = await CategoryService.getCategoryById(categoryId);
+      sendSuccess(req, {category},' Banner retrieved successfully')
     }catch(err){
       next(err);
     }
