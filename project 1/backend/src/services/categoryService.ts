@@ -32,7 +32,15 @@ export class CategoryService {
     return category;
   }
 
-  static async updateByIdCategory(categoryId: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
+  static async getCategoryByProductId(productId: number): Promise<Category[]>{
+    const category = await CategoryRepository.findByProductId(productId);
+    if (!category) {
+      throw new AppError('Category not found', 404);
+    }
+    return category
+  }
+
+  static async updateByIdCategory(parseInt: (string: string, radix?: number) => number, categoryId: number, updateCategoryDto: UpdateCategoryDto): Promise<Category> {
     const category = await CategoryRepository.findById(categoryId);
     if (!category) {
       throw new AppError('Category not found', 404);
@@ -46,6 +54,17 @@ export class CategoryService {
     const updateCategory = await CategoryRepository.update(categoryId, fields, values);
     return updateCategory;
   }
+
+  static async deleteByIdCategory(categoryId: number): Promise<Category>{
+    const category = await CategoryRepository.findById(categoryId);
+    if(!category){
+      throw new AppError('Category not found', 404);
+    }
+
+    const deleteCategory = await CategoryRepository.delete(categoryId);
+    return deleteCategory
+  }
+
   private static buildUpdateQuery(updateData: any) {
     const fields: string[] = [];
     const values: any[] = [];

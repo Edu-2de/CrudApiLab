@@ -20,6 +20,11 @@ export class CategoryRepository {
     return result.rows[0];
   }
 
+  static async findByProductId(productId: number): Promise<Category[]>{
+    const result = await pool.query('SELECT c.* FROM categories c INNER JOIN products p ON p.category_id = c.id WHERE p.id = $1', [productId]);
+    return result.rows;
+  }
+
   static async update(id: number, fields: string[], values: any[]):
   Promise<Category>{
     const query = `UPDATE categories SET ${fields.join(', ')} WHERE id = $${fields.length + 1} RETURNING *`;
@@ -32,8 +37,4 @@ export class CategoryRepository {
     return result.rows[0];
   }
 
-  static async findByProductId(productId: number): Promise<Category[]>{
-    const result = await pool.query('SELECT c.* FROM categories c INNER JOIN products p ON p.category_id = c.id WHERE p.id = $1', [productId]);
-    return result.rows;
-  }
 }

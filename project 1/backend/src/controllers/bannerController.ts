@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { BannerService } from '../services/bannerService';
 import { sendSuccess } from '../utils/response';
-import { BannerParamsDto, BannerStatusDto, CreateBannerDto, UpdateBannerDto } from '../dtos/banner.dto';
+import { BannerStatusDto, CreateBannerDto, UpdateBannerDto } from '../dtos/banner.dto';
 
 export class BannerController {
   static async createBanner(req: Request, res: Response, next: NextFunction): Promise<void> {
