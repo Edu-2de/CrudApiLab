@@ -7,4 +7,8 @@ export class CreateAddressDto{
   @MinLength(10, { message: 'First name must be at least 2 characters' })
   address_line1!: string;
 
+  @IsString()
+  @MinLength(10, { message: 'First name must be at least 2 characters' })
+  address_line2!: string;
+
 }
