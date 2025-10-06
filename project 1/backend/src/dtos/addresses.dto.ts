@@ -3,7 +3,9 @@ import {Transform} from 'class-transformer';
 
 
 export class CreateAddressDto{
-  c
+  @IsString()
+  @MinLength(10, { message: 'Address line must be at least 10 characters' })
+  address_line1!: string;
 
   @IsOptional()
   @IsString()
@@ -31,5 +33,5 @@ export class UpdateAddressDto{
   @IsOptional()
   @IsString()
   @MinLength(10, { message: 'Address line must be at least 10 characters' })
-  address_line2!: string;
+  address_line1!: string;
 }
