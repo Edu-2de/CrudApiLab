@@ -46,6 +46,17 @@ export class CategoryService {
     const updateCategory = await CategoryRepository.update(categoryId, fields, values);
     return updateCategory;
   }
+
+  static async deleteByIdCategory(categoryId: number): Promise<Category>{
+    const category = await CategoryRepository.findById(categoryId);
+    if(!category){
+      throw new AppError('Category not found', 404);
+    }
+
+    const deleteCategory = await CategoryRepository.delete(categoryId);
+    return deleteCategory
+  }
+
   private static buildUpdateQuery(updateData: any) {
     const fields: string[] = [];
     const values: any[] = [];
