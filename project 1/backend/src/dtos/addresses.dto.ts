@@ -48,4 +48,9 @@ export class UpdateAddressDto {
   @IsString()
   @MinLength(2, { message: 'State must be at least 2 characters' })
   state!: string;
+
+  @IsOptional()
+  @IsNumber()
+  @MinLength(5, { message: 'State must be at least 2 characters' })
+  postal_code!: string;
 }
