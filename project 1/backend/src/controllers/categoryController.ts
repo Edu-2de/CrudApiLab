@@ -44,7 +44,9 @@ export class CategoryController{
 
   static async deleteByIdCategory(req: Request, res: Response, next: NextFunction): Promise<void>{
     try{
-
+      const {categoryId} = req.params;
+      const category = await CategoryService.deleteByIdCategory(parseInt(categoryId));
+      sendSuccess(res, {category}, 'Category deleted successfully')
     }catch(err){
       next(err);
     }
