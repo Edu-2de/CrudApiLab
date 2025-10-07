@@ -1,0 +1,13 @@
+import pool from "../database/connection";
+import { Address, CreateAddressData  } from "../entities/Address";
+
+export class AddressRepository{
+    static async create(addressData: CreateAddressData): Promise<void>{
+        const{address_line1, address_line2, city, state, postal_code, country} = addressData;
+        const query = `
+            INSERT INTO addresses (address_line1, address_line2, city, state, postal_code, country)
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+        await pool.query(query, [address_line1, address_line2, city, state, postal_code, country]);
+    }
+}
