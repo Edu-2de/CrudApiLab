@@ -16,7 +16,8 @@ export class AddressRepository{
         return result.rows;
     }
 
-    static async findById(id: number): Promise<void>{
-        
+    static async findById(id: number): Promise<Address | null>{
+        const result = await pool.query('SELECT * FROM addresses WHERE id = $1', [id]);
+        return result.rows[0] || null;
     }
 }
