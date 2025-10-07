@@ -10,4 +10,9 @@ export class AddressRepository{
         `;
         await pool.query(query, [address_line1, address_line2, city, state, postal_code, country]);
     }
+
+    static async findAll(): Promise<Address[]> {
+        const result = await pool.query('SELECT * FROM addresses ORDER BY created_at DESC');
+        return result.rows;
+    }
 }
