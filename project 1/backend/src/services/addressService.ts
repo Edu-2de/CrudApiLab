@@ -52,7 +52,28 @@ export class AddressService{
     }
 
     const {fields, values} = this.buildUpdateQuery(updateDto);
-    
-    
+    if(fields.length === 0) {
+      throw new AppError('No fields to update', 400);
+    }
+
+    const updatedAddress = await AddressRepository.update(addressId, fields, values);
+    return updatedAddress;
+  }
+
+
+  private static buildUpdateQuery(updateData: any) {
+    const fields: string[] = [];
+    const values: any[] = [];
+    let idx = 1;
+
+    Object.entries(updateData).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        fields.push(`${key} = $${idx++}`);
+        values.push(value);
+      }
+    });
+
+    fields.push('updated_at = CURRENT_TIMESTAMP');
+    return { fields, values };
   }
 }
