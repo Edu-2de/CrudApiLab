@@ -19,4 +19,9 @@ export class AddressRepository{
     const result = await pool.query('SELECT * FROM user_addresses WHERE id = $1', [id]);
     return result.rows[0] || null ;
   }
+
+  static async findByUserId(userId: number): Promise<Address | null>{
+    const result = await pool.query('SELECT * FROM user_addresses WHERE user_id = $1', [userId]);
+    return result.rows[0] || null;
+  }
 }
