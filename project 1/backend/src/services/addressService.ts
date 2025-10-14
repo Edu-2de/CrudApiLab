@@ -28,4 +28,12 @@ export class AddressService{
     }
     return address;
   }
+
+  static async getByIdAddress(addressId: number): Promise<Address>{
+    const address = await AddressRepository.findById(addressId);
+    if (!address) {
+      throw new AppError('Address not found', 404);
+    }
+    return address;
+  }
 }
