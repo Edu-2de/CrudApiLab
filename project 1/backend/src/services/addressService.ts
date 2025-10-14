@@ -20,4 +20,12 @@ export class AddressService{
     const address = await AddressRepository.create(addressData);
     return address;
   }
+
+  static async getAllAddresses(): Promise<Address[]> {
+    const address = await AddressRepository.findAll();
+    if(address.length === 0){
+      throw new AppError('No addresses found', 404);
+    }
+    return address;
+  }
 }
