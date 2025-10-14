@@ -11,7 +11,7 @@ export interface Address{
 }
 
 
-export interface CreateAddress {
+export interface CreateAddressData {
   id: number,
   user_id: number, 
   address_line1: string,
