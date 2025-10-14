@@ -44,4 +44,15 @@ export class AddressService{
     }
     return address;
   }
+
+  static async updateByIdAddress(addressId: number, updateDto: UpdateAddressDto): Promise<Address>{
+    const address = await AddressRepository.findById(addressId);
+    if (!address){
+      throw new AppError('Address not found', 404);
+    }
+
+    const {fields, values} = this.buildUpdateQuery(updateDto);
+    
+    
+  }
 }
