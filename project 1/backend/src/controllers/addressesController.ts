@@ -67,4 +67,29 @@ export class AddressesController {
       next(err);
     }
   }
+
+  static updateAddress = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const addressId = Number(req.params.addressId);
+      if(!addressId){
+        throw new Error('Invalid address ID');
+      }
+
+      const { address_line1, address_line2, city, state, postal_code, country } = req.body;
+
+      const updatedAddress: UpdateAddressDto = {
+        address_line1,
+        address_line2,
+        city,
+        state,
+        postal_code,
+        country,
+      };
+
+      const result = await AddressService.updateByIdAddress(addressId, updatedAddress);
+      sendSuccess(res, result, 'Address updated successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
