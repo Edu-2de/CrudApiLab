@@ -14,4 +14,9 @@ export class AddressRepository{
     const result = await pool.query('SELECT * FROM user_addresses ORDER BY created_at DESC');
     return result.rows;
   }
+
+  static async findById(id: number): Promise<Address | null> {
+    const result = await pool.query('SELECT * FROM user_addresses WHERE id = $1', [id]);
+    return result.rows[0] || null ;
+  }
 }
