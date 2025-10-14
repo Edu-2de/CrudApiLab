@@ -53,4 +53,18 @@ export class AddressesController {
       next(err);
     }
   }
+
+  static getAddressByUserId = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const userId = Number(req.params.userId);
+      if(!userId){
+        throw new Error('Invalid user ID');
+      }
+
+      const addresses = await AddressService.getByUserIdAddress(userId);
+      sendSuccess(res, { addresses }, 'Addresses retrieved successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
