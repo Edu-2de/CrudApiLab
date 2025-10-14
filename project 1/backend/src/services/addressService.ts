@@ -13,7 +13,7 @@ export class AddressService{
       address_line2,
       city,
       state,
-      postal_code,
+      postal_code: Number(postal_code),
       country,
     }
 

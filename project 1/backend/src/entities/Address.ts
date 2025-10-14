@@ -12,7 +12,6 @@ export interface Address{
 
 
 export interface CreateAddressData {
-  id: number,
   user_id: number, 
   address_line1: string,
   address_line2?: string,
