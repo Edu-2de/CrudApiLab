@@ -24,4 +24,12 @@ export class AddressRepository{
     const result = await pool.query('SELECT * FROM user_addresses WHERE user_id = $1', [userId]);
     return result.rows[0] || null;
   }
+
+  static async update(id: number, fields: string[], values: any[]): Promise<Address>{
+    const query = `UPDATE user_addresses SET ${fields.join(', ')} WHERE id = $${fields.length + 1} RETURNING *`;
+
+    const result = await pool.query(query, [...values, id]);
+    return result.rows[0];
+  }
+  
 }
