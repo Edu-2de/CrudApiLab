@@ -31,5 +31,10 @@ export class AddressRepository{
     const result = await pool.query(query, [...values, id]);
     return result.rows[0];
   }
+
+  static async delete(id: number): Promise<Address>{
+    const result = await pool.query('DELETE FROM user_addresses WHERE id = $1 RETURNING *', [id]);
+    return result.rows[0];
+  }
   
 }
