@@ -39,4 +39,18 @@ export class AddressesController {
       next(err);
     }
   }
+
+  static getAddressById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const addressId = Number(req.params.addressId);
+      if(!addressId){
+        throw new Error('Invalid address ID');
+      }
+
+      const address = await AddressService.getByIdAddress(addressId);
+      sendSuccess(res, { address }, 'Address retrieved successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
