@@ -2,6 +2,10 @@ import { IsEmail, IsString, MinLength, IsOptional, IsIn, IsNumberString, IsNumbe
 import { Transform } from 'class-transformer';
 
 export class CreateAddressDto {
+  @IsNumber()
+  @MinLength(1, { message: 'User id must be at least 1 character' })
+  user_id!: number;
+
   @IsString()
   @MinLength(10, { message: 'Address line must be at least 10 characters' })
   address_line1!: string;
