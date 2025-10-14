@@ -60,6 +60,15 @@ export class AddressService{
     return updatedAddress;
   }
 
+  static async deleteByIdAddress(addressId: number): Promise<Address>{
+    const address = await AddressRepository.findById(addressId);
+    if(!address){
+      throw new AppError('Address not found', 404);
+    }
+    const deletedAddress = await AddressRepository.delete(addressId);
+    return deletedAddress;
+  }
+
 
   private static buildUpdateQuery(updateData: any) {
     const fields: string[] = [];

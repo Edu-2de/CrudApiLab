@@ -92,4 +92,18 @@ export class AddressesController {
       next(err);
     }
   }
+
+  static deleteAddress = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const addressId = Number(req.params.addressId);
+      if(!addressId){
+        throw new Error('Invalid address ID');
+      }
+
+      const result = await AddressService.(addressId);
+      sendSuccess(res, result, 'Address deleted successfully');
+    } catch (err) {
+      next(err);
+    }
+  }
 }
